@@ -38,7 +38,17 @@ from tqdm import tqdm
 class DataLoader:
     def __init__(self, config):
         self.config=config
-        self.coco_data()
+        if config["data_name"] is "flickr8k":
+            self.flickr8k()
+        elif config["data_name"] is "flickr30k":
+            self.flickr8k()
+        elif config["data_name"] is "aide":
+            self.flickr8k()
+        elif config["data_name"] is "coco14":
+            self.coco_data()
+        elif config["data_name"] is "coco17":
+            self.coco_data()
+
         
     def flickr8k(self):        
         # load training dataset (6K)
@@ -64,7 +74,6 @@ class DataLoader:
         # parse descriptions
         self.descriptions = load_descriptions(self.doc)
         print('Loaded: %d ' % len(self.descriptions))
-        print('Example description',self.descriptions["1000268201_693b08cb0e"])
         
         clean_descriptions(self.descriptions, self.config)
         # summarize vocabulary
@@ -155,7 +164,9 @@ class DataLoader:
                 encoding_test[image_filename] = encode(img, images_feature_model)
                 if index % 100 == 0:
                     print(index)
-          
+            if not os.path.isdir("./"+self.config["data_name"]):
+                os.makedirs("./"+self.config["data_name"])
+                os.makedirs("./"+self.config["data_name"]+"/Pickle")
             with open(self.config["encoded_images_test"], "wb") as encoded_pickle:
                 pickle.dump(encoding_test, encoded_pickle)
             print(encoding_test)
@@ -213,13 +224,14 @@ class DataLoader:
         print('Found %s word vectors.' % len(embeddings_index))
         # Get 200-dim dense vector for each of the 10000 words in out vocabulary
         embedding_matrix = np.zeros((vocab_size, self.config["embedings_dim"]))
-
         for word, i in wordtoix.items():
             #if i < max_words:
             embedding_vector = embeddings_index.get(word)
+            print(embedding_vector)
             if embedding_vector is not None:
                 # Words not found in the embedding index will be all zeros
                 #1655,299 199
+                print(embedding_vector.shape)#(99,0)
                 embedding_matrix[i] = embedding_vector
         return embedding_matrix, embedding_vector
     
