@@ -27,6 +27,7 @@ config_flickr8k = {"images_path": data_path + "images/flickr8k/Images/",
            "lstm_model_save_dir": "./flickr8k/model_weights/",
            "lstm_model_save_path": "./flickr8k/model_weights/model_Base_3_Batch_Komninos.h5",
             "coco-caption_path":"/home/wisla/projects/image-captioning/coco-caption",
+           "results_directory":"results",
            "data_name":"flickr8k",
            }
 config_flickr30k = {"images_folder": data_path + "images/flickr30k/Images",
@@ -53,6 +54,7 @@ config_flickr30k = {"images_folder": data_path + "images/flickr30k/Images",
            "lstm_model_save_dir": "./flickr30k/model_weights/",
            "lstm_model_save_path": "./flickr30k/model_weights/model_Base_3_Batch_Komninos.h5",
            "coco-caption_path":"/home/wisla/projects/image-captioning/coco-caption",
+           "results_directory":"results",
            "data_name": "flickr30k" 
            }
 
@@ -81,6 +83,7 @@ config_coco14 = {"images_folder": data_path + "images/coco2014",
            "lstm_model_save_dir": "./coco14/model_weights/",
            "lstm_model_save_path": "./coco14/model_weights/model_Base_3_Batch_Komninos.h5",
            "coco-caption_path":"/home/wisla/projects/image-captioning/coco-caption",
+           "results_directory":"results",
            "data_name": "coco14" 
            }
 config_aide = {"images_path": data_path + "images/flickr8k/Images/",
@@ -108,6 +111,7 @@ config_aide = {"images_path": data_path + "images/flickr8k/Images/",
            "spacy_lemma_model": "pl_spacy_model",
            "lstm_model_save_dir": "./aide/model_weights/",
            "lstm_model_save_path": "./aide/model_weights/model_Base_3_Batch_Komninos.h5",
-            "coco-caption_path":"/home/wisla/projects/image-captioning/coco-caption",
+            "coco-caption_path":"./coco-caption",
+           "results_directory":"results",
            "data_name":"aide",
            }

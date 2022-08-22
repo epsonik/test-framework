@@ -14,8 +14,8 @@ import time
 import os
 import sys
 
-def calculate_results(expected, results, name):
-    sys.path.append("/home/wisla/projects/image-captioning/coco-caption")
+def calculate_results(expected, results, config):
+    sys.path.append("./coco-caption")
     from pycocoevalcap.eval_any import COCOEvalCap
     cocoEval = COCOEvalCap(expected, results)
     eval_res = cocoEval.evaluate()
@@ -29,7 +29,10 @@ def calculate_results(expected, results, name):
         imgToEval[image_id]['caption'] = caption
         imgToEval[image_id]['ground_truth_captions'] = [x['caption'] for x in expected[p]]
 
-    cache_path = os.path.join("test", name + '.json')
+    if not os.path.isdir("./"+ config["results_directory"]):
+        os.makedirs("./"+config["results_directory"])
+    cache_path = os.path.join(config["results_directory"], config["data_name"] + '.json')
+    print(cache_path)
     with open(cache_path, 'w') as outfile:
         json.dump({'overall': out, 'imgToEval': imgToEval}, outfile)
     return out

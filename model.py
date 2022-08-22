@@ -21,7 +21,7 @@ from keras import callbacks
 from keras import optimizers
 from helper import *
 from pickle import dump, load
-
+from eval_utils import calculate_results
 class ModelImpl:
     def __init__(self, data):
         self.data=data
@@ -80,5 +80,5 @@ class ModelImpl:
         with open(self.config["encoded_images_test"], "rb") as encoded_pickle:
             encoding_test = load(encoded_pickle)
         expected, results = prepare_for_evaluation(encoding_test, self.data, self.model)
-        out = calculate_results(expected, results, name=self.config['result_filename'])
+        out = calculate_results(expected, results, self.config)
         print(out)

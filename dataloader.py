@@ -227,11 +227,9 @@ class DataLoader:
         for word, i in wordtoix.items():
             #if i < max_words:
             embedding_vector = embeddings_index.get(word)
-            print(embedding_vector)
             if embedding_vector is not None:
                 # Words not found in the embedding index will be all zeros
                 #1655,299 199
-                print(embedding_vector.shape)#(99,0)
                 embedding_matrix[i] = embedding_vector
         return embedding_matrix, embedding_vector
     
