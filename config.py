@@ -166,10 +166,10 @@ config_flickr8k_polish = {"images_path": data_path + "images/flickr8k/Images/",
            "data_name":"flickr8k_polish",
            }
 config_flickr30k_polish = {"images_path": data_path + "images/flickr30k/Images/",
-           "train_images_path": data_path + "images/flickr30k_polish/flickr30k_polish_text/flickr30k_polish.trainImages.txt", # file conatains the names of images to be used in train data
-           "test_images_path": data_path + "images/flickr30k_polish/flickr30k_polish_text/flickr30k_polish.testImages.txt",
-           "train_path": data_path + "images/flickr30k/flickr30k_text/flickr30k.trainImages.txt", 
-           "token_path": data_path + "images/flickr30k_polish/flickr30k_polish_text/flickr30k_polish.token.txt",
+           "train_images_path": data_path + "images/flickr30k_polish/Flickr30k_polish_text/Flickr_30k_polish.trainImages.txt", # file conatains the names of images to be used in train data
+           "test_images_path": data_path + "images/flickr30k_polish/Flickr30k_polish_text/Flickr_30k_polish.testImages.txt",
+           "train_path": data_path + "images/flickr30k_polish/Flickr30k_polish_text/Flickr_30k_polish.trainImages.txt", 
+           "token_path": data_path + "images/flickr30k_polish/Flickr30k_polish_text/Flickr_30k_polish.token.txt",
           "word_embedings_path": data_path + "images/glovePL/glove_100_3_polish.txt",
            "embedings_dim": 99, # Polish - 100
            "train_model": True, # True if you intend to train the model,
