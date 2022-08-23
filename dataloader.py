@@ -68,6 +68,7 @@ class DataLoader:
         # Create a list of all image names in the directory
         self.img = glob.glob(self.images + '*.jpg')
         self.train_img, self.train_images = self.images_with_path(self.config["train_images_path"])  
+        
         self.test_img, self.test_images = self.images_with_path(self.config["test_images_path"])
         self.image_features_train, self.image_features_test = self.prepare_images(self.train_img, self.test_img)
         print('Photos: train=%d' % len(self.image_features_train))
