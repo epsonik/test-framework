@@ -52,7 +52,7 @@ class ModelImpl:
     
     def setup(self):
             # model.optimizer.lr = 0.001
-        self.epochs = 1
+        self.epochs = 2
         self.number_pics_per_bath = 100
         self.steps = len(self.data.train_descriptions)//self.number_pics_per_bath
         

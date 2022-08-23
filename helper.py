@@ -258,18 +258,6 @@ def prepare_for_evaluation(encoding_test, data, model):
         image = encoding_test[pic].reshape((1,2048))
         for desc in data.descriptions[pic.rsplit( ".", 1 )[ 0 ]]:
             expected[image_id].append({"image_id":image_id, "caption":desc})
-#         actual_desc_0 = data.descriptions[pic.rsplit( ".", 1 )[ 0 ]][0]
-#         actual_desc_1 = data.descriptions[pic.rsplit( ".", 1 )[ 0 ]][1]
-#         actual_desc_2 = data.descriptions[pic.rsplit( ".", 1 )[ 0 ]][2]
-#         actual_desc_3 = data.descriptions[pic.rsplit( ".", 1 )[ 0 ]][3]
-#         actual_desc_4 = data.descriptions[pic.rsplit( ".", 1 )[ 0 ]][4]
-
-#         expected[image_id]=[{"image_id":image_id, "caption":actual_desc_0},
-#                            {"image_id":image_id, "caption":actual_desc_1},
-#                            {"image_id":image_id, "caption":actual_desc_2},
-#                            {"image_id":image_id, "caption":actual_desc_3},
-#                            {"image_id":image_id, "caption":actual_desc_4}]
-
         generated = greedySearch(image, model, data.wordtoix, data.ixtoword, data.max_length)
         results[image_id]=[{"image_id":image_id, "caption":generated}]
     return expected, results

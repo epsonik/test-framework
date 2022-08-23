@@ -40,8 +40,12 @@ class DataLoader:
         self.config=config
         if config["data_name"] is "flickr8k":
             self.flickr8k()
-        elif config["data_name"] is "flickr30k":
+        if config["data_name"] is "flickr8k_polish":
             self.flickr8k()
+        elif config["data_name"] is "flickr30k":
+            self.coco_data()
+        elif config["data_name"] is "flickr30k_polish":
+            self.coco_data()
         elif config["data_name"] is "aide":
             self.flickr8k()
         elif config["data_name"] is "coco14":

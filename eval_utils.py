@@ -15,7 +15,7 @@ import os
 import sys
 
 def calculate_results(expected, results, config):
-    sys.path.append("./coco-caption")
+    sys.path.append(config["coco-caption_path"])
     from pycocoevalcap.eval_any import COCOEvalCap
     cocoEval = COCOEvalCap(expected, results)
     eval_res = cocoEval.evaluate()
