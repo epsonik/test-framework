@@ -1,4 +1,4 @@
-##Environment setup
+## Environment setup
 
 Copy folder`coco-caption` from path `/home2/data` to project root directory
 create virtual environment from file
@@ -9,7 +9,7 @@ Add virtual environment `framework` to jupyter
 ```
 ipython kernel install --user --name=framework
 ```
-###How to use jupyter Notebook via ssh:
+### How to use jupyter Notebook via ssh:
 How to connect local graphic jupyter notebook to remote jupyter server with virtual conda environment via ssh.
 
 WARNING:
@@ -29,7 +29,7 @@ ssh wisla@10.44.27.164
 ```
 
 ```
-##Configuration file
+## Configuration file
 File In `config.py`  is a configuration file that allows to automatically load data for testing framework.
 
 
