@@ -54,14 +54,7 @@ class DataLoader:
             self.coco_data()
 
         
-    def flickr8k(self):        
-        # load training dataset (6K)
-        filename = self.config["train_images_path"]
-        self.train = load_set(filename)
-        print("Train dataset")
-#       id obrazow  
-        
-        print('Train dataset loaded: %d' % len(self.train))
+    def flickr8k(self):
         
         # Below path contains all the images
         self.images = self.config["images_path"]
@@ -239,7 +232,8 @@ class DataLoader:
         return embedding_matrix, embedding_vector
     
     def coco_data(self):
-        self.train_img, self.train_images, self.test_img, self.test_images = self.load_coco_data()
+        self.train_img, self.train_images, _, _ = self.load_coco_data()
+
         self.image_features_train, self.image_features_test = self.prepare_images(self.train_img, self.test_img)
         
         self.train_descriptions, self.descriptions = self.load_clean_descriptions_coco(self.config["token_path"], self.train_images)
