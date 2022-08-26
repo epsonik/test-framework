@@ -56,7 +56,7 @@ class DataLoader:
         
     def flickr8k(self):        
         # load training dataset (6K)
-        filename = self.config["train_path"]
+        filename = self.config["train_images_path"]
         self.train = load_set(filename)
         print("Train dataset")
 #       id obrazow  

@@ -3,7 +3,6 @@ data_path = "/home2/data/"
 config_flickr8k = {"images_path": data_path + "images/flickr8k/Images/",
            "train_images_path": data_path + "images/flickr8k/Flickr8k_text/Flickr_8k.trainImages.txt", # file conatains the names of images to be used in train data
            "test_images_path": data_path + "images/flickr8k/Flickr8k_text/Flickr_8k.testImages.txt",
-           "train_path": data_path + "images/flickr8k/Flickr8k_text/Flickr_8k.trainImages.txt", 
            "token_path": data_path + "images/flickr8k/Flickr8k_text/Flickr_8k.token.txt",
           "word_embedings_path": data_path + "images/glove/glove.6B.200d.txt",
           "embedings_dim": 199,
@@ -112,7 +111,6 @@ config_coco17 = {"images_folder": data_path + "images/coco2014",
 config_aide = {"images_path": data_path + "images/flickr8k/Images/",
            "train_images_path": data_path + "images/aide/aide_text/aide.trainImages.txt", # file conatains the names of images to be used in train data
            "test_images_path": data_path + "images/aide/aide_text/aide.testImages.txt",
-           "train_path": data_path + "images/aide/aide_text/aide.trainImages.txt", 
            "token_path": data_path + "images/aide/aide_text/aide.token.txt",
           "word_embedings_path": data_path + "images/glovePL/glove_100_3_polish.txt",
            "embedings_dim": 99, # Polish - 100
@@ -140,7 +138,6 @@ config_aide = {"images_path": data_path + "images/flickr8k/Images/",
 config_flickr8k_polish = {"images_path": data_path + "images/flickr8k/Images/",
            "train_images_path": data_path + "images/flickr8k_polish/Flickr8k_polish_text/Flickr_8k_polish.trainImages.txt", # file conatains the names of images to be used in train data
            "test_images_path": data_path + "images/flickr8k_polish/Flickr8k_polish_text/Flickr_8k_polish.testImages.txt",
-           "train_path": data_path + "images/flickr8k_polish/Flickr8k_polish_text/Flickr_8k_polish.trainImages.txt", 
            "token_path": data_path + "images/flickr8k_polish/Flickr8k_polish_text/Flickr_8k_polish.token.txt",
           "word_embedings_path": data_path + "images/glovePL/glove_100_3_polish.txt",
            "embedings_dim": 99, # Polish - 100
@@ -168,7 +165,6 @@ config_flickr8k_polish = {"images_path": data_path + "images/flickr8k/Images/",
 config_flickr30k_polish = {"images_path": data_path + "images/flickr30k/Images/",
            "train_images_path": data_path + "images/flickr30k_polish/Flickr30k_polish_text/Flickr_30k_polish.trainImages.txt", # file conatains the names of images to be used in train data
            "test_images_path": data_path + "images/flickr30k_polish/Flickr30k_polish_text/Flickr_30k_polish.testImages.txt",
-           "train_path": data_path + "images/flickr30k_polish/Flickr30k_polish_text/Flickr_30k_polish.trainImages.txt", 
            "token_path": data_path + "images/flickr30k_polish/Flickr30k_polish_text/Flickr_30k_polish.token.txt",
           "word_embedings_path": data_path + "images/glovePL/glove_100_3_polish.txt",
            "embedings_dim": 99, # Polish - 100
@@ -196,7 +192,6 @@ config_flickr30k_polish = {"images_path": data_path + "images/flickr30k/Images/"
 config_mixed_flickr8k_30k = {"images_path": data_path + "images/flickr8k/Images/",
            "train_images_path": data_path + "images/flickr8k/Flickr8k_text/Flickr_8k.trainImages.txt", # file conatains the names of images to be used in train data
            "test_images_path": data_path + "images/flickr8k/Flickr8k_text/Flickr_8k.testImages.txt",
-           "train_path": data_path + "images/flickr8k/Flickr8k_text/Flickr_8k.trainImages.txt", 
            "token_path": data_path + "images/flickr8k/Flickr8k_text/Flickr_8k.token.txt",
           "word_embedings_path": data_path + "images/glove/glove.6B.200d.txt",
           "embedings_dim": 199,
@@ -211,8 +206,6 @@ config_mixed_flickr8k_30k = {"images_path": data_path + "images/flickr8k/Images/
            "encoded_images_train": "./flickr8k/Pickle/encoded_train_images.pkl",
            "preprocess_descriptions": False,
            "preprocessed_descriptions_save_path": "./flickr8k/descriptions.txt",
-           "pretrained_model_path": "",
-           "report_path": "",
            "use_lemma": False,
            "spacy_lemma_model": "pl_spacy_model",
            "lstm_model_save_dir": "./flickr8k/model_weights/",
