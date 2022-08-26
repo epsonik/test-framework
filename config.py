@@ -173,11 +173,6 @@ config_mixed_flickr8k_30k = {"images_path": data_path + "images/flickr8k/Images/
            "encoded_images_train": "./flickr8k/Pickle/encoded_train_images.pkl",
            "preprocess_descriptions": False,
            "preprocessed_descriptions_save_path": "./flickr8k/descriptions.txt",
-<<<<<<< HEAD
-           "use_lemma": False,
-           "spacy_lemma_model": "pl_spacy_model",
-=======
->>>>>>> aebf67901d7837ca5f59bf9ab221dc09ac13e86b
            "lstm_model_save_dir": "./flickr8k/model_weights/",
            "lstm_model_save_path": "./flickr8k/model_weights/model_Base_3_Batch_Komninos.h5",
            "results_directory":"results",
