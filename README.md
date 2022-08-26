@@ -123,16 +123,21 @@ Path to the directory with coco-caption library
 Name of the data that is used fe. Flickr8k, flickr30k This name is used to store all Pickle files and preprocessed file.
 
 ## How to use
-To run specific Dataset we need to pass name of configuration from `config.py`.
+To run specific Dataset we need to pass name of configuration from `config.py` to function:
+```
+data = DataLoader(name_of_configuration)
+example
+data = DataLoader(config_flickr30k_polish)
+```
 Supported configurations(Datasets) :
-
 | Name of configuration| Dataset |
 | --- | ----------- |
 | config_flickr8k | Flickr8k |
 | config_flickr30k | Flickr30k |
 |config_coco14| COCO Dataset 2014|
 |config_coco17| COCO Dataset 2017|
-|config_aide|AiDE Dataset|
-| config_flickr8k_polish | Flickr8k |
-| config_flickr30k_polish | Flickr30k |
+|config_aide|AiDE Dataset Polish|
+| config_flickr8k_polish | Flickr8k in Polish|
+| config_flickr30k_polish | Flickr30k in Polish|
+
 
