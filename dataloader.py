@@ -149,7 +149,6 @@ class DataLoader:
         self.out()
 
     def get_word_to_xand_ix_to_word(self, config_passed):
-        vocab_size = len(self.ixtoword) + 1
         if config_passed["train_images"] is "flickr8k":
             ixtoword_path = config_flickr8k["ixtoword_path"]
             wordtoix_path = config_flickr8k["wordtoix_path"]
@@ -174,7 +173,7 @@ class DataLoader:
             ixtoword = load(encoded_pickle)
         with open(wordtoix_path, "rb") as encoded_pickle:
             wordtoix = load(encoded_pickle)
-
+        vocab_size = len(ixtoword) + 1
         embedding_matrix, embedding_vector = self.get_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_dim)
         return ixtoword, wordtoix, embedding_matrix, embedding_vector, vocab_size
 
