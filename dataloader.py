@@ -35,6 +35,7 @@ import json
 from helper import *
 from pycocotools.coco import COCO
 from tqdm import tqdm
+from config import *
 
 
 class DataLoader:
@@ -57,7 +58,6 @@ class DataLoader:
         self.mixed(config_passed)
 
     def case_train(self, config_passed):
-        from config import *
         if config_passed["train_images"] is "flickr8k":
             with open(config_flickr8k["encoded_images_train"], "rb") as encoded_pickle:
                 encoding_train = load(encoded_pickle)
@@ -85,7 +85,6 @@ class DataLoader:
         return encoding_train, descriptions, train_descriptions
 
     def case_test(self, config_passed):
-        from config import *
         if config_passed["test_images"] is "flickr8k":
             with open(config_flickr8k["encoded_images_test"], "rb") as encoded_pickle:
                 encoding_test = load(encoded_pickle)
@@ -93,7 +92,6 @@ class DataLoader:
         elif config_passed["test_images"] is "flickr8k_polish":
             with open(config_flickr8k_polish["encoded_images_test"], "rb") as encoded_pickle:
                 encoding_test = load(encoded_pickle)
-
 
         elif config_passed["test_images"] is "flickr30k":
             with open(config_flickr30k["encoded_images_test"], "rb") as encoded_pickle:
