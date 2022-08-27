@@ -79,6 +79,7 @@ class DataLoader:
 
         # parse descriptions
         self.descriptions = load_descriptions(self.config["token_path"])
+        print(self.descriptions)
         print('Loaded: %d ' % len(self.descriptions))
 
         clean_descriptions(self.descriptions, self.config)
@@ -87,10 +88,10 @@ class DataLoader:
         save_descriptions(self.descriptions, self.config["preprocessed_descriptions_save_path"])
 
         # descriptions
-        self.train_descriptions = load_clean_descriptions(self.config["preprocessed_descriptions_save_path"],
-                                                          self.train)
+        self.train_descriptions = load_clean_descriptions_new(self.config["preprocessed_descriptions_save_path"],
+                                                          list(self.image_features_train.keys()))
         print('Descriptions: train=%d' % len(self.train_descriptions))
-        self.out()
+#         self.out()
 
     def out(self):
         self.all_train_captions = self.all_train_captions(self.train_descriptions)

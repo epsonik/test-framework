@@ -74,6 +74,7 @@ def load_descriptions(token_path):
 
 
 def clean_descriptions(descriptions, config):
+    print("save desc")
     # prepare translation table for removing punctuation
     table = str.maketrans('', '', string.punctuation)
     for key, desc_list in descriptions.items():
@@ -83,11 +84,6 @@ def clean_descriptions(descriptions, config):
             desc = desc.split()
             # convert to lower case
             desc = [word.lower() for word in desc]
-            # Lematyzacja
-            #### spacy model from here: http://zil.ipipan.waw.pl/SpacyPL?action=AttachFile&do=view&target=pl_spacy_model-0.1.0.tar.gz
-            #### spacy dokumentacja - https://spacy.io/usage
-            if config["use_lemma"]:
-                desc = [word.lemma_ for word in doc]
             # remove punctuation from each token
             desc = [w.translate(table) for w in desc]
             # remove tokens with numbers in them
@@ -107,6 +103,7 @@ def to_vocabulary(descriptions):
 
 # save descriptions to file, one per line
 def save_descriptions(descriptions, filename):
+    print("save desc")
     lines = list()
     for key, desc_list in descriptions.items():
         for desc in desc_list:
@@ -135,6 +132,7 @@ def load_set(filename):
 # load clean descriptions into memory
 def load_clean_descriptions(filename, dataset):
     # load document
+    print(dataset)
     doc = load_doc(filename)
     descriptions = dict()
     for line in doc.split('\n'):
@@ -142,6 +140,7 @@ def load_clean_descriptions(filename, dataset):
         tokens = line.split()
         # split id from description
         image_id, image_desc = tokens[0], tokens[1:]
+        print(image_id)#bez.jpg
         # skip images not in the set
         if image_id in dataset:
             # create list
@@ -153,6 +152,29 @@ def load_clean_descriptions(filename, dataset):
             descriptions[image_id].append(desc)
     return descriptions
 
+# load clean descriptions into memory
+def load_clean_descriptions_new(filename, dataset):
+    # load document
+    doc = load_doc(filename)
+    train_descriptions = dict()
+    for line in doc.split('\n'):
+        # split line by white space
+        tokens = line.split()
+        # split id from description
+        image_id, image_desc = tokens[0], tokens[1:]
+        if image_id not in descriptions:
+            descriptions[image_id] = list()
+        descriptions[image_id].append(image_desc)
+        # skip images not in the set
+        if image_id+".jpg" in dataset:
+            # create list
+            if image_id not in train_descriptions:
+                train_descriptions[image_id] = list()
+            # wrap description in tokens
+            desc = 'startseq ' + ' '.join(image_desc) + ' endseq'
+            # store
+            train_descriptions[image_id].append(desc)
+    return train_descriptions, descriptions
 
 def preprocess(image_path):
     # Convert all the images to size 299x299 as expected by the inception v3 model
