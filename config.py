@@ -150,7 +150,7 @@ config_flickr30k_polish = {
     "test_images_path": data_path + "images/flickr30k_polish/Flickr30k_polish_text/Flickr_30k_polish.testImages.txt",
     "token_path": data_path + "images/flickr30k_polish/Flickr30k_polish_text/Flickr_30k_polish.token.txt",
     "word_embedings_path": data_path + "images/glovePL/glove_100_3_polish.txt",
-    "embedings_dim": 99,  # Polish - 100
+    "embedings_dim": 199,  # Polish - 100
     "train_model": False,  # True if you intend to train the model,
     "save_model": False,
     "encode_images": False,

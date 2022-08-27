@@ -63,25 +63,27 @@ class DataLoader:
                 encoding_train = load(encoded_pickle)
             descriptions = load_descriptions(config_flickr8k["token_path"])
             train_descriptions = load_clean_descriptions_new(config_flickr8k["preprocessed_descriptions_save_path"],
-                                                                  list(encoding_train.keys()))
+                                                             list(encoding_train.keys()))
         elif config_passed["train_images"] is "flickr8k_polish":
             with open(config_flickr8k_polish["encoded_images_train"], "rb") as encoded_pickle:
                 encoding_train = load(encoded_pickle)
             descriptions = load_descriptions(config_flickr8k_polish["token_path"])
-            train_descriptions = load_clean_descriptions_new(config_flickr8k_polish["preprocessed_descriptions_save_path"],
-                                                                  list(encoding_train.keys()))
+            train_descriptions = load_clean_descriptions_new(
+                config_flickr8k_polish["preprocessed_descriptions_save_path"],
+                list(encoding_train.keys()))
         elif config_passed["train_images"] is "flickr30k":
             with open(config_flickr30k["encoded_images_train"], "rb") as encoded_pickle:
                 encoding_train = load(encoded_pickle)
             descriptions = load_descriptions(config_flickr30k["token_path"])
             train_descriptions = load_clean_descriptions_new(config_flickr30k["preprocessed_descriptions_save_path"],
-                                                                  list(encoding_train.keys()))
+                                                             list(encoding_train.keys()))
         elif config_passed["train_images"] is "flickr30k_polish":
             with open(config_flickr30k_polish["encoded_images_train"], "rb") as encoded_pickle:
                 encoding_train = load(encoded_pickle)
             descriptions = load_descriptions(config_flickr30k_polish["token_path"])
-            train_descriptions = load_clean_descriptions_new(config_flickr30k_polish["preprocessed_descriptions_save_path"],
-                                                                  list(encoding_train.keys()))
+            train_descriptions = load_clean_descriptions_new(
+                config_flickr30k_polish["preprocessed_descriptions_save_path"],
+                list(encoding_train.keys()))
         return encoding_train, descriptions, train_descriptions
 
     def case_test(self, config_passed):
@@ -105,8 +107,11 @@ class DataLoader:
 
     def mixed(self, config_passed):
         self.image_features_train, self.descriptions, self.train_descriptions = self.case_train(config_passed)
+        self.vocab_size = len(self.ixtoword) + 1  # one for appended 0's
+        self.ixtoword, self.wordtoix, self.embedding_matrix, self.embedding_vector = self.get_word_to_xand_ix_to_word(config_passed, self.vocab_size )
         self.image_features_test = self.case_test(config_passed)
-        self.out()
+        self.vocab = self.count_words_and_threshold(self.all_train_captions)
+        self.max_length = max_length(self.train_descriptions)
 
     def flickr8k(self):
         # load training dataset (6K)
@@ -140,12 +145,41 @@ class DataLoader:
 
         # descriptions
         self.train_descriptions = load_clean_descriptions_new(self.config["preprocessed_descriptions_save_path"],
-                                                          list(self.image_features_train.keys()))
+                                                              list(self.image_features_train.keys()))
         print('Descriptions: train=%d' % len(self.train_descriptions))
-#         self.out()
+        self.out()
+
+    def get_word_to_xand_ix_to_word(self, config_passed, vocab_size):
+        if config_passed["train_images"] is "flickr8k":
+            ixtoword_path = config_flickr8k["ixtoword_path"]
+            wordtoix_path = config_flickr8k["wordtoix_path"]
+            word_embedings_path = config_flickr8k["word_embedings_path"]
+            embedings_dim = config_flickr8k["embedings_dim"]
+        elif config_passed["train_images"] is "flickr8k_polish":
+            ixtoword_path = config_flickr8k_polish["ixtoword_path"]
+            wordtoix_path = config_flickr8k_polish["wordtoix_path"]
+            word_embedings_path = config_flickr8k_polish["word_embedings_path"]
+            embedings_dim = config_flickr8k_polish["embedings_dim"]
+        elif config_passed["train_images"] is "flickr30k":
+            ixtoword_path = config_flickr30k["ixtoword_path"]
+            wordtoix_path = config_flickr30k["wordtoix_path"]
+            word_embedings_path = config_flickr30k["word_embedings_path"]
+            embedings_dim = config_flickr30k["embedings_dim"]
+        elif config_passed["train_images"] is "flickr30k_polish":
+            ixtoword_path = config_flickr30k_polish["ixtoword_path"]
+            wordtoix_path = config_flickr30k_polish["wordtoix_path"]
+            word_embedings_path = config_flickr30k_polish["word_embedings_path"]
+            embedings_dim = config_flickr30k_polish["embedings_dim"]
+        with open(ixtoword_path, "rb") as encoded_pickle:
+            ixtoword = load(encoded_pickle)
+        with open(wordtoix_path, "rb") as encoded_pickle:
+            wordtoix = load(encoded_pickle)
+
+        embedding_matrix, embedding_vector = self.get_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_dim)
+        return ixtoword, wordtoix, embedding_matrix, embedding_vector
 
     def out(self):
-        self.all_train_captions = self.all_train_captions(self.train_descriptions)
+        self.all_train_captions = self.get_all_train_captions(self.train_descriptions)
         print("Number of training captions ", len(self.all_train_captions))
         # determine the maximum sequence length
         self.max_length = max_length(self.train_descriptions)
@@ -158,7 +192,7 @@ class DataLoader:
 
         self.embedding_matrix, self.embedding_vector = self.embedding_matrix(self.vocab_size, self.wordtoix)
 
-    def all_train_captions(self, train_descriptions):
+    def get_all_train_captions(self, train_descriptions):
         # Create a list of all the training captions
         all_train_captions = []
         for key, val in train_descriptions.items():
@@ -181,7 +215,7 @@ class DataLoader:
         word_count_threshold = 10
         word_counts = {}
         nsents = 0
-        for sent in self.all_train_captions:
+        for sent in all_train_captions:
             nsents += 1
             for w in sent.split(' '):
                 word_counts[w] = word_counts.get(w, 0) + 1
@@ -257,12 +291,12 @@ class DataLoader:
             encoding_test = load(encoded_pickle)
         return encoding_train, encoding_test
 
-    def embedding_matrix(self, vocab_size, wordtoix):
+    def get_embedding_matrix(self, vocab_size, wordtoix, word_embedings_path, embedings_dim):
         # Load Glove vectors
 
         embeddings_index = {}  # empty dictionary
 
-        f = open(self.config["word_embedings_path"], encoding="utf-8")
+        f = open(word_embedings_path, encoding="utf-8")
         for line in f:
             values = line.split()
             word = values[0]
@@ -281,7 +315,7 @@ class DataLoader:
         f.close()
         print('Found %s word vectors.' % len(embeddings_index))
         # Get 200-dim dense vector for each of the 10000 words in out vocabulary
-        embedding_matrix = np.zeros((vocab_size, self.config["embedings_dim"]))
+        embedding_matrix = np.zeros((vocab_size, embedings_dim))
         for word, i in wordtoix.items():
             # if i < max_words:
             embedding_vector = embeddings_index.get(word)
