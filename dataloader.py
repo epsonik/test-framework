@@ -40,7 +40,7 @@ from config import *
 
 class DataLoader:
     def __init__(self, config_passed):
-        # self.config = config
+        self.config = config_passed
         # if config["data_name"] is "flickr8k":
         #     self.flickr8k()
         # if config["data_name"] is "flickr8k_polish":
@@ -107,7 +107,7 @@ class DataLoader:
 
     def mixed(self, config_passed):
         self.image_features_train, self.descriptions, self.train_descriptions = self.case_train(config_passed)
-        self.ixtoword, self.wordtoix, self.embedding_matrix, self.embedding_vector, self.vocab_size = self.get_word_to_xand_ix_to_word(config_passed )
+        self.ixtoword, self.wordtoix, self.embedding_matrix, self.embedding_vector, self.vocab_size, self.embedings_dim = self.get_word_to_xand_ix_to_word(config_passed )
         self.image_features_test = self.case_test(config_passed)
         self.all_train_captions = self.get_all_train_captions(self.train_descriptions)
         self.vocab = self.count_words_and_threshold(self.all_train_captions)
@@ -176,7 +176,7 @@ class DataLoader:
             wordtoix = load(encoded_pickle)
         vocab_size = len(ixtoword) + 1
         embedding_matrix, embedding_vector = self.get_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_dim)
-        return ixtoword, wordtoix, embedding_matrix, embedding_vector, vocab_size
+        return ixtoword, wordtoix, embedding_matrix, embedding_vector, vocab_size, embedings_dim
 
     def out(self):
         self.all_train_captions = self.get_all_train_captions(self.train_descriptions)

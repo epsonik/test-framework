@@ -175,7 +175,7 @@ general = {
 }
 config_mixed_flickr8k_30k = {
     "train_images": "flickr8k",
-    "test_images": "flickr30k",
+    "test_images": "flickr8k",
     "train_model": False,  # True if you intend to train the model,
     "save_model": True,
     "encode_images": False,

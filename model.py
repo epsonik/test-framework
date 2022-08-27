@@ -25,12 +25,12 @@ from eval_utils import calculate_results
 class ModelImpl:
     def __init__(self, data):
         self.data=data
-        self.config = data.config
+        self.config = self.data.config
         inputs1 = Input(shape=(2048,))
         fe1 = Dropout(0.5)(inputs1)
         fe2 = Dense(256, activation='relu')(fe1)
         inputs2 = Input(shape=(self.data.max_length,))
-        se1 = Embedding(self.data.vocab_size, self.config["embedings_dim"], mask_zero=True)(inputs2)
+        se1 = Embedding(self.data.vocab_size, self.data.embedings_dim, mask_zero=True)(inputs2)
         se2 = Dropout(0.5)(se1)
         se3 = LSTM(256)(se2)
         decoder1 = add([fe2, se3])
