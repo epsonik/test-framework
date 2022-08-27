@@ -107,7 +107,7 @@ class DataLoader:
 
     def mixed(self, config_passed):
         self.image_features_train, self.descriptions, self.train_descriptions = self.case_train(config_passed)
-        self.ixtoword, self.wordtoix, self.embedding_matrix, self.embedding_vector, self.vocab_size = self.get_word_to_xand_ix_to_word(config_passed, self.vocab_size )
+        self.ixtoword, self.wordtoix, self.embedding_matrix, self.embedding_vector, self.vocab_size = self.get_word_to_xand_ix_to_word(config_passed )
         self.image_features_test = self.case_test(config_passed)
         self.vocab = self.count_words_and_threshold(self.all_train_captions)
         self.max_length = max_length(self.train_descriptions)
@@ -148,7 +148,7 @@ class DataLoader:
         print('Descriptions: train=%d' % len(self.train_descriptions))
         self.out()
 
-    def get_word_to_xand_ix_to_word(self, config_passed, vocab_size):
+    def get_word_to_xand_ix_to_word(self, config_passed):
         vocab_size = len(self.ixtoword) + 1
         if config_passed["train_images"] is "flickr8k":
             ixtoword_path = config_flickr8k["ixtoword_path"]
