@@ -162,9 +162,6 @@ def load_clean_descriptions_new(filename, dataset):
         tokens = line.split()
         # split id from description
         image_id, image_desc = tokens[0], tokens[1:]
-        if image_id not in descriptions:
-            descriptions[image_id] = list()
-        descriptions[image_id].append(image_desc)
         # skip images not in the set
         if image_id+".jpg" in dataset:
             # create list
@@ -174,7 +171,7 @@ def load_clean_descriptions_new(filename, dataset):
             desc = 'startseq ' + ' '.join(image_desc) + ' endseq'
             # store
             train_descriptions[image_id].append(desc)
-    return train_descriptions, descriptions
+    return train_descriptions
 
 def preprocess(image_path):
     # Convert all the images to size 299x299 as expected by the inception v3 model
