@@ -38,23 +38,77 @@ from tqdm import tqdm
 
 
 class DataLoader:
-    def __init__(self, config):
-        self.config = config
-        if config["data_name"] is "flickr8k":
-            self.flickr8k()
-        if config["data_name"] is "flickr8k_polish":
-            self.flickr8k()
-        elif config["data_name"] is "flickr30k":
-            self.coco_data()
-        elif config["data_name"] is "flickr30k_polish":
-            self.flickr8k()
-        elif config["data_name"] is "aide":
-            self.flickr8k()
-        elif config["data_name"] is "coco14":
-            self.coco_data()
-        elif config["data_name"] is "coco17":
-            self.coco_data()
+    def __init__(self, config_passed):
+        # self.config = config
+        # if config["data_name"] is "flickr8k":
+        #     self.flickr8k()
+        # if config["data_name"] is "flickr8k_polish":
+        #     self.flickr8k()
+        # elif config["data_name"] is "flickr30k":
+        #     self.coco_data()
+        # elif config["data_name"] is "flickr30k_polish":
+        #     self.flickr8k()
+        # elif config["data_name"] is "aide":
+        #     self.flickr8k()
+        # elif config["data_name"] is "coco14":
+        #     self.coco_data()
+        # elif config["data_name"] is "coco17":
+        #     self.coco_data()
+        self.mixed(config_passed)
 
+    def case_train(self, config_passed):
+        from config import *
+        if config_passed["train_images"] is "flickr8k":
+            with open(config_flickr8k["encoded_images_train"], "rb") as encoded_pickle:
+                encoding_train = load(encoded_pickle)
+            descriptions = load_descriptions(config_flickr8k["token_path"])
+            train_descriptions = load_clean_descriptions_new(config_flickr8k["preprocessed_descriptions_save_path"],
+                                                                  list(encoding_train.keys()))
+        elif config_passed["train_images"] is "flickr8k_polish":
+            with open(config_flickr8k_polish["encoded_images_train"], "rb") as encoded_pickle:
+                encoding_train = load(encoded_pickle)
+            descriptions = load_descriptions(config_flickr8k_polish["token_path"])
+            train_descriptions = load_clean_descriptions_new(config_flickr8k_polish["preprocessed_descriptions_save_path"],
+                                                                  list(encoding_train.keys()))
+        elif config_passed["train_images"] is "flickr30k":
+            with open(config_flickr30k["encoded_images_train"], "rb") as encoded_pickle:
+                encoding_train = load(encoded_pickle)
+            descriptions = load_descriptions(config_flickr30k["token_path"])
+            train_descriptions = load_clean_descriptions_new(config_flickr30k["preprocessed_descriptions_save_path"],
+                                                                  list(encoding_train.keys()))
+        elif config_passed["train_images"] is "flickr30k_polish":
+            with open(config_flickr30k_polish["encoded_images_train"], "rb") as encoded_pickle:
+                encoding_train = load(encoded_pickle)
+            descriptions = load_descriptions(config_flickr30k_polish["token_path"])
+            train_descriptions = load_clean_descriptions_new(config_flickr30k_polish["preprocessed_descriptions_save_path"],
+                                                                  list(encoding_train.keys()))
+        return encoding_train, descriptions, train_descriptions
+
+    def case_test(self, config_passed):
+        from config import *
+        if config_passed["test_images"] is "flickr8k":
+            with open(config_flickr8k["encoded_images_test"], "rb") as encoded_pickle:
+                encoding_test = load(encoded_pickle)
+
+        elif config_passed["test_images"] is "flickr8k_polish":
+            with open(config_flickr8k_polish["encoded_images_test"], "rb") as encoded_pickle:
+                encoding_test = load(encoded_pickle)
+
+
+        elif config_passed["test_images"] is "flickr30k":
+            with open(config_flickr30k["encoded_images_test"], "rb") as encoded_pickle:
+                encoding_test = load(encoded_pickle)
+
+        elif config_passed["test_images"] is "flickr30k_polish":
+            with open(config_flickr30k_polish["encoded_images_test"], "rb") as encoded_pickle:
+                encoding_test = load(encoded_pickle)
+
+        return encoding_test
+
+    def mixed(self, config_passed):
+        self.image_features_train, self.descriptions, self.train_descriptions = self.case_train(config_passed)
+        self.image_features_test = self.case_test(config_passed)
+        self.out()
 
     def flickr8k(self):
         # load training dataset (6K)
@@ -79,7 +133,6 @@ class DataLoader:
 
         # parse descriptions
         self.descriptions = load_descriptions(self.config["token_path"])
-        print(self.descriptions)
         print('Loaded: %d ' % len(self.descriptions))
 
         clean_descriptions(self.descriptions, self.config)
