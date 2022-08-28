@@ -56,7 +56,7 @@ class ModelImpl:
                            callbacks=[callback],
                            verbose=1)
             if self.config["save_model"]:
-                writepath = "./" + self.config["data_name"] + "/" + 'model' + '.h5'
+                writepath = "./" + self.config["data_name"] + self.config["lstm_model_save_dir"] + 'model' + '.h5'
                 self.model.save(writepath)
                 self.model.save_weights("./" + self.config["data_name"] + "/" + self.config["lstm_model_save_path"])
         else:
