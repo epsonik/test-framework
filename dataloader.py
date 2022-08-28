@@ -94,13 +94,13 @@ class DataLoader:
         elif config_passed["train_images"] is "coco17":
             with open(config_coco17["encoded_images_train"], "rb") as encoded_pickle:
                 encoding_train = load(encoded_pickle)
-            train_descriptions, descriptions = self.load_clean_descriptions_new(
+            train_descriptions, descriptions = load_clean_descriptions_new(
                 config_coco17["preprocessed_descriptions_save_path"],
                 list(encoding_train.keys()))
         elif config_passed["train_images"] is "coco14":
             with open(config_coco14["encoded_images_train"], "rb") as encoded_pickle:
                 encoding_train = load(encoded_pickle)
-            train_descriptions, descriptions = self.load_clean_descriptions_coco(
+            train_descriptions, descriptions = load_clean_descriptions_coco(
                 config_coco14["preprocessed_descriptions_save_path"],
                 list(encoding_train.keys()))
         return encoding_train, descriptions, train_descriptions

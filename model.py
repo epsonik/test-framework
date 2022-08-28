@@ -70,15 +70,14 @@ class ModelImpl:
                            callbacks=[callback],
                            verbose=1)
             if self.config["save_model"]:
-                writepath = self.config["lstm_model_save_dir"] + 'model' + '.h5'
+                writepath = "./"+self.config["data_name"]+"/" + 'model' + '.h5'
                 self.model.save(writepath)
-                self.model.save_weights(self.config["lstm_model_save_path"])
+                self.model.save_weights("./"+self.config["data_name"]+"/"+self.config["lstm_model_save_path"])
         else:
             self.model.load_weights(self.config["lstm_model_save_path"])
     
     def evaluate(self):
-        with open(self.config["encoded_images_test"], "rb") as encoded_pickle:
-            encoding_test = load(encoded_pickle)
+        encoding_test = self.data.image_features_test
         expected, results = prepare_for_evaluation(encoding_test, self.data, self.model)
         out = calculate_results(expected, results, self.config)
         print(out)
