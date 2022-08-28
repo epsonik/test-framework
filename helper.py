@@ -2,46 +2,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import torch
-import torch.nn as nn
-
-import numpy as np
-import json
-from json import encoder
-import random
-import time
-import sys
-
-import pickle
-from numpy import array
-import pandas as pd
-import matplotlib.pyplot as plt
-import string
-import os
-from PIL import Image
-import glob
-from pickle import dump, load
-from time import time
-from keras.preprocessing import sequence
-from keras.models import Sequential
-from keras.layers import LSTM, Embedding, TimeDistributed, Dense, RepeatVector, \
-    Activation, Flatten, Reshape, concatenate, Dropout, BatchNormalization
-from tensorflow.keras.optimizers import Adam, RMSprop
-from keras.layers.wrappers import Bidirectional
-from keras.layers.merge import add
 from keras.applications.inception_v3 import InceptionV3
 from keras.preprocessing import image
 from keras.models import Model
-from keras import Input, layers
-from keras import optimizers
 from keras.applications.inception_v3 import preprocess_input
-from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.utils import to_categorical
-from nltk.translate.meteor_score import meteor_score
-from nltk.translate.bleu_score import sentence_bleu, corpus_bleu
-from keras import callbacks
-from keras import optimizers
 from helper import *
 
 
@@ -140,7 +106,7 @@ def load_clean_descriptions(filename, dataset):
         tokens = line.split()
         # split id from description
         image_id, image_desc = tokens[0], tokens[1:]
-        print(image_id)#bez.jpg
+        print(image_id)  # bez.jpg
         # skip images not in the set
         if image_id in dataset:
             # create list
@@ -151,6 +117,7 @@ def load_clean_descriptions(filename, dataset):
             # store
             descriptions[image_id].append(desc)
     return descriptions
+
 
 # load clean descriptions into memory
 def load_clean_descriptions_new(filename, dataset):
@@ -163,7 +130,7 @@ def load_clean_descriptions_new(filename, dataset):
         # split id from description
         image_id, image_desc = tokens[0], tokens[1:]
         # skip images not in the set
-        if image_id+".jpg" in dataset:
+        if image_id + ".jpg" in dataset:
             # create list
             if image_id not in train_descriptions:
                 train_descriptions[image_id] = list()
@@ -172,6 +139,7 @@ def load_clean_descriptions_new(filename, dataset):
             # store
             train_descriptions[image_id].append(desc)
     return train_descriptions
+
 
 def preprocess(image_path):
     # Convert all the images to size 299x299 as expected by the inception v3 model

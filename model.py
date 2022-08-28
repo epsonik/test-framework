@@ -1,30 +1,17 @@
-
-from keras.preprocessing import sequence
-from keras.models import Sequential
-from keras.layers import LSTM, Embedding, TimeDistributed, Dense, RepeatVector,\
-                         Activation, Flatten, Reshape, concatenate, Dropout, BatchNormalization
+from keras.layers import LSTM, Embedding, TimeDistributed, Dense, RepeatVector, \
+    Activation, Flatten, Reshape, concatenate, Dropout, BatchNormalization
 from tensorflow.keras.optimizers import Adam, RMSprop
-from keras.layers.wrappers import Bidirectional
 from keras.layers.merge import add
-from keras.applications.inception_v3 import InceptionV3
-from keras.preprocessing import image
 from keras.models import Model
 from keras import Input, layers
-from keras import optimizers
-from keras.applications.inception_v3 import preprocess_input
-from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.utils import to_categorical
-from nltk.translate.meteor_score import meteor_score
-from nltk.translate.bleu_score import sentence_bleu, corpus_bleu
 from keras import callbacks
-from keras import optimizers
 from helper import *
-from pickle import dump, load
 from eval_utils import calculate_results
+
+
 class ModelImpl:
     def __init__(self, data):
-        self.data=data
+        self.data = data
         self.config = self.data.config
         inputs1 = Input(shape=(2048,))
         fe1 = Dropout(0.5)(inputs1)
@@ -39,43 +26,42 @@ class ModelImpl:
         self.model = Model(inputs=[inputs1, inputs2], outputs=outputs)
         self.model.summary()
         self.model.layers[2]
-        
+
         self.model.layers[2].set_weights([data.embedding_matrix])
         self.model.layers[2].trainable = False
-        
+
         self.model.compile(loss='categorical_crossentropy', optimizer=self.optimizer())
         self.setup()
-        
-        
+
     def optimizer(self):
         return Adam(learning_rate=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-    
+
     def setup(self):
-            # model.optimizer.lr = 0.001
+        # model.optimizer.lr = 0.001
         self.epochs = 2
         self.number_pics_per_bath = 100
-        self.steps = len(self.data.train_descriptions)//self.number_pics_per_bath
-        
+        self.steps = len(self.data.train_descriptions) // self.number_pics_per_bath
+
     def train(self):
         if self.config["train_model"]:
-            callback = callbacks.EarlyStopping(monitor='loss',min_delta = 0.001, patience=3)
-            generator = data_generator(self.data.train_descriptions, 
-                                       self.data.image_features_train, 
-                                       self.data.wordtoix, 
-                                       self.data.max_length, 
-                                       self.number_pics_per_bath, 
+            callback = callbacks.EarlyStopping(monitor='loss', min_delta=0.001, patience=3)
+            generator = data_generator(self.data.train_descriptions,
+                                       self.data.image_features_train,
+                                       self.data.wordtoix,
+                                       self.data.max_length,
+                                       self.number_pics_per_bath,
                                        self.data.vocab_size)
             self.model.fit(generator, epochs=self.epochs,
                            steps_per_epoch=self.steps,
                            callbacks=[callback],
                            verbose=1)
             if self.config["save_model"]:
-                writepath = "./"+self.config["data_name"]+"/" + 'model' + '.h5'
+                writepath = "./" + self.config["data_name"] + "/" + 'model' + '.h5'
                 self.model.save(writepath)
-                self.model.save_weights("./"+self.config["data_name"]+"/"+self.config["lstm_model_save_path"])
+                self.model.save_weights("./" + self.config["data_name"] + "/" + self.config["lstm_model_save_path"])
         else:
             self.model.load_weights(self.config["lstm_model_save_path"])
-    
+
     def evaluate(self):
         encoding_test = self.data.image_features_test
         expected, results = prepare_for_evaluation(encoding_test, self.data, self.model)

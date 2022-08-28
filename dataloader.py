@@ -1,61 +1,20 @@
-import os
-import pickle
-import numpy as np
-from numpy import array
-import pandas as pd
-import matplotlib.pyplot as plt
-import string
-import os
-import sys
-from PIL import Image
-import glob
-from pickle import dump, load
-from time import time
-from keras.preprocessing import sequence
-from keras.models import Sequential
-from keras.layers import LSTM, Embedding, TimeDistributed, Dense, RepeatVector, \
-    Activation, Flatten, Reshape, concatenate, Dropout, BatchNormalization
-from tensorflow.keras.optimizers import Adam, RMSprop
-from keras.layers.wrappers import Bidirectional
-from keras.layers.merge import add
-from keras.applications.inception_v3 import InceptionV3
-from keras.preprocessing import image
-from keras.models import Model
-from keras import Input, layers
-from keras import optimizers
-from keras.applications.inception_v3 import preprocess_input
-from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.utils import to_categorical
-from nltk.translate.meteor_score import meteor_score
-from nltk.translate.bleu_score import sentence_bleu, corpus_bleu
-from keras import callbacks
-from keras import optimizers
-import json
 from helper import *
-from pycocotools.coco import COCO
-from tqdm import tqdm
 from config import *
 
 
 class DataLoader:
     def __init__(self, config_passed):
+        self.flickr8k(config_flickr8k)
+        self.flickr8k(config_flickr8k_polish)
+        self.flickr8k(config_flickr30k_polish)
+        self.flickr8k(config_aide)
+        self.coco_data(config_flickr30k)
+        self.coco_data(config_coco14)
+        self.coco_data(config_coco17)
         self.config = config_passed
-        # if config["data_name"] is "flickr8k":
-        #     self.flickr8k()
-        # if config["data_name"] is "flickr8k_polish":
-        #     self.flickr8k()
-        # elif config["data_name"] is "flickr30k":
-        #     self.coco_data()
-        # elif config["data_name"] is "flickr30k_polish":
-        #     self.flickr8k()
-        # elif config["data_name"] is "aide":
-        #     self.flickr8k()
-        # elif config["data_name"] is "coco14":
-        #     self.coco_data()
-        # elif config["data_name"] is "coco17":
-        #     self.coco_data()
         self.mixed(config_passed)
+
+    def generate_data(self):
 
     def case_train(self, config_passed):
         if config_passed["train_images"] is "flickr8k":
@@ -145,7 +104,8 @@ class DataLoader:
         self.vocab = self.count_words_and_threshold(self.all_train_captions)
         self.max_length = max_length(self.train_descriptions)
 
-    def flickr8k(self):
+    def flickr8k(self, config_passed):
+        self.config = config_passed
         # load training dataset (6K)
         filename = self.config["train_images_path"]
         self.train = load_set(filename)
@@ -374,7 +334,8 @@ class DataLoader:
                 embedding_matrix[i] = embedding_vector
         return embedding_matrix, embedding_vector
 
-    def coco_data(self):
+    def coco_data(self, config_passed):
+        self.config = config_passed
         self.train_img, self.train_images, _, _ = self.load_coco_data()
 
         _, _, self.test_img, self.test_images = self.load_coco_data()
