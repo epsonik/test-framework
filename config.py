@@ -179,7 +179,6 @@ config_mixed_flickr8k_30k = {
     "train_model": True,  # True if you intend to train the model,
     "save_model": True,
     "preprocess_descriptions": False,
-    #                   dsdsssdsdsdsds
     "lstm_model_save_dir": "/model_weights/",
     "lstm_model_save_path": "/model_weights/model_Base_3_Batch_Komninos.h5",
     "results_directory": "results",
@@ -192,7 +191,6 @@ config_mixed_flickr30k_flickr8k = {
     "train_model": True,  # True if you intend to train the model,
     "save_model": True,
     "preprocess_descriptions": False,
-    #                   dsdsssdsdsdsds
     "lstm_model_save_dir": "/model_weights/",
     "lstm_model_save_path": "/model_weights/model_Base_3_Batch_Komninos.h5",
     "results_directory": "results",
@@ -218,7 +216,6 @@ config_mixed_coco14_flickr8k = {
     "train_model": True,  # True if you intend to train the model,
     "save_model": True,
     "preprocess_descriptions": False,
-    #                   dsdsssdsdsdsds
     "lstm_model_save_dir": "/model_weights/",
     "lstm_model_save_path": "/model_weights/model_Base_3_Batch_Komninos.h5",
     "results_directory": "results",
@@ -231,7 +228,6 @@ config_mixed_coco14_flickr30k = {
     "train_model": True,  # True if you intend to train the model,
     "save_model": True,
     "preprocess_descriptions": False,
-    #                   dsdsssdsdsdsds
     "lstm_model_save_dir": "/model_weights/",
     "lstm_model_save_path": "/model_weights/model_Base_3_Batch_Komninos.h5",
     "results_directory": "results",
@@ -244,7 +240,6 @@ config_mixed_coco14_coco17 = {
     "train_model": True,  # True if you intend to train the model,
     "save_model": True,
     "preprocess_descriptions": False,
-    #                   dsdsssdsdsdsds
     "lstm_model_save_dir": "/model_weights/",
     "lstm_model_save_path": "/model_weights/model_Base_3_Batch_Komninos.h5",
     "results_directory": "results",
@@ -257,7 +252,6 @@ config_mixed_coco17_flickr8k = {
     "train_model": True,  # True if you intend to train the model,
     "save_model": True,
     "preprocess_descriptions": False,
-    #                   dsdsssdsdsdsds
     "lstm_model_save_dir": "/model_weights/",
     "lstm_model_save_path": "/model_weights/model_Base_3_Batch_Komninos.h5",
     "results_directory": "results",
@@ -270,7 +264,6 @@ config_mixed_flickr8k_flickr8k = {
     "train_model": True,  # True if you intend to train the model,
     "save_model": True,
     "preprocess_descriptions": False,
-    #                   dsdsssdsdsdsds
     "lstm_model_save_dir": "/model_weights/",
     "lstm_model_save_path": "/model_weights/model_Base_3_Batch_Komninos.h5",
     "results_directory": "results",

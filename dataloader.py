@@ -13,15 +13,18 @@ from config import *
 
 class DataLoader:
     def __init__(self, config_passed):
-#         self.flickr8k(config_flickr8k)
-#         self.flickr8k(config_flickr8k_polish)
-#         self.flickr8k(config_flickr30k_polish)
-#         self.flickr8k(config_aide)
-#         self.coco_data(config_flickr30k)
-#         self.coco_data(config_coco14)
-#         self.coco_data(config_coco17)
-        self.config = config_passed
-        self.mixed(config_passed)
+        if config_passed == "load_data":
+            self.flickr8k(config_flickr8k)
+            self.flickr8k(config_flickr8k_polish)
+            self.flickr8k(config_flickr30k_polish)
+            self.flickr8k(config_aide)
+            self.coco_data(config_flickr30k)
+            self.coco_data(config_coco14)
+            self.coco_data(config_coco17)
+        else:
+            self.config = config_passed
+            self.mixed(config_passed)
+
     def case_train(self, config_passed):
         if config_passed["train_images"] is "flickr8k":
             with open(config_flickr8k["encoded_images_train"], "rb") as encoded_pickle:
