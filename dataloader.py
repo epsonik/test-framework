@@ -13,13 +13,13 @@ from config import *
 
 class DataLoader:
     def __init__(self, config_passed):
-        self.flickr8k(config_flickr8k)
-        self.flickr8k(config_flickr8k_polish)
-        self.flickr8k(config_flickr30k_polish)
-        self.flickr8k(config_aide)
-        self.coco_data(config_flickr30k)
-        self.coco_data(config_coco14)
-        self.coco_data(config_coco17)
+#         self.flickr8k(config_flickr8k)
+#         self.flickr8k(config_flickr8k_polish)
+#         self.flickr8k(config_flickr30k_polish)
+#         self.flickr8k(config_aide)
+#         self.coco_data(config_flickr30k)
+#         self.coco_data(config_coco14)
+#         self.coco_data(config_coco17)
         self.config = config_passed
         self.mixed(config_passed)
     def case_train(self, config_passed):
@@ -100,7 +100,7 @@ class DataLoader:
     def mixed(self, config_passed):
         self.image_features_train, self.descriptions, self.train_descriptions = self.case_train(config_passed)
         print('Photos: train=%d' % len(self.image_features_train))
-        print('Loaded: %d ' % len(self.descriptions))
+        print('Loaded all descriptions from train dataset: %d ' % len(self.descriptions))
         print('Descriptions: train=%d' % len(self.train_descriptions))
         self.ixtoword, self.wordtoix, self.embedding_matrix, self.embedding_vector, self.vocab_size, self.embedings_dim = \
             self.get_word_to_xand_ix_to_word(config_passed)
