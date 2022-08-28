@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import numpy as np
 from keras.applications.inception_v3 import InceptionV3
 from keras.preprocessing import image
 from keras.models import Model
@@ -9,6 +10,7 @@ from keras.applications.inception_v3 import preprocess_input
 from keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.utils import to_categorical
 from helper import *
+from numpy import array
 
 
 def load_doc(filename):
