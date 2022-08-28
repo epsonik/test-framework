@@ -76,7 +76,7 @@ class DataLoader:
                 encoding_train = load(encoded_pickle)
             train_descriptions, descriptions = self.load_clean_descriptions_coco_new(
                 config_flickr30k["preprocessed_descriptions_save_path"],
-                list(encoding_train.keys()))
+                config_flickr30k["token_path"])
         elif config_passed["train_images"] is "flickr30k_polish":
             with open(config_flickr30k_polish["encoded_images_train"], "rb") as encoded_pickle:
                 encoding_train = load(encoded_pickle)
@@ -96,13 +96,13 @@ class DataLoader:
                 encoding_train = load(encoded_pickle)
             train_descriptions, descriptions = self.load_clean_descriptions_coco_new(
                 config_coco17["preprocessed_descriptions_save_path"],
-                list(encoding_train.keys()))
+                config_coco17["token_path"])
         elif config_passed["train_images"] is "coco14":
             with open(config_coco14["encoded_images_train"], "rb") as encoded_pickle:
                 encoding_train = load(encoded_pickle)
             train_descriptions, descriptions = self.load_clean_descriptions_coco_new(
                 config_coco14["preprocessed_descriptions_save_path"],
-                list(encoding_train.keys()))
+                config_coco14["token_path"])
         return encoding_train, descriptions, train_descriptions
 
     def case_test(self, config_passed):
@@ -420,14 +420,14 @@ class DataLoader:
 
         return descriptions, self.desc_raw(imgs, train_images)
 
-    def load_clean_descriptions_coco_new(self, filename, dataset_keys):
-        imgs = json.load(open(filename, 'r'))
+    def load_clean_descriptions_coco_new(self, filename, dataset_name):
+        imgs = json.load(open(dataset_name, 'r'))
         imgs = imgs['images']
 
         with open(filename, "rb") as encoded_pickle:
             train_descriptions = load(encoded_pickle)
 
-        return train_descriptions, self.desc_raw(imgs, dataset_keys)
+        return train_descriptions, self.desc_raw(imgs)
 
     def load_coco_data(self):
         input_json = self.config["images_names_path"]
