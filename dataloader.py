@@ -134,9 +134,13 @@ class DataLoader:
 
     def mixed(self, config_passed):
         self.image_features_train, self.descriptions, self.train_descriptions = self.case_train(config_passed)
+        print('Photos: train=%d' % len(self.image_features_train))
+        print('Loaded: %d ' % len(self.descriptions))
+        print('Descriptions: train=%d' % len(self.train_descriptions))
         self.ixtoword, self.wordtoix, self.embedding_matrix, self.embedding_vector, self.vocab_size, self.embedings_dim = \
             self.get_word_to_xand_ix_to_word(config_passed)
         self.image_features_test = self.case_test(config_passed)
+        print('Photos: test=%d' % len(self.image_features_test))
         self.all_train_captions = self.get_all_train_captions(self.train_descriptions)
         self.vocab = self.count_words_and_threshold(self.all_train_captions)
         self.max_length = max_length(self.train_descriptions)
