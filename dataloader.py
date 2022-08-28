@@ -74,9 +74,9 @@ class DataLoader:
         elif config_passed["train_images"] is "flickr30k":
             with open(config_flickr30k["encoded_images_train"], "rb") as encoded_pickle:
                 encoding_train = load(encoded_pickle)
-            descriptions = load_descriptions(config_flickr30k["token_path"])
-            train_descriptions = load_clean_descriptions_new(config_flickr30k["preprocessed_descriptions_save_path"],
-                                                             list(encoding_train.keys()))
+            train_descriptions, descriptions = self.load_clean_descriptions_coco_new(
+                config_flickr30k["preprocessed_descriptions_save_path"],
+                list(encoding_train.keys()))
         elif config_passed["train_images"] is "flickr30k_polish":
             with open(config_flickr30k_polish["encoded_images_train"], "rb") as encoded_pickle:
                 encoding_train = load(encoded_pickle)
@@ -94,13 +94,13 @@ class DataLoader:
         elif config_passed["train_images"] is "coco17":
             with open(config_coco17["encoded_images_train"], "rb") as encoded_pickle:
                 encoding_train = load(encoded_pickle)
-            train_descriptions, descriptions = load_clean_descriptions_new(
+            train_descriptions, descriptions = self.load_clean_descriptions_coco_new(
                 config_coco17["preprocessed_descriptions_save_path"],
                 list(encoding_train.keys()))
         elif config_passed["train_images"] is "coco14":
             with open(config_coco14["encoded_images_train"], "rb") as encoded_pickle:
                 encoding_train = load(encoded_pickle)
-            train_descriptions, descriptions = load_clean_descriptions_coco(
+            train_descriptions, descriptions = self.load_clean_descriptions_coco_new(
                 config_coco14["preprocessed_descriptions_save_path"],
                 list(encoding_train.keys()))
         return encoding_train, descriptions, train_descriptions
@@ -382,7 +382,7 @@ class DataLoader:
 
         self.out()
 
-    def desc_raw(self, imgs, train_images):
+    def desc_raw(self, imgs):
         descriptions_raw = dict()
         for img in imgs:
             image_filename = img['filename']
@@ -420,15 +420,14 @@ class DataLoader:
 
         return descriptions, self.desc_raw(imgs, train_images)
 
-    def load_clean_descriptions_coco_new(self, filename, dataset):
+    def load_clean_descriptions_coco_new(self, filename, dataset_keys):
         imgs = json.load(open(filename, 'r'))
         imgs = imgs['images']
-        descriptions = dict()
 
-        with open(self.config["preprocessed_descriptions_save_path"], "rb") as encoded_pickle:
-            descriptions = load(encoded_pickle)
+        with open(filename, "rb") as encoded_pickle:
+            train_descriptions = load(encoded_pickle)
 
-        return descriptions, self.desc_raw(imgs, dataset)
+        return train_descriptions, self.desc_raw(imgs, dataset_keys)
 
     def load_coco_data(self):
         input_json = self.config["images_names_path"]
