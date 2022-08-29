@@ -290,13 +290,13 @@ class DataLoader:
                 image_filename = img.rsplit("/", 1)[-1]
                 encoding_test[image_filename] = encode(img, images_feature_model)
                 if index % 100 == 0:
+                    print("Processed:\n")
                     print(index)
             if not os.path.isdir("./" + self.config["data_name"]):
                 os.makedirs("./" + self.config["data_name"])
                 os.makedirs("./" + self.config["data_name"] + "/Pickle")
             with open(self.config["encoded_images_test"], "wb") as encoded_pickle:
                 pickle.dump(encoding_test, encoded_pickle)
-            print(encoding_test)
             print("Test images encoded")
             print("Time taken in seconds =", time() - start)
 
@@ -307,6 +307,7 @@ class DataLoader:
                 image_filename = img.rsplit("/", 1)[-1]
                 encoding_train[image_filename] = encode(img, images_feature_model)
                 if index % 100 == 0:
+                    print("Processed:\n")
                     print(index)
                 index += 1
             mode = 'a' if os.path.exists(self.config["encoded_images_train"]) else 'wb'
