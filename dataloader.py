@@ -290,7 +290,7 @@ class DataLoader:
                 image_filename = img.rsplit("/", 1)[-1]
                 encoding_test[image_filename] = encode(img, images_feature_model)
                 if index % 100 == 0:
-                    print("Processed:\n")
+                    print("Processed:")
                     print(index)
             if not os.path.isdir("./" + self.config["data_name"]):
                 os.makedirs("./" + self.config["data_name"])
@@ -307,7 +307,7 @@ class DataLoader:
                 image_filename = img.rsplit("/", 1)[-1]
                 encoding_train[image_filename] = encode(img, images_feature_model)
                 if index % 100 == 0:
-                    print("Processed:\n")
+                    print("Processed:")
                     print(index)
                 index += 1
             mode = 'a' if os.path.exists(self.config["encoded_images_train"]) else 'wb'
