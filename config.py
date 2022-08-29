@@ -197,6 +197,18 @@ config_mixed_flickr30k_flickr8k = {
     "coco-caption_path": "./coco-caption",
     "data_name": "mixed_flickr30k_flickr8k",
 }
+config_mixed_flickr30k_coco17 = {
+    "train_images": "flickr30k",
+    "test_images": "coco17",
+    "train_model": True,  # True if you intend to train the model,
+    "save_model": True,
+    "preprocess_descriptions": False,
+    "lstm_model_save_dir": "/model_weights/",
+    "lstm_model_save_path": "/model_weights/model_Base_3_Batch_Komninos.h5",
+    "results_directory": "results",
+    "coco-caption_path": "./coco-caption",
+    "data_name": "mixed_mixed_flickr30k_coco17",
+}
 config_mixed_flickr8k_coco14 = {
     "train_images": "flickr8k",
     "test_images": "coco14",
