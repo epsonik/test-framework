@@ -47,7 +47,6 @@ def load_descriptions(token_path):
 
 
 def clean_descriptions(descriptions, config):
-    print("save desc")
     # prepare translation table for removing punctuation
     table = str.maketrans('', '', string.punctuation)
     for key, desc_list in descriptions.items():
@@ -76,7 +75,6 @@ def to_vocabulary(descriptions):
 
 # save descriptions to file, one per line
 def save_descriptions(descriptions, filename):
-    print("save desc")
     lines = list()
     for key, desc_list in descriptions.items():
         for desc in desc_list:
@@ -217,7 +215,6 @@ def data_generator(descriptions, photos, wordtoix, max_length, num_photos_per_ba
                     y.append(out_seq)
             # yield the batch data
             if n == num_photos_per_batch:
-                #                 yield [[array(X1), array(X2)], array(y)]
                 yield ([array(X1), array(X2)], array(y))
                 X1, X2, y = list(), list(), list()
                 n = 0
@@ -280,5 +277,3 @@ def generate_report(results_path):
         writer = csv.DictWriter(f, fieldnames=header)
         writer.writeheader()
         writer.writerows(overall)
-#             data=[overall["Bleu_1"], overall["Bleu_2"], overall["Bleu_3"], overall["Bleu_4"], overall["METEOR"],
-#                        overall["ROUGE_L"], overall["CIDEr"], overall["WMD"]]
