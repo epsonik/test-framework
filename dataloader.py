@@ -223,7 +223,7 @@ class DataLoader:
         self.vocab_size = len(self.ixtoword) + 1  # one for appended 0's
         print("Vocab size: ", self.vocab_size)
 
-        self.embedding_matrix, self.embedding_vector = self.embedding_matrix(self.vocab_size, self.wordtoix)
+        self.embedding_matrix, self.embedding_vector = self.get_embedding_matrix(self.vocab_size, self.wordtoix)
 
     def get_all_train_captions(self, train_descriptions):
         # Create a list of all the training captions
