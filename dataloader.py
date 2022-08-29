@@ -135,7 +135,6 @@ class DataLoader:
         filename = self.config["train_images_path"]
         self.train = load_set(filename)
         print("Train dataset")
-        #       id obrazow
 
         print('Train dataset loaded: %d' % len(self.train))
         # Below path contains all the images
