@@ -148,42 +148,27 @@ class DataLoader:
         self.out()
 
     def get_word_to_xand_ix_to_word(self, config_passed):
-        if config_passed["train_images"] is "flickr8k":
-            ixtoword_path = config_flickr8k["ixtoword_path"]
-            wordtoix_path = config_flickr8k["wordtoix_path"]
-            word_embedings_path = config_flickr8k["word_embedings_path"]
-            embedings_dim = config_flickr8k["embedings_dim"]
-        elif config_passed["train_images"] is "flickr8k_polish":
-            ixtoword_path = config_flickr8k_polish["ixtoword_path"]
-            wordtoix_path = config_flickr8k_polish["wordtoix_path"]
-            word_embedings_path = config_flickr8k_polish["word_embedings_path"]
-            embedings_dim = config_flickr8k_polish["embedings_dim"]
-        elif config_passed["train_images"] is "flickr30k":
-            ixtoword_path = config_flickr30k["ixtoword_path"]
-            wordtoix_path = config_flickr30k["wordtoix_path"]
-            word_embedings_path = config_flickr30k["word_embedings_path"]
-            embedings_dim = config_flickr30k["embedings_dim"]
-        elif config_passed["train_images"] is "flickr30k_polish":
-            ixtoword_path = config_flickr30k_polish["ixtoword_path"]
-            wordtoix_path = config_flickr30k_polish["wordtoix_path"]
-            word_embedings_path = config_flickr30k_polish["word_embedings_path"]
-            embedings_dim = config_flickr30k_polish["embedings_dim"]
-        elif config_passed["train_images"] is "coco14":
-            ixtoword_path = config_coco14["ixtoword_path"]
-            wordtoix_path = config_coco14["wordtoix_path"]
-            word_embedings_path = config_coco14["word_embedings_path"]
-            embedings_dim = config_coco14["embedings_dim"]
-        elif config_passed["train_images"] is "coco17":
-            ixtoword_path = config_coco17["ixtoword_path"]
-            wordtoix_path = config_coco17["wordtoix_path"]
-            word_embedings_path = config_coco17["word_embedings_path"]
-            embedings_dim = config_coco17["embedings_dim"]
-        elif config_passed["train_images"] is "aide":
-            ixtoword_path = config_aide["ixtoword_path"]
-            wordtoix_path = config_aide["wordtoix_path"]
-            word_embedings_path = config_aide["word_embedings_path"]
-            embedings_dim = config_aide["embedings_dim"]
+        def pass_args(cf):
+            ixtoword_path = cf["ixtoword_path"]
+            wordtoix_path = cf["wordtoix_path"]
+            word_embedings_path = cf["word_embedings_path"]
+            embedings_dim = cf["embedings_dim"]
+            return ixtoword_path, wordtoix_path, word_embedings_path, embedings_dim
 
+        if config_passed["train_images"] is "flickr8k":
+            ixtoword_path, wordtoix_path, word_embedings_path, embedings_dim = pass_args(config_flickr8k)
+        elif config_passed["train_images"] is "flickr8k_polish":
+            ixtoword_path, wordtoix_path, word_embedings_path, embedings_dim = pass_args(config_flickr8k_polish)
+        elif config_passed["train_images"] is "flickr30k":
+            ixtoword_path, wordtoix_path, word_embedings_path, embedings_dim = pass_args(config_flickr30k)
+        elif config_passed["train_images"] is "flickr30k_polish":
+            ixtoword_path, wordtoix_path, word_embedings_path, embedings_dim = pass_args(config_flickr30k_polish)
+        elif config_passed["train_images"] is "coco14":
+            ixtoword_path, wordtoix_path, word_embedings_path, embedings_dim = pass_args(config_coco14)
+        elif config_passed["train_images"] is "coco17":
+            ixtoword_path, wordtoix_path, word_embedings_path, embedings_dim = pass_args(config_coco17)
+        elif config_passed["train_images"] is "aide":
+            ixtoword_path, wordtoix_path, word_embedings_path, embedings_dim = pass_args(config_aide)
         with open(ixtoword_path, "rb") as encoded_pickle:
             ixtoword = load(encoded_pickle)
         with open(wordtoix_path, "rb") as encoded_pickle:
