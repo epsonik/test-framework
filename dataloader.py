@@ -13,7 +13,7 @@ from config import *
 
 class DataLoader:
     def __init__(self, config_passed):
-        if config_passed == "load_data":
+        if config_passed is "load_data":
             self.flickr8k(config_flickr8k)
             self.flickr8k(config_flickr8k_polish)
             self.flickr8k(config_flickr30k_polish)
