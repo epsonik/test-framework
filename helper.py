@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import json
 import os
+import string
 
 import numpy as np
 from keras.applications.inception_v3 import InceptionV3
