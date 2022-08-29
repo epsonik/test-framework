@@ -266,14 +266,19 @@ def greedySearch(photo, model, wordtoix, ixtoword, max_length):
     return final
 
 
-def generate_report():
-    header = "Bleu_1", "Bleu_2", "Bleu_3", "Bleu_4", "METEOR", "ROUGE_L", "CIDEr", "SPICE", "WMD"
-    t = PrettyTable((header))
-    print(f'\n===== Corners (zero values not shown) =====')
-    results_for_report = [json.load(open(os.path.abspath(x), 'r')) for x in os.listdir('results')]
-    for result_for_report in results_for_report:
-        overall = result_for_report["overall"]
-        overall.keys()
-        t.add_row((overall["Bleu_1"], overall["Bleu_2"], overall["Bleu_3"], overall["Bleu_4"], overall["METEOR"],
-                   overall["ROUGE_L"], overall["CIDEr"], overall["SPICE"], overall["WMD"]))
-    print(t)
+def generate_report(results_path):
+    import csv
+    header = ["config_name","Bleu_1", "Bleu_2", "Bleu_3", "Bleu_4", "METEOR", "ROUGE_L", "CIDEr","SPICE", "WMD"]
+    print(f'\n Final results saved to final_results.csv')
+    overall=[]
+    for x in os.listdir(results_path):
+        if x.endswith(".json"):
+            results_for_report = json.load(open("./"+results_path +"/"+ x , 'r'))
+            results_for_report["overall"]["config_name"]=x.split(".")[0]
+            overall.append(results_for_report["overall"])
+    with open("./"+results_path+"/final_results.csv", 'w') as f:
+        writer = csv.DictWriter(f, fieldnames=header)
+        writer.writeheader()
+        writer.writerows(overall)
+#             data=[overall["Bleu_1"], overall["Bleu_2"], overall["Bleu_3"], overall["Bleu_4"], overall["METEOR"],
+#                        overall["ROUGE_L"], overall["CIDEr"], overall["WMD"]]
