@@ -33,92 +33,67 @@ class DataLoader:
             self.mixed(config_passed)
 
     def case_train(self, config_passed):
-        if config_passed["train_images"] is "flickr8k":
-            with open(config_flickr8k["encoded_images_train"], "rb") as encoded_pickle:
+        def load_train_f(cf):
+            with open(cf["encoded_images_train"], "rb") as encoded_pickle:
                 encoding_train = load(encoded_pickle)
-            descriptions = load_descriptions(config_flickr8k["token_path"])
-            train_descriptions = load_clean_descriptions_new(config_flickr8k["preprocessed_descriptions_save_path"],
+            descriptions = load_descriptions(cf["token_path"])
+            train_descriptions = load_clean_descriptions_new(cf["preprocessed_descriptions_save_path"],
                                                              list(encoding_train.keys()))
+            return encoding_train, descriptions, train_descriptions
+
+        def load_train_coco(cf):
+            with open(cf["encoded_images_train"], "rb") as encoded_pickle:
+                encoding_train = load(encoded_pickle)
+            train_descriptions, descriptions = self.load_clean_descriptions_coco_new(
+                cf["preprocessed_descriptions_save_path"],
+                cf["token_path"])
+            return encoding_train, train_descriptions, descriptions
+
+        if config_passed["train_images"] is "flickr8k":
+            encoding_train, descriptions, train_descriptions = load_train_f(config_flickr8k)
         elif config_passed["train_images"] is "flickr8k_polish":
-            with open(config_flickr8k_polish["encoded_images_train"], "rb") as encoded_pickle:
-                encoding_train = load(encoded_pickle)
-            descriptions = load_descriptions(config_flickr8k_polish["token_path"])
-            train_descriptions = load_clean_descriptions_new(
-                config_flickr8k_polish["preprocessed_descriptions_save_path"],
-                list(encoding_train.keys()))
+            encoding_train, descriptions, train_descriptions = load_train_f(config_flickr8k_polish)
         elif config_passed["train_images"] is "flickr30k":
-            with open(config_flickr30k["encoded_images_train"], "rb") as encoded_pickle:
-                encoding_train = load(encoded_pickle)
-            train_descriptions, descriptions = self.load_clean_descriptions_coco_new(
-                config_flickr30k["preprocessed_descriptions_save_path"],
-                config_flickr30k["token_path"])
+            encoding_train, train_descriptions, descriptions = load_train_coco(config_flickr30k)
         elif config_passed["train_images"] is "flickr30k_polish":
-            with open(config_flickr30k_polish["encoded_images_train"], "rb") as encoded_pickle:
-                encoding_train = load(encoded_pickle)
-            descriptions = load_descriptions(config_flickr30k_polish["token_path"])
-            train_descriptions = load_clean_descriptions_new(
-                config_flickr30k_polish["preprocessed_descriptions_save_path"],
-                list(encoding_train.keys()))
+            encoding_train, descriptions, train_descriptions = load_train_f(config_flickr30k_polish)
         elif config_passed["train_images"] is "aide":
-            with open(config_aide["encoded_images_train"], "rb") as encoded_pickle:
-                encoding_train = load(encoded_pickle)
-            descriptions = load_descriptions(config_aide["token_path"])
-            train_descriptions = load_clean_descriptions_new(
-                config_aide["preprocessed_descriptions_save_path"],
-                list(encoding_train.keys()))
+            encoding_train, descriptions, train_descriptions = load_train_f(config_aide)
         elif config_passed["train_images"] is "coco17":
-            with open(config_coco17["encoded_images_train"], "rb") as encoded_pickle:
-                encoding_train = load(encoded_pickle)
-            train_descriptions, descriptions = self.load_clean_descriptions_coco_new(
-                config_coco17["preprocessed_descriptions_save_path"],
-                config_coco17["token_path"])
+            encoding_train, train_descriptions, descriptions = load_train_coco(config_coco17)
         elif config_passed["train_images"] is "coco14":
-            with open(config_coco14["encoded_images_train"], "rb") as encoded_pickle:
-                encoding_train = load(encoded_pickle)
-            train_descriptions, descriptions = self.load_clean_descriptions_coco_new(
-                config_coco14["preprocessed_descriptions_save_path"],
-                config_coco14["token_path"])
+            encoding_train, train_descriptions, descriptions = load_train_coco(config_coco14)
         return encoding_train, descriptions, train_descriptions
 
     def case_test(self, config_passed):
+        def load_test_f(cf):
+            with open(cf["encoded_images_test"], "rb") as encoded_pickle:
+                encoding_test = load(encoded_pickle)
+            test_descriptions = load_descriptions(cf["token_path"])
+            return encoding_test, test_descriptions
+
+        def load_test_coco(cf):
+            with open(cf["encoded_images_test"], "rb") as encoded_pickle:
+                encoding_test = load(encoded_pickle)
+            _, test_descriptions = self.load_clean_descriptions_coco_new(
+                cf["preprocessed_descriptions_save_path"],
+                cf["token_path"])
+            return encoding_test, test_descriptions
+
         if config_passed["test_images"] is "flickr8k":
-            with open(config_flickr8k["encoded_images_test"], "rb") as encoded_pickle:
-                encoding_test = load(encoded_pickle)
-            test_descriptions = load_descriptions(config_flickr8k["token_path"])
+            encoding_test, test_descriptions = load_test_f(config_flickr8k)
         elif config_passed["test_images"] is "flickr8k_polish":
-            with open(config_flickr8k_polish["encoded_images_test"], "rb") as encoded_pickle:
-                encoding_test = load(encoded_pickle)
-            test_descriptions = load_descriptions(config_flickr8k_polish["token_path"])
+            encoding_test, test_descriptions = load_test_f(config_flickr8k_polish)
         elif config_passed["test_images"] is "flickr30k":
-            with open(config_flickr30k["encoded_images_test"], "rb") as encoded_pickle:
-                encoding_test = load(encoded_pickle)
-            _, test_descriptions = self.load_clean_descriptions_coco_new(
-                config_flickr30k["preprocessed_descriptions_save_path"],
-                config_flickr30k["token_path"])
+            encoding_test, test_descriptions = load_test_coco(config_flickr30k)
         elif config_passed["test_images"] is "flickr30k_polish":
-            with open(config_flickr30k_polish["encoded_images_test"], "rb") as encoded_pickle:
-                encoding_test = load(encoded_pickle)
-            _, test_descriptions = load_clean_descriptions_new(
-                config_flickr30k_polish["preprocessed_descriptions_save_path"],
-                list(encoding_test.keys()))
+            encoding_test, test_descriptions = load_test_coco(config_flickr30k_polish)
         elif config_passed["test_images"] is "aide":
-            with open(config_aide["encoded_images_test"], "rb") as encoded_pickle:
-                encoding_test = load(encoded_pickle)
-            test_descriptions = load_clean_descriptions_new(
-                config_aide["preprocessed_descriptions_save_path"],
-                list(encoding_test.keys()))
+            encoding_test, test_descriptions = load_test_f(config_aide)
         elif config_passed["test_images"] is "coco14":
-            with open(config_coco14["encoded_images_test"], "rb") as encoded_pickle:
-                encoding_test = load(encoded_pickle)
-            _, test_descriptions = self.load_clean_descriptions_coco_new(
-                config_coco14["preprocessed_descriptions_save_path"],
-                config_coco14["token_path"])
+            encoding_test, test_descriptions = load_test_coco(config_coco14)
         elif config_passed["test_images"] is "coco17":
-            with open(config_coco17["encoded_images_test"], "rb") as encoded_pickle:
-                encoding_test = load(encoded_pickle)
-            _, test_descriptions = self.load_clean_descriptions_coco_new(
-                config_coco17["preprocessed_descriptions_save_path"],
-                config_coco17["token_path"])
+            encoding_test, test_descriptions = load_test_coco(config_coco17)
         return encoding_test, test_descriptions
 
     def mixed(self, config_passed):
@@ -128,8 +103,8 @@ class DataLoader:
         print('Descriptions: train=%d' % len(self.train_descriptions))
         self.ixtoword, self.wordtoix, self.embedding_matrix, self.embedding_vector, self.vocab_size, self.embedings_dim = \
             self.get_word_to_xand_ix_to_word(config_passed)
-        #pictures from test set
-        #all descriptions from the set, that test set belongs to
+        # pictures from test set
+        # all descriptions from the set, that test set belongs to
         self.image_features_test, self.test_descriptions = self.case_test(self.config)
         print('Photos: test=%d' % len(self.image_features_test))
         self.all_train_captions = self.get_all_train_captions(self.train_descriptions)
@@ -230,7 +205,9 @@ class DataLoader:
         self.vocab_size = len(self.ixtoword) + 1  # one for appended 0's
         print("Vocab size: ", self.vocab_size)
 
-        self.embedding_matrix, self.embedding_vector = self.get_embedding_matrix(self.vocab_size, self.wordtoix,self.config["word_embedings_path"], self.config["embedings_dim"] )
+        self.embedding_matrix, self.embedding_vector = self.get_embedding_matrix(self.vocab_size, self.wordtoix,
+                                                                                 self.config["word_embedings_path"],
+                                                                                 self.config["embedings_dim"])
 
     def get_all_train_captions(self, train_descriptions):
         # Create a list of all the training captions
