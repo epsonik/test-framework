@@ -377,7 +377,7 @@ class DataLoader:
         with open(self.config["preprocessed_descriptions_save_path"], "rb") as encoded_pickle:
             descriptions = load(encoded_pickle)
 
-        return descriptions, self.desc_raw(imgs, train_images)
+        return descriptions, self.desc_raw(imgs)
 
     def load_clean_descriptions_coco_new(self, filename, dataset_name):
         imgs = json.load(open(dataset_name, 'r'))
