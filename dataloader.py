@@ -15,12 +15,19 @@ class DataLoader:
     def __init__(self, config_passed):
         if config_passed is "load_data":
             self.flickr8k(config_flickr8k)
+            print("Flickr8k loaded")
             self.flickr8k(config_flickr8k_polish)
+            print("Flickr8k in Polish loaded")
             self.flickr8k(config_flickr30k_polish)
+            print("Flickr30k in Polish loaded")
             self.flickr8k(config_aide)
+            print("Aide in Polish loaded")
             self.coco_data(config_flickr30k)
+            print("Flickr30k loaded")
             self.coco_data(config_coco14)
+            print("COCO2014 loaded")
             self.coco_data(config_coco17)
+            print("COCO2017 loaded")
         else:
             self.config = config_passed
             self.mixed(config_passed)
@@ -223,7 +230,7 @@ class DataLoader:
         self.vocab_size = len(self.ixtoword) + 1  # one for appended 0's
         print("Vocab size: ", self.vocab_size)
 
-        self.embedding_matrix, self.embedding_vector = self.get_embedding_matrix(self.vocab_size, self.wordtoix)
+        self.embedding_matrix, self.embedding_vector = self.get_embedding_matrix(self.vocab_size, self.wordtoix,self.config["word_embedings_path"], self.config["embedings_dim"] )
 
     def get_all_train_captions(self, train_descriptions):
         # Create a list of all the training captions
