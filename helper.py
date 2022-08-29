@@ -237,7 +237,7 @@ def prepare_for_evaluation(encoding_test, data, model):
         image_id = pic.rsplit(".", 1)[0].rsplit("_", 1)[0]
         expected[image_id] = []
         image = encoding_test[pic].reshape((1, 2048))
-        for desc in data.descriptions[pic.rsplit(".", 1)[0]]:
+        for desc in data.test_descriptions[pic.rsplit(".", 1)[0]]:
             expected[image_id].append({"image_id": image_id, "caption": desc})
         generated = greedySearch(image, model, data.wordtoix, data.ixtoword, data.max_length)
         results[image_id] = [{"image_id": image_id, "caption": generated}]

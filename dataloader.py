@@ -77,28 +77,42 @@ class DataLoader:
         if config_passed["test_images"] is "flickr8k":
             with open(config_flickr8k["encoded_images_test"], "rb") as encoded_pickle:
                 encoding_test = load(encoded_pickle)
-
+            test_descriptions = load_descriptions(config_flickr8k["token_path"])
         elif config_passed["test_images"] is "flickr8k_polish":
             with open(config_flickr8k_polish["encoded_images_test"], "rb") as encoded_pickle:
                 encoding_test = load(encoded_pickle)
-
+            test_descriptions = load_descriptions(config_flickr8k_polish["token_path"])
         elif config_passed["test_images"] is "flickr30k":
             with open(config_flickr30k["encoded_images_test"], "rb") as encoded_pickle:
                 encoding_test = load(encoded_pickle)
-
+            _, test_descriptions = self.load_clean_descriptions_coco_new(
+                config_flickr30k["preprocessed_descriptions_save_path"],
+                config_flickr30k["token_path"])
         elif config_passed["test_images"] is "flickr30k_polish":
             with open(config_flickr30k_polish["encoded_images_test"], "rb") as encoded_pickle:
                 encoding_test = load(encoded_pickle)
+            _, test_descriptions = load_clean_descriptions_new(
+                config_flickr30k_polish["preprocessed_descriptions_save_path"],
+                list(encoding_test.keys()))
         elif config_passed["test_images"] is "aide":
             with open(config_aide["encoded_images_test"], "rb") as encoded_pickle:
                 encoding_test = load(encoded_pickle)
+            test_descriptions = load_clean_descriptions_new(
+                config_aide["preprocessed_descriptions_save_path"],
+                list(encoding_test.keys()))
         elif config_passed["test_images"] is "coco14":
             with open(config_coco14["encoded_images_test"], "rb") as encoded_pickle:
                 encoding_test = load(encoded_pickle)
+            _, test_descriptions = self.load_clean_descriptions_coco_new(
+                config_coco14["preprocessed_descriptions_save_path"],
+                config_coco14["token_path"])
         elif config_passed["test_images"] is "coco17":
             with open(config_coco17["encoded_images_test"], "rb") as encoded_pickle:
                 encoding_test = load(encoded_pickle)
-        return encoding_test
+            _, test_descriptions = self.load_clean_descriptions_coco_new(
+                config_coco17["preprocessed_descriptions_save_path"],
+                config_coco17["token_path"])
+        return encoding_test, test_descriptions
 
     def mixed(self, config_passed):
         self.image_features_train, self.descriptions, self.train_descriptions = self.case_train(config_passed)
@@ -107,7 +121,9 @@ class DataLoader:
         print('Descriptions: train=%d' % len(self.train_descriptions))
         self.ixtoword, self.wordtoix, self.embedding_matrix, self.embedding_vector, self.vocab_size, self.embedings_dim = \
             self.get_word_to_xand_ix_to_word(config_passed)
-        self.image_features_test = self.case_test(config_passed)
+        #pictures from test set
+        #all descriptions from the set, that test set belongs to
+        self.image_features_test, self.test_descriptions = self.case_test(self.config)
         print('Photos: test=%d' % len(self.image_features_test))
         self.all_train_captions = self.get_all_train_captions(self.train_descriptions)
         self.vocab = self.count_words_and_threshold(self.all_train_captions)

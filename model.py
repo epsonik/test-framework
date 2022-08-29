@@ -63,7 +63,6 @@ class ModelImpl:
             self.model.load_weights(self.config["lstm_model_save_path"])
 
     def evaluate(self):
-        encoding_test = self.data.image_features_test
-        expected, results = prepare_for_evaluation(encoding_test, self.data, self.model)
+        expected, results = prepare_for_evaluation(self.data.encoding_test, self.data, self.model)
         out = calculate_results(expected, results, self.config)
         print(out)
