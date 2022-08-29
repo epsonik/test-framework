@@ -372,7 +372,7 @@ class DataLoader:
             with open(self.config["preprocessed_descriptions_save_path"], "wb") as encoded_pickle:
                 pickle.dump(descriptions, encoded_pickle)
 
-            return descriptions, self.desc_raw(imgs, train_images)
+            return descriptions, self.desc_raw(imgs)
 
         with open(self.config["preprocessed_descriptions_save_path"], "rb") as encoded_pickle:
             descriptions = load(encoded_pickle)
