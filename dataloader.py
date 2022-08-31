@@ -70,11 +70,11 @@ def load_coco_data(configuration):
     test_images = dict()
     for ix in range(len(info['images'])):
         img = info['images'][ix]
-        image_filename = img['file_path']
+        image_filename = img['file_path'].rsplit(".", 1)[0]
         file_path = images_folder + "/" + img['file_path']
 
         if image_filename.find("/") != -1:
-            image_filename = img['file_path'].rsplit("/", 1)[1]
+            image_filename = img['file_path'].rsplit("/", 1)[1].rsplit(".", 1)[0]
 
         if img['split'] == 'train':
             train_images[image_filename] = file_path
@@ -97,17 +97,17 @@ def get_all_train_captions(train_descriptions):
     return all_train_captions
 
 
-def load_captions_coco(filename, train_images_names_list, test_images_names_list):
+def load_captions_coco(filename):
     imgs = json.load(open(filename, 'r'))
     imgs = imgs['images']
     all_captions = dict()
     for img in imgs:
-        image_filename = img['filename']
+        image_filename = img['filename'].rsplit(".", 1)[0]
         # create list
         if image_filename not in all_captions:
-            all_captions[image_filename.rsplit(".", 1)[0]] = list()
+            all_captions[image_filename] = list()
         for sent in img['sentences']:
-            all_captions[image_filename.rsplit(".", 1)[0]].append(sent['raw'])
+            all_captions[image_filename].append(sent['raw'])
 
     return all_captions
 
@@ -133,12 +133,12 @@ def load_dataset(configuration):
         train_dataset_configuration = get_dataset_configuration(configuration[split_name]["dataset_name"])
         if train_dataset_configuration["data_name"] in ["flickr30k", "coco17", "coco14"]:
             train_images_mapping_original, test_images_mapping_original = load_coco_data(train_dataset_configuration)
-            all_captions = load_captions_coco(train_dataset_configuration["captions_file_path"],
-                                              list(train_images_mapping_original.keys()),
-                                              list(test_images_mapping_original.keys()))
+            all_captions = load_captions_coco(train_dataset_configuration["captions_file_path"])
             train_captions_mapping_original, test_captions_mapping_original = load_captions(all_captions,
-                                                                                            list(train_images_mapping_original.keys()),
-                                                                                            list(test_images_mapping_original.keys()))
+                                                                                            list(
+                                                                                                train_images_mapping_original.keys()),
+                                                                                            list(
+                                                                                                test_images_mapping_original.keys()))
         if train_dataset_configuration["data_name"] in ["flickr30k_polish", "flickr8k_polish", "aide", "flickr8k"]:
             train_images_mapping_original, test_images_mapping_original = images_with_path(
                 train_dataset_configuration["images_dir"], train_dataset_configuration[
@@ -147,8 +147,10 @@ def load_dataset(configuration):
                     "test_images_names_file_path"])
             all_captions = load_descriptions_flickr(train_dataset_configuration["captions_file_path"])
             train_captions_mapping_original, test_captions_mapping_original = load_captions(all_captions,
-                                                                                            list(train_images_mapping_original.keys()),
-                                                                                            list(test_images_mapping_original.keys()))
+                                                                                            list(
+                                                                                                train_images_mapping_original.keys()),
+                                                                                            list(
+                                                                                                test_images_mapping_original.keys()))
         return {"train_images_mapping_original": train_images_mapping_original,
                 "test_images_mapping_original": test_images_mapping_original,
                 "all_captions": all_captions,
@@ -156,13 +158,13 @@ def load_dataset(configuration):
                 "test_captions_mapping_original": test_captions_mapping_original}
 
     train = get_data_for_split("train")
-    test = get_data_for_split( "test")
+    test = get_data_for_split("test")
     return train, test
 
 
 class DataLoader:
     def __init__(self, configuration):
-        self.train, self.test = load_dataset(configuration )
+        self.train, self.test = load_dataset(configuration)
         # self.train_img, self.train_images = self.images_with_path(self.config["train_images_path"])
         # full_train_dataset
         # full_test_dataset
