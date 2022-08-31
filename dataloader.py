@@ -30,6 +30,8 @@ def get_dataset_configuration(dataset_name):
         return config_datasets.config_coco14
     elif dataset_name is "coco17":
         return config_datasets.config_coco17
+    else:
+        return Exception("Bad name of dataset")
 
 
 def load_doc(filename):

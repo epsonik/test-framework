@@ -19,8 +19,8 @@ config_mixed_flickr8k_flickr8k = {
     "data_name": "mixed_flickr8k_30k",
 }
 config_mixed_coco2017_coco2017 = {
-    "train": {"dataset_name": "coco2017", "subset_name": "test"},
-    "test": {"dataset_name": "coco2017", "subset_name": "train"},
+    "train": {"dataset_name": "coco17", "subset_name": "test"},
+    "test": {"dataset_name": "coco17", "subset_name": "train"},
     "train_model": True,
     "save_model": True,
     "model_save_dir": "/model_weights/",
