@@ -4,10 +4,8 @@ import json
 import config_datasets
 
 
-def load_captions(all_descriptions, train_images_file_path, test_images_file_path):
-    train_images = set(open(train_images_file_path, 'r').read().strip().split('\n'))
+def load_captions(all_descriptions, train_images, test_images):
     train_images_mapping = dict()
-    test_images = set(open(test_images_file_path, 'r').read().strip().split('\n'))
     test_images_mapping = dict()
     for x in list(all_descriptions.keys()):
         if x in train_images:
@@ -137,10 +135,8 @@ def load_dataset(configuration):
                                               list(train_images_mapping_original.keys()),
                                               list(test_images_mapping_original.keys()))
             train_captions_mapping_original, test_captions_mapping_original = load_captions(all_captions,
-                                                                                            train_dataset_configuration[
-                                                                                                "train_images_names_file_path"],
-                                                                                            train_dataset_configuration[
-                                                                                                "test_images_names_file_path"])
+                                                                                            list(train_images_mapping_original.keys()),
+                                                                                            list(test_images_mapping_original.keys()))
         if train_dataset_configuration["data_name"] in ["flickr30k_polish", "flickr8k_polish", "aide", "flickr8k"]:
             train_images_mapping_original, test_images_mapping_original = images_with_path(
                 train_dataset_configuration["images_dir"], train_dataset_configuration[
@@ -149,10 +145,8 @@ def load_dataset(configuration):
                     "test_images_names_file_path"])
             all_captions = load_descriptions_flickr(train_dataset_configuration["captions_file_path"])
             train_captions_mapping_original, test_captions_mapping_original = load_captions(all_captions,
-                                                                                            train_dataset_configuration[
-                                                                                                "train_images_names_file_path"],
-                                                                                            train_dataset_configuration[
-                                                                                                "test_images_names_file_path"])
+                                                                                            list(train_images_mapping_original.keys()),
+                                                                                            list(test_images_mapping_original.keys()))
         return {"train_images_mapping_original": train_images_mapping_original,
                 "test_images_mapping_original": test_images_mapping_original,
                 "all_captions": all_captions,
