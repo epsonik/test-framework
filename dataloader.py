@@ -5,6 +5,18 @@ import config_datasets
 
 
 def load_captions(all_descriptions, train_images, test_images):
+    """
+    Parameters
+    ----------
+    all_descriptions
+    train_images
+    test_images
+
+    Returns
+    -------
+    train_images_mapping
+    test_images_mapping
+    """
     train_images_mapping = dict()
     test_images_mapping = dict()
     for x in list(all_descriptions.keys()):
@@ -16,6 +28,15 @@ def load_captions(all_descriptions, train_images, test_images):
 
 
 def get_dataset_configuration(dataset_name):
+    """
+
+    Parameters
+    ----------
+    dataset_name :
+    Returns
+    -------
+    config
+    """
     if dataset_name is "flickr8k":
         return config_datasets.config_flickr8k
     elif dataset_name is "flickr8k_polish":
@@ -35,6 +56,15 @@ def get_dataset_configuration(dataset_name):
 
 
 def load_doc(filename):
+    """
+    Parameters
+    ----------
+    filename:
+
+    Returns
+    -------
+    text
+    """
     file = open(filename, 'r')
     text = file.read()
     file.close()
@@ -42,6 +72,15 @@ def load_doc(filename):
 
 
 def load_descriptions_flickr(captions_file_path):
+    """General method to load train and test dataset
+
+    Parameters
+    ----------
+    captions_file_path :
+    Returns
+    -------
+    mapping
+    """
     doc = load_doc(captions_file_path)
     mapping = dict()
     for line in doc.split('\n'):
@@ -63,6 +102,17 @@ def load_descriptions_flickr(captions_file_path):
 
 
 def load_coco_data(configuration):
+    """
+    Parameters
+    ----------
+    configuration : dict
+        Configuration of the datasets used in training.
+
+    Returns
+    -------
+    train_images
+    test_images
+    """
     input_json = configuration["images_file_path"]
     images_folder = configuration["images_dir"]
     info = json.load(open(input_json))
@@ -89,6 +139,17 @@ def load_coco_data(configuration):
 
 
 def get_all_train_captions(train_descriptions):
+    """General method to load train and test dataset
+
+    Parameters
+    ----------
+    configuration : dict
+        Configuration of the datasets used in training.
+
+    Returns
+    -------
+    all_train_captions
+    """
     # Create a list of all the training captions
     all_train_captions = []
     for key, val in train_descriptions.items():
@@ -98,6 +159,15 @@ def get_all_train_captions(train_descriptions):
 
 
 def load_captions_coco(filename):
+    """
+    Parameters
+    ----------
+    filename :
+
+    Returns
+    -------
+    all_captions
+    """
     imgs = json.load(open(filename, 'r'))
     imgs = imgs['images']
     all_captions = dict()
@@ -113,6 +183,20 @@ def load_captions_coco(filename):
 
 
 def images_with_path(images_dir, train_images_file_path, test_images_file_path):
+    """Method to map images ids to pictures
+
+    Parameters
+    ----------
+    images_dir
+    train_images_file_path
+    test_images_file_path
+
+    Returns
+    -------
+    train_images_mapping: dict
+    test_images_mapping: dict
+
+    """
     train_images = set(open(train_images_file_path, 'r').read().strip().split('\n'))
     train_images_mapping = dict()
     test_images = set(open(test_images_file_path, 'r').read().strip().split('\n'))
@@ -129,6 +213,31 @@ def images_with_path(images_dir, train_images_file_path, test_images_file_path):
 
 
 def load_dataset(configuration):
+    """General method to load train and test dataset
+
+    Parameters
+    ----------
+    configuration : dict
+        Configuration of the datasets used in training.
+
+    Returns
+    -------
+    train: dict->{
+                "train_images_mapping_original": dict,
+                "test_images_mapping_original": dict,
+                "all_captions": dict,
+                "train_captions_mapping_original": dict,
+                "test_captions_mapping_original": dict
+            }
+    test: dict->{
+                "train_images_mapping_original": dict,
+                "test_images_mapping_original": dict,
+                "all_captions": dict,
+                "train_captions_mapping_original": dict,
+                "test_captions_mapping_original": dict
+            }
+    """
+
     def get_data_for_split(split_name):
         train_dataset_configuration = get_dataset_configuration(configuration[split_name]["dataset_name"])
         if train_dataset_configuration["data_name"] in ["flickr30k", "coco17", "coco14"]:
@@ -166,6 +275,3 @@ def load_dataset(configuration):
 class DataLoader:
     def __init__(self, configuration):
         self.train, self.test = load_dataset(configuration)
-        # self.train_img, self.train_images = self.images_with_path(self.config["train_images_path"])
-        # full_train_dataset
-        # full_test_dataset
