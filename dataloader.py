@@ -129,8 +129,8 @@ def images_with_path(images_dir, train_images_file_path, test_images_file_path):
 
 
 def load_dataset(configuration):
-    def get_data_for_split(configuration, split_name):
-        train_dataset_configuration = get_dataset_configuration(configuration[split_name]["dataset_name"])
+    def get_data_for_split(split_name):
+        train_dataset_configuration = get_dataset_configuration(configuration[split_name])
         if train_dataset_configuration["data_name"] in ["flickr30k", "coco17", "coco14"]:
             train_images_mapping_original, test_images_mapping_original = load_coco_data(train_dataset_configuration)
             all_captions = load_captions_coco(train_dataset_configuration["captions_file_path"],
@@ -159,15 +159,14 @@ def load_dataset(configuration):
                 "train_captions_mapping_original": train_captions_mapping_original,
                 "test_captions_mapping_original": test_captions_mapping_original}
 
-    train = get_data_for_split(configuration, "train")
-    test = get_data_for_split(configuration, "test")
-    train = {}
+    train = get_data_for_split("train")
+    test = get_data_for_split("test")
     return train, test
 
 
 class DataLoader:
     def __init__(self, configuration):
-        self.train, self.test = load_dataset(configuration )
+        self.train, self.test = load_dataset(configuration)
         # self.train_img, self.train_images = self.images_with_path(self.config["train_images_path"])
         # full_train_dataset
         # full_test_dataset
