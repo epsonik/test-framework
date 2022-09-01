@@ -49,8 +49,8 @@ config_coco17 = {
 
 config_coco14 = {
     "images_dir": data_path + "images/coco2014",
-    "images_names_file_path": data_path + "images/coco2014/annotations/cocotalk.json",
-    "captions_file_path": data_path + "images/coco2014/annotations/dataset_coco.json",
+    "images_names_file_path": data_path + "images/coco2014/karpathy/cocotalk.json",
+    "captions_file_path": data_path + "images/coco2014/karpathy/dataset_coco.json",
     "data_name": "coco14",
     "language": "eng"
 }
