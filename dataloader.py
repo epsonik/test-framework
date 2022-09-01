@@ -4,18 +4,29 @@ import json
 import config_datasets
 
 
-def load_captions(all_descriptions, train_images, test_images):
+def split_captions(all_descriptions, train_images, test_images):
     """
+        Split captions to train and test sets  and map image id to the set of captions
     Parameters
     ----------
-    all_descriptions
-    train_images
-    test_images
+    all_descriptions: dict
+        Dictionary with key-image filename, value- list of captions separated by comma.
+        Captions are raw, without any text preprocessing, that is specific for NLP tasks.
+    train_images: list
+        List of image ids that belongs to train set.
+    test_images: list
+        List of image ids that belongs to test set.
 
     Returns
     -------
-    train_images_mapping
-    test_images_mapping
+    train_images_mapping: dict
+        Dictionary od images that are in train split, with key-image filename,
+         value- list of captions separated by comma. Captions are raw, without any text preprocessing,
+         that is specific for NLP tasks.
+    test_images_mapping: dict
+        Dictionary od images that are in test split, with key-image filename,
+         value-list of captions separated by comma.Captions are raw, without any text preprocessing,
+          that is specific for NLP tasks.
     """
     train_images_mapping = dict()
     test_images_mapping = dict()
@@ -29,13 +40,15 @@ def load_captions(all_descriptions, train_images, test_images):
 
 def get_dataset_configuration(dataset_name):
     """
-
+        Method to get configuration (path to the images, data splits etc) specific for dataset fe. COCO2017, Flickr8k
     Parameters
     ----------
-    dataset_name :
+    dataset_name : str
+        Name that explicitly identifies name of the dataset from file config_datasets.py
     Returns
     -------
-    config
+    config: dict
+        Dictionary with configuration parameters fe. language of the dataset or path to the directory with images
     """
     if dataset_name is "flickr8k":
         return config_datasets.config_flickr8k
@@ -57,13 +70,15 @@ def get_dataset_configuration(dataset_name):
 
 def load_doc(filename):
     """
+    Load docuemnt from specigied "filename"
     Parameters
     ----------
-    filename:
-
+    filename: str
+        Path to the file to load
     Returns
     -------
-    text
+    text: str
+        Continous text. Need to be read with separators specific for file
     """
     file = open(filename, 'r')
     text = file.read()
@@ -71,15 +86,18 @@ def load_doc(filename):
     return text
 
 
-def load_descriptions_flickr(captions_file_path):
-    """General method to load train and test dataset
-
+def load_all_captions_flickr(captions_file_path):
+    """
+    Load all captions from Flickr type dataset
     Parameters
     ----------
-    captions_file_path :
+    caption_file_path : str
+        Path to the file containing all Flickr dataset captions
     Returns
     -------
-    mapping
+    all_captions:dict
+        Dictionary with key image filename value- list of captions separated by comma.
+        Captions are raw, without any text preprocessing specific for NLP tasks.
     """
     doc = load_doc(captions_file_path)
     mapping = dict()
@@ -101,79 +119,75 @@ def load_descriptions_flickr(captions_file_path):
     return mapping
 
 
-def load_coco_data(configuration):
+def load_images_coco(configuration):
     """
+        Load images from files of COCO dataset
     Parameters
     ----------
     configuration : dict
-        Configuration of the datasets used in training.
-
+        Configuration of the datasets used in training from config_datasets.py.
     Returns
     -------
-    train_images
-    test_images
+    train_images: dict->{image_filename: global path to the image}
+        train split of images
+    test_images: dict->{image_filename: global path to the image}
+        test split of images
     """
-    input_json = configuration["images_file_path"]
+    file_with_images_def = configuration["images_names_file_path"]
+    # directory will all images from COCO dataset
     images_folder = configuration["images_dir"]
-    info = json.load(open(input_json))
-    train_images = dict()
-    test_images = dict()
+    info = json.load(open(file_with_images_def))
+    train_images_mapping = dict()
+    test_images_mapping = dict()
+    # iterate over all images from COCO dataset listed in file configuration["images_names_file_path"]
     for ix in range(len(info['images'])):
+
         img = info['images'][ix]
+        # remove from image name .jpg sufix
         image_filename = img['file_path'].rsplit(".", 1)[0]
+        # add global path to the image name
         file_path = images_folder + "/" + img['file_path']
 
         if image_filename.find("/") != -1:
             image_filename = img['file_path'].rsplit("/", 1)[1].rsplit(".", 1)[0]
-
+        # assignment of images from specific split
+        # in our case we use train and test dataset
+        # all images assigned to restval, train by Karpathy split are assigned to the train split
+        # images from val and test are assigned to the test split
         if img['split'] == 'train':
-            train_images[image_filename] = file_path
+            train_images_mapping[image_filename] = file_path
         elif img['split'] == 'val':
-            test_images[image_filename] = file_path
+            test_images_mapping[image_filename] = file_path
         elif img['split'] == 'test':
-            test_images[image_filename] = file_path
+            test_images_mapping[image_filename] = file_path
         elif img['split'] == 'restval':
-            train_images[image_filename] = file_path
+            train_images_mapping[image_filename] = file_path
 
-    return train_images, test_images
+    return train_images_mapping, test_images_mapping
 
 
-def get_all_train_captions(train_descriptions):
-    """General method to load train and test dataset
-
+def load_all_captions_coco(caption_file_path):
+    """
+    Load all captions from cocodataset
     Parameters
     ----------
-    configuration : dict
-        Configuration of the datasets used in training.
-
+    caption_file_path : str
+        Path to the file containing COCO dataset captions
     Returns
     -------
-    all_train_captions
+    all_captions:dict->{"232332": []
+        Dictionary with key image filename value- list of captions separated by comma.
+        Captions are raw, without any text preprocessing specific for NLP tasks.
     """
-    # Create a list of all the training captions
-    all_train_captions = []
-    for key, val in train_descriptions.items():
-        for cap in val:
-            all_train_captions.append(cap)
-    return all_train_captions
-
-
-def load_captions_coco(filename):
-    """
-    Parameters
-    ----------
-    filename :
-
-    Returns
-    -------
-    all_captions
-    """
-    imgs = json.load(open(filename, 'r'))
+    # open file with coco captions
+    imgs = json.load(open(caption_file_path, 'r'))
     imgs = imgs['images']
     all_captions = dict()
     for img in imgs:
+        # remove ".jpg" sufix
         image_filename = img['filename'].rsplit(".", 1)[0]
-        # create list
+        # create dictionary
+        # in the file key "raw" represents captions without any processing
         if image_filename not in all_captions:
             all_captions[image_filename] = list()
         for sent in img['sentences']:
@@ -182,39 +196,48 @@ def load_captions_coco(filename):
     return all_captions
 
 
-def images_with_path(images_dir, train_images_file_path, test_images_file_path):
+def load_images_flickr(images_dir, train_images_file_path, test_images_file_path):
     """Method to map images ids to pictures
 
     Parameters
     ----------
-    images_dir
+    images_dir: str
+        Path to the directory with all images from  Flickr type dataset
     train_images_file_path
+        Path to the file with image names of images from train split
     test_images_file_path
-
+        Path to the file with image names of images from test split
     Returns
     -------
-    train_images_mapping: dict
-    test_images_mapping: dict
+    train_images_mapping: dict->{image_filename: global path to the image}
+        train split of images
+    test_images_mapping: dict->{image_filename: global path to the image}
+        test split of images
 
     """
     train_images = set(open(train_images_file_path, 'r').read().strip().split('\n'))
     train_images_mapping = dict()
     test_images = set(open(test_images_file_path, 'r').read().strip().split('\n'))
     test_images_mapping = dict()
+    # add global paths to the all images in images_dir directory
     all_images = glob.glob(images_dir + '*.jpg')
     for i in all_images:  # img is list of full path names of all images
         image_name = i.split("/")[-1]
         image_id = image_name.split(".")[0]
-        if image_name in train_images:  # Check if the image belongs to test/training set
-            train_images_mapping[image_id] = i  # Add it to the list of test/train images
-        if image_name in test_images:  # Check if the image belongs to test/training set
-            test_images_mapping[image_id] = i
+        if image_name in train_images:  # Check if the image belongs to train set
+            train_images_mapping[image_id] = i  # Add it to the dict of train images
+        if image_name in test_images:  # Check if the image belongs to test set
+            test_images_mapping[image_id] = i  # Add it to the dict of test images
     return train_images_mapping, test_images_mapping
 
 
 def load_dataset(configuration):
-    """General method to load train and test dataset
-
+    """General method to load train and test set into framework.
+        Framework accepts different types of datasets in test and train split, fe. train - COCO2017, test - Flickr8k.
+        Following this assumption, datasets for train and test sets are loaded separately.
+        All data for all datasets are loaded (all captions, all images for training and testing) and separated
+        accordingly to the splits defined in configurations files. Therefore user can freely mix con
+         mix data configurations for training and testing.
     Parameters
     ----------
     configuration : dict
@@ -229,6 +252,7 @@ def load_dataset(configuration):
                 "train_captions_mapping_original": dict,
                 "test_captions_mapping_original": dict
             }
+            Dictionary with data assigned to the training split.
     test: dict->{
                 "train_images_mapping_original": dict,
                 "test_images_mapping_original": dict,
@@ -236,30 +260,37 @@ def load_dataset(configuration):
                 "train_captions_mapping_original": dict,
                 "test_captions_mapping_original": dict
             }
+            Dictionary with data assigned to the testing split.
     """
 
     def get_data_for_split(split_name):
+        # Load dataset configuration, by the name of the dataset assigned for training/testing
         train_dataset_configuration = get_dataset_configuration(configuration[split_name]["dataset_name"])
+        # Therefore Flickr and COCO have different file and data structures, to show captions and split of data
+        # different methods for loading captions and images are used.
+        # Datasets Flickr30k, COCO2017, COCO2014 have the same strucutre of files with captions and split informations.
         if train_dataset_configuration["data_name"] in ["flickr30k", "coco17", "coco14"]:
-            train_images_mapping_original, test_images_mapping_original = load_coco_data(train_dataset_configuration)
-            all_captions = load_captions_coco(train_dataset_configuration["captions_file_path"])
-            train_captions_mapping_original, test_captions_mapping_original = load_captions(all_captions,
-                                                                                            list(
-                                                                                                train_images_mapping_original.keys()),
-                                                                                            list(
-                                                                                                test_images_mapping_original.keys()))
+            #Load train images and test images and assign them to specific splits
+            train_images_mapping_original, test_images_mapping_original = load_images_coco(train_dataset_configuration)
+            #Load all captions from dataset, that is COCO type
+            all_captions = load_all_captions_coco(train_dataset_configuration["captions_file_path"])
+        # Datasets Flickr30k, Flickr8k_polish, AIDe, Flickr8k  have the same strucutre of files with captions and split informations.
         if train_dataset_configuration["data_name"] in ["flickr30k_polish", "flickr8k_polish", "aide", "flickr8k"]:
-            train_images_mapping_original, test_images_mapping_original = images_with_path(
+            #Load train images and test images and assign them to specific splits
+            train_images_mapping_original, test_images_mapping_original = load_images_flickr(
                 train_dataset_configuration["images_dir"], train_dataset_configuration[
                     "train_images_names_file_path"],
                 train_dataset_configuration[
                     "test_images_names_file_path"])
-            all_captions = load_descriptions_flickr(train_dataset_configuration["captions_file_path"])
-            train_captions_mapping_original, test_captions_mapping_original = load_captions(all_captions,
-                                                                                            list(
-                                                                                                train_images_mapping_original.keys()),
-                                                                                            list(
-                                                                                                test_images_mapping_original.keys()))
+            #Load all captions from dataset, that is Flickr8k type
+            all_captions = load_all_captions_flickr(train_dataset_configuration["captions_file_path"])
+
+        #Assign captions to specific splits
+        train_captions_mapping_original, test_captions_mapping_original = split_captions(all_captions,
+                                                                                         list(
+                                                                                             train_images_mapping_original.keys()),
+                                                                                         list(
+                                                                                             test_images_mapping_original.keys()))
         return {"train_images_mapping_original": train_images_mapping_original,
                 "test_images_mapping_original": test_images_mapping_original,
                 "all_captions": all_captions,

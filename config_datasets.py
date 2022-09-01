@@ -34,14 +34,14 @@ config_flickr30k_polish = {
 }
 config_flickr30k = {
     "images_dir": data_path + "images/flickr30k/Images",
-    "images_file_path": data_path + "images/flickr30k/karpathy/f30ktalk.json",
+    "images_names_file_path": data_path + "images/flickr30k/karpathy/f30ktalk.json",
     "captions_file_path": data_path + "images/flickr30k/karpathy/dataset_flickr30k.json",
     "data_name": "flickr30k",
     "language": "eng"
 }
 config_coco17 = {
     "images_dir": data_path + "images/coco2014",
-    "images_file_path": data_path + "images/coco2017/annotations/cocotalk.json",
+    "images_names_file_path": data_path + "images/coco2017/annotations/cocotalk.json",
     "captions_file_path": data_path + "images/coco2017/annotations/dataset_coco.json",
     "data_name": "coco17",
     "language": "eng"
@@ -49,7 +49,7 @@ config_coco17 = {
 
 config_coco14 = {
     "images_dir": data_path + "images/coco2014",
-    "images_file_path": data_path + "images/coco2014/annotations/cocotalk.json",
+    "images_names_file_path": data_path + "images/coco2014/annotations/cocotalk.json",
     "captions_file_path": data_path + "images/coco2014/annotations/dataset_coco.json",
     "data_name": "coco14",
     "language": "eng"
