@@ -4,11 +4,14 @@ Copy folder`coco-caption` from path `/home2/data` to project root directory
 create virtual environment from file
 ```
 conda create --name framework --file requirements.txt
+Activate environment:
+conda activate framework
 ```
 Add virtual environment `framework` to jupyter
 ```
 ipython kernel install --user --name=framework
 ```
+Your env is in the Anaconda directory in envs directory
 ### How to use jupyter Notebook via ssh:
 How to connect local graphic jupyter notebook to remote jupyter server with virtual conda environment via ssh.
 
