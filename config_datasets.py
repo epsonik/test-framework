@@ -1,5 +1,5 @@
 #### Config
-data_path = "/home2/data/"
+data_path = "/Users/mateuszb/PycharmProjects/test-framework/"
 config_flickr8k = {
     "images_dir": data_path + "images/flickr8k/Images/",
     "train_images_names_file_path": data_path + "images/flickr8k/Flickr8k_text/Flickr_8k.trainImages.txt",

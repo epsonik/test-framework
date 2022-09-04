@@ -50,19 +50,19 @@ def get_dataset_configuration(dataset_name):
     config: dict
         Dictionary with configuration parameters fe. language of the dataset or path to the directory with images
     """
-    if dataset_name is "flickr8k":
+    if dataset_name == "flickr8k":
         return config_datasets.config_flickr8k
-    elif dataset_name is "flickr8k_polish":
+    elif dataset_name == "flickr8k_polish":
         return config_datasets.config_flickr8k_polish
-    elif dataset_name is "flickr30k":
+    elif dataset_name == "flickr30k":
         return config_datasets.config_flickr30k
-    elif dataset_name is "flickr30k_polish":
+    elif dataset_name == "flickr30k_polish":
         return config_datasets.config_flickr30k_polish
-    elif dataset_name is "aide":
+    elif dataset_name == "aide":
         return config_datasets.config_aide
-    elif dataset_name is "coco14":
+    elif dataset_name == "coco14":
         return config_datasets.config_coco14
-    elif dataset_name is "coco17":
+    elif dataset_name == "coco17":
         return config_datasets.config_coco17
     else:
         return Exception("Bad name of dataset")
@@ -265,44 +265,50 @@ def load_dataset(configuration):
 
     def get_data_for_split(split_name):
         # Load dataset configuration, by the name of the dataset assigned for training/testing
-        train_dataset_configuration = get_dataset_configuration(configuration[split_name]["dataset_name"])
+        dataset_configuration = get_dataset_configuration(configuration[split_name]["dataset_name"])
         # Therefore Flickr and COCO have different file and data structures, to show captions and split of data
         # different methods for loading captions and images are used.
         # Datasets Flickr30k, COCO2017, COCO2014 have the same strucutre of files with captions and split informations.
-        if train_dataset_configuration["data_name"] in ["flickr30k", "coco17", "coco14"]:
-            #Load train images and test images and assign them to specific splits
-            train_images_mapping_original, test_images_mapping_original = load_images_coco(train_dataset_configuration)
-            #Load all captions from dataset, that is COCO type
-            all_captions = load_all_captions_coco(train_dataset_configuration["captions_file_path"])
+        if dataset_configuration["data_name"] in ["flickr30k", "coco17", "coco14"]:
+            # Load train images and test images and assign them to specific splits
+            train_images_mapping_original, test_images_mapping_original = load_images_coco(dataset_configuration)
+            # Load all captions from dataset, that is COCO type
+            all_captions = load_all_captions_coco(dataset_configuration["captions_file_path"])
         # Datasets Flickr30k, Flickr8k_polish, AIDe, Flickr8k  have the same strucutre of files with captions and split informations.
-        if train_dataset_configuration["data_name"] in ["flickr30k_polish", "flickr8k_polish", "aide", "flickr8k"]:
-            #Load train images and test images and assign them to specific splits
+        if dataset_configuration["data_name"] in ["flickr30k_polish", "flickr8k_polish", "aide", "flickr8k"]:
+            # Load train images and test images and assign them to specific splits
             train_images_mapping_original, test_images_mapping_original = load_images_flickr(
-                train_dataset_configuration["images_dir"], train_dataset_configuration[
+                dataset_configuration["images_dir"], dataset_configuration[
                     "train_images_names_file_path"],
-                train_dataset_configuration[
+                dataset_configuration[
                     "test_images_names_file_path"])
-            #Load all captions from dataset, that is Flickr8k type
-            all_captions = load_all_captions_flickr(train_dataset_configuration["captions_file_path"])
+            # Load all captions from dataset, that is Flickr8k type
+            all_captions = load_all_captions_flickr(dataset_configuration["captions_file_path"])
 
-        #Assign captions to specific splits
+        # Assign captions to specific splits
         train_captions_mapping_original, test_captions_mapping_original = split_captions(all_captions,
                                                                                          list(
                                                                                              train_images_mapping_original.keys()),
                                                                                          list(
                                                                                              test_images_mapping_original.keys()))
-        return {"train_images_mapping_original": train_images_mapping_original,
+        return {
+            "train": {
+                "train_images_mapping_original": train_images_mapping_original,
+                "train_captions_mapping_original": train_captions_mapping_original
+            },
+            "test": {
                 "test_images_mapping_original": test_images_mapping_original,
-                "all_captions": all_captions,
-                "train_captions_mapping_original": train_captions_mapping_original,
-                "test_captions_mapping_original": test_captions_mapping_original}
+                "test_captions_mapping_original": test_captions_mapping_original
+            },
+            "all_captions": all_captions
+        }
 
     train = get_data_for_split("train")
     test = get_data_for_split("test")
-
     return train, test
 
 
 class DataLoader:
     def __init__(self, configuration):
         self.train, self.test = load_dataset(configuration)
+        self.configuration = configuration
