@@ -1,17 +1,21 @@
 #### Config
 data_path = "/home2/data/"
 general = {
-    "word_embedings_path": data_path + "images/glove/glove.6B.200d.txt",
-    "PL_word_embedings_path": data_path + "images/glovePL/glove_100_3_polish.txt",
-    "embedings_dim": 199,
-    "PL_embedings_dim": 299,
+    "PL": {
+        "word_embedings_path": data_path + "images/glovePL/glove_100_3_polish.txt",
+        "embedings_dim": 299
+    },
+    "eng": {
+        "word_embedings_path": data_path + "images/glove/glove.6B.200d.txt",
+        "embedings_dim": 199
+    },
     "results_directory": "/results",
     "coco-caption_path": "./coco-caption",
     "START": 'START ',
     "STOP": ' STOP'
 }
 config_mixed_flickr8k_flickr8k_n = {
-    "train": {"dataset_name": "flickr8k", "subset_name": "test"},
+    "train": {"dataset_name": "flickr8k", "subset_name": "train"},
     "test": {"dataset_name": "flickr8k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": True,

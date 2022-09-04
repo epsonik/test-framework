@@ -300,15 +300,17 @@ def load_dataset(configuration):
                 "test_images_mapping_original": test_images_mapping_original,
                 "test_captions_mapping_original": test_captions_mapping_original
             },
-            "all_captions": all_captions
+            "all_captions": all_captions,
+            "language": dataset_configuration['language']
         }
 
     train = get_data_for_split("train")
     test = get_data_for_split("test")
-    return train, test
+    language = train['language']
+    return train, test, language
 
 
 class DataLoader:
     def __init__(self, configuration):
-        self.train, self.test = load_dataset(configuration)
+        self.train, self.test, self.language = load_dataset(configuration)
         self.configuration = configuration

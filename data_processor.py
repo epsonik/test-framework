@@ -241,10 +241,17 @@ def get_all_train_captions_list(train_captions):
     return all_train_captions
 
 
+# convert a dictionary of clean descriptions to a list of descriptions
+def to_lines(descriptions):
+    all_desc = list()
+    for key in descriptions.keys():
+        [all_desc.append(d) for d in descriptions[key]]
+    return all_desc
+
+
 # calculate the length of the description with the most words
-def get_max_length(descriptions):
-    lines = to_lines(descriptions)
-    return max(len(d.split()) for d in lines)
+def get_max_length(captions):
+    return max(len(d.split()) for d in captions)
 
 
 def count_words_and_threshold(all_train_captions):
@@ -261,8 +268,8 @@ def count_words_and_threshold(all_train_captions):
     return vocab
 
 
-def ixtowordandbackward(self, vocab):
-    if self.config["save_ix_to_word"]:
+def ixtowordandbackward(vocab, configuration):
+    if configuration["save_ix_to_word"]:
         ixtoword = {}
         wordtoix = {}
         ix = 1
@@ -270,15 +277,15 @@ def ixtowordandbackward(self, vocab):
             wordtoix[w] = ix
             ixtoword[ix] = w
             ix += 1
-        with open(self.config["ixtoword_path"], "wb") as encoded_pickle:
+        with open(configuration["ixtoword_path"], "wb") as encoded_pickle:
             pickle.dump(ixtoword, encoded_pickle)
-        with open(self.config["wordtoix_path"], "wb") as encoded_pickle:
+        with open(configuration["wordtoix_path"], "wb") as encoded_pickle:
             pickle.dump(wordtoix, encoded_pickle)
         return ixtoword, wordtoix
 
-    with open(self.config["ixtoword_path"], "rb") as encoded_pickle:
+    with open(configuration["ixtoword_path"], "rb") as encoded_pickle:
         ixtoword = pickle.load(encoded_pickle)
-    with open(self.config["wordtoix_path"], "rb") as encoded_pickle:
+    with open(configuration["wordtoix_path"], "rb") as encoded_pickle:
         wordtoix = pickle.load(encoded_pickle)
     return ixtoword, wordtoix
 
@@ -307,8 +314,7 @@ def preprocess_data(data):
     all_captions = define_learning_data(data)
     clean_descriptions(train_captions_mapping)
     train_captions_preprocessed = wrap_captions_in_start_stop(train_captions_mapping)
-    print(train_captions_preprocessed)
-    preprocess_images(train_images, test_images, configuration)
+    # preprocess_images(train_images, test_images, configuration)
     all_train_captions = get_all_train_captions_list(train_captions_preprocessed)
     print("Number of training captions ", len(all_train_captions))
     # determine the maximum sequence length
@@ -316,10 +322,10 @@ def preprocess_data(data):
     print('Description Length: %d' % max_length)
     # Count words and consider only words which occur at least 10 times in the corpus
     vocab = count_words_and_threshold(all_train_captions)
-    ixtoword, wordtoix = ixtowordandbackward(vocab)
+    ixtoword, wordtoix = ixtowordandbackward(vocab, data.configuration)
     vocab_size = len(ixtoword) + 1  # one for appended 0's
     print("Vocab size: ", vocab_size)
 
     embedding_matrix, embedding_vector = get_embedding_matrix(vocab_size, wordtoix,
-                                                              configuration["word_embedings_path"],
-                                                              configuration["embedings_dim"])
+                                                              general[data.language]["word_embedings_path"],
+                                                              general[data.language]["embedings_dim"])
