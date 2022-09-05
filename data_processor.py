@@ -105,9 +105,9 @@ def prepare_images(self, train_img, test_img):
         return encoding_train, encoding_test
 
     with open(self.config["encoded_images_train"], "rb") as encoded_pickle:
-        encoding_train = load(encoded_pickle)
+        encoding_train = pickle.load(encoded_pickle)
     with open(self.config["encoded_images_test"], "rb") as encoded_pickle:
-        encoding_test = load(encoded_pickle)
+        encoding_test = pickle.load(encoded_pickle)
     return encoding_train, encoding_test
 
 
@@ -118,13 +118,14 @@ def clean_descriptions(captions_mapping):
     *remove tokens with numbers
     Parameters
     ----------
-    captions_mapping : dict
+    captions_mapping: dict
         Dictionary with keys - image_id and values-list of ground truth captions from training set.
 
     Returns
     -------
+    cleaned_descriptions_mapping: dict
     """
-    # prepare translation table for removing punctuation
+    cleaned_descriptions_mapping = dict()
     table = str.maketrans('', '', string.punctuation)
     for key, desc_list in captions_mapping.items():
         for i in range(len(desc_list)):
@@ -137,9 +138,8 @@ def clean_descriptions(captions_mapping):
             desc = [w.translate(table) for w in desc]
             # remove tokens with numbers in them
             desc = [word for word in desc if word.isalpha()]
-            # store as string
-            # desc_list[i] = ' '.join(desc)
-            desc_list[i] = desc
+            cleaned_descriptions_mapping[i] = desc
+    return cleaned_descriptions_mapping
 
 
 def wrap_captions_in_start_stop(training_captions):
@@ -236,26 +236,35 @@ def preprocess_images(train_images, test_images, configuration):
 
 
 def get_all_train_captions_list(train_captions):
-    # Create a list of all the training captions
-    all_train_captions = list(itertools.chain(*train_captions.values()))
-    return all_train_captions
+    """Method to create a list of all the training captions.
+    Parameters
+    ----------
+    captions_mapping : dict
+        Dictionary with keys - image_id and values-list of ground truth captions from training set.
+
+    Returns
+    -------
+    all_train_captions_flattened
+    """
+    all_train_captions_flattened = list(itertools.chain(*train_captions.values()))
+    return all_train_captions_flattened
 
 
-# convert a dictionary of clean descriptions to a list of descriptions
-def to_lines(descriptions):
-    all_desc = list()
-    for key in descriptions.keys():
-        [all_desc.append(d) for d in descriptions[key]]
-    return all_desc
-
-
-# calculate the length of the description with the most words
 def get_max_length(captions):
+    """Calculate the length of the description with the most words.
+    Parameters
+    ----------
+    captions_mapping : dict
+        Dictionary with keys - image_id and values-list of ground truth captions from training set.
+
+    Returns
+    -------
+    all_train_captions_flattened
+    """
     return max(len(d.split()) for d in captions)
 
 
 def count_words_and_threshold(all_train_captions):
-    word_count_threshold = 10
     word_counts = {}
     nsents = 0
     for sent in all_train_captions:
@@ -263,12 +272,13 @@ def count_words_and_threshold(all_train_captions):
         for w in sent.split(' '):
             word_counts[w] = word_counts.get(w, 0) + 1
     # Consider only words which occur at least 10 times in the corpus
-    vocab = [w for w in word_counts if word_counts[w] >= word_count_threshold]
+    vocab = [w for w in word_counts if word_counts[w] >= general["word_count_threshold"]]
     print('preprocessed words %d -> %d' % (len(word_counts), len(vocab)))
     return vocab
 
 
 def ixtowordandbackward(vocab, configuration):
+    word_indexing_path = "./" + configuration["data_name"] + configuration["pickles_dir"]
     if configuration["save_ix_to_word"]:
         ixtoword = {}
         wordtoix = {}
@@ -277,15 +287,20 @@ def ixtowordandbackward(vocab, configuration):
             wordtoix[w] = ix
             ixtoword[ix] = w
             ix += 1
-        with open(configuration["ixtoword_path"], "wb") as encoded_pickle:
+
+        with open(
+                word_indexing_path + "/" + configuration["ixtoword_path"],
+                "wb") as encoded_pickle:
             pickle.dump(ixtoword, encoded_pickle)
-        with open(configuration["wordtoix_path"], "wb") as encoded_pickle:
+        with open(
+                word_indexing_path + "/" + configuration["wordtoix_path"],
+                "wb") as encoded_pickle:
             pickle.dump(wordtoix, encoded_pickle)
         return ixtoword, wordtoix
 
-    with open(configuration["ixtoword_path"], "rb") as encoded_pickle:
+    with open(word_indexing_path + "/" + configuration["ixtoword_path"], "rb") as encoded_pickle:
         ixtoword = pickle.load(encoded_pickle)
-    with open(configuration["wordtoix_path"], "rb") as encoded_pickle:
+    with open(word_indexing_path + "/" + configuration["wordtoix_path"], "rb") as encoded_pickle:
         wordtoix = pickle.load(encoded_pickle)
     return ixtoword, wordtoix
 
@@ -306,18 +321,27 @@ def define_learning_data(data):
         "all_captions"]
 
 
+def create_dir_structure(configuration):
+    if not os.path.isdir("./" + configuration["data_name"]):
+        os.makedirs("./" + configuration["data_name"])
+    if not os.path.isdir("./" + configuration["data_name"] + "/" + configuration["pickles_dir"]):
+        os.makedirs("./" + configuration["data_name"] + "/" + configuration["pickles_dir"])
+    if not os.path.isdir("./" + configuration["data_name"] + "/" + configuration["model_save_dir"]):
+        os.makedirs("./" + configuration["data_name"] + "/" + configuration["model_save_dir"])
+
+
 def preprocess_data(data):
+    create_dir_structure(data.configuration)
     train_images_mapping, \
     train_captions_mapping, \
     test_images_mapping, \
     test_captions_mapping, \
     all_captions = define_learning_data(data)
-    clean_descriptions(train_captions_mapping)
-    train_captions_preprocessed = wrap_captions_in_start_stop(train_captions_mapping)
+    cleaned_descriptions = clean_descriptions(train_captions_mapping)
+    train_captions_preprocessed = wrap_captions_in_start_stop(cleaned_descriptions)
     # preprocess_images(train_images, test_images, configuration)
     all_train_captions = get_all_train_captions_list(train_captions_preprocessed)
     print("Number of training captions ", len(all_train_captions))
-    # determine the maximum sequence length
     max_length = get_max_length(all_train_captions)
     print('Description Length: %d' % max_length)
     # Count words and consider only words which occur at least 10 times in the corpus

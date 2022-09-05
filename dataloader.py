@@ -312,5 +312,6 @@ def load_dataset(configuration):
 
 class DataLoader:
     def __init__(self, configuration):
+
         self.train, self.test, self.language = load_dataset(configuration)
         self.configuration = configuration
