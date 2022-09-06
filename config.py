@@ -17,8 +17,8 @@ general = {
 }
 config_mixed_flickr8k_flickr8k_n = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
-    "test": {"dataset_name": "flickr8k", "subset_name": "train"},
-    "encode_images": True,
+    "test": {"dataset_name": "flickr8k", "subset_name": "test"},
+    "encode_images": False,
     "save_ix_to_word": True,
     "preprocess_descriptions": True,
     "train_model": True,

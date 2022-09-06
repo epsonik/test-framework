@@ -63,54 +63,6 @@ def define_images_feature_model():
     return model_new
 
 
-def prepare_images(self, train_img, test_img):
-    # Call the funtion to encode all the train images
-    # This will take a while on CPU - Execute this only once
-    images_feature_model = define_images_feature_model()
-    if self.config["encode_images"]:
-        start = time()
-        encoding_test = {}
-        index = 1
-        for img in test_img:
-            image_filename = img.rsplit("/", 1)[-1]
-            encoding_test[image_filename] = encode(img, images_feature_model)
-            if index % 100 == 0:
-                print("Processed:")
-                print(index)
-        if not os.path.isdir("./" + self.config["data_name"]):
-            os.makedirs("./" + self.config["data_name"])
-            os.makedirs("./" + self.config["data_name"] + "/Pickle")
-        with open(self.config["encoded_images_test"], "wb") as encoded_pickle:
-            pickle.dump(encoding_test, encoded_pickle)
-        print("Test images encoded")
-        print("Time taken in seconds =", time() - start)
-
-        start = time()
-        encoding_train = {}
-        index = 1
-        for img in train_img:
-            image_filename = img.rsplit("/", 1)[-1]
-            encoding_train[image_filename] = encode(img, images_feature_model)
-            if index % 100 == 0:
-                print("Processed:")
-                print(index)
-            index += 1
-        mode = 'a' if os.path.exists(self.config["encoded_images_train"]) else 'wb'
-        # Save the bottleneck train features to disk
-        with open(self.config["encoded_images_train"], 'w+b') as encoded_pickle:
-            pickle.dump(encoding_train, encoded_pickle)
-        print("Train images encoded")
-        print("Time taken in seconds =", time() - start)
-
-        return encoding_train, encoding_test
-
-    with open(self.config["encoded_images_train"], "rb") as encoded_pickle:
-        encoding_train = pickle.load(encoded_pickle)
-    with open(self.config["encoded_images_test"], "rb") as encoded_pickle:
-        encoding_test = pickle.load(encoded_pickle)
-    return encoding_train, encoding_test
-
-
 def clean_descriptions(captions_mapping):
     """Method to:
     *lower all letters
@@ -125,7 +77,6 @@ def clean_descriptions(captions_mapping):
     -------
     cleaned_descriptions_mapping: dict
     """
-    cleaned_descriptions_mapping = dict()
     table = str.maketrans('', '', string.punctuation)
     for key, desc_list in captions_mapping.items():
         for i in range(len(desc_list)):
@@ -138,8 +89,7 @@ def clean_descriptions(captions_mapping):
             desc = [w.translate(table) for w in desc]
             # remove tokens with numbers in them
             desc = [word for word in desc if word.isalpha()]
-            cleaned_descriptions_mapping[i] = desc
-    return cleaned_descriptions_mapping
+            desc_list[i] = desc
 
 
 def wrap_captions_in_start_stop(training_captions):
@@ -191,6 +141,7 @@ def preprocess_images(train_images, test_images, configuration):
     # Call the funtion to encode all the train images
     # This will take a while on CPU - Execute this only once
     images_feature_model = define_images_feature_model()
+    word_indexing_path = "./" + configuration["data_name"] + configuration["pickles_dir"]
     if configuration["encode_images"]:
         start = time()
         encoding_test = {}
@@ -200,16 +151,15 @@ def preprocess_images(train_images, test_images, configuration):
             if index % 100 == 0:
                 print("Processed:")
                 print(index)
+            index += 1
         print("Test images encoded")
         print("Time taken in seconds =", time() - start)
 
-        mode = 'a' if os.path.exists(configuration["encoded_images_test_path"]) else 'wb'
         # Save the bottleneck train features to disk
-        with open(configuration["encoded_images_test_path"], 'w+b') as encoded_pickle:
+        with open(word_indexing_path + configuration["encoded_images_test_path"], 'w+b') as encoded_pickle:
             pickle.dump(encoding_test, encoded_pickle)
-
-        print("Train images encoded")
-        print("Time taken in seconds =", time() - start)
+        print("Encoded test images saved under ")
+        print(word_indexing_path + configuration["encoded_images_test_path"])
         start = time()
         encoding_train = {}
         index = 1
@@ -219,19 +169,23 @@ def preprocess_images(train_images, test_images, configuration):
                 print("Processed:")
                 print(index)
             index += 1
-        mode = 'a' if os.path.exists(configuration["encoded_images_train_path"]) else 'wb'
         # Save the bottleneck train features to disk
-        with open(configuration["encoded_images_train_path"], 'w+b') as encoded_pickle:
+        with open(word_indexing_path + configuration["encoded_images_train_path"], 'w+b') as encoded_pickle:
             pickle.dump(encoding_train, encoded_pickle)
         print("Train images encoded")
         print("Time taken in seconds =", time() - start)
-
+        print("Encoded train images saved under ")
+        print(word_indexing_path + configuration["encoded_images_train_path"])
         return encoding_train, encoding_test
 
-    with open(configuration["encoded_images_train_path"], "rb") as encoded_pickle:
+    with open(word_indexing_path + configuration["encoded_images_train_path"], "rb") as encoded_pickle:
         encoded_images_train = pickle.load(encoded_pickle)
-    with open(configuration["encoded_images_test_path"], "rb") as encoded_pickle:
+    print("Encoded train images loaded from: ")
+    print(word_indexing_path + configuration["encoded_images_train_path"])
+    with open(word_indexing_path + configuration["encoded_images_test_path"], "rb") as encoded_pickle:
         encoded_images_test = pickle.load(encoded_pickle)
+    print("Encoded train images loaded from:  ")
+    print(word_indexing_path + configuration["encoded_images_test_path"])
     return encoded_images_train, encoded_images_test
 
 
@@ -337,19 +291,25 @@ def preprocess_data(data):
     test_images_mapping, \
     test_captions_mapping, \
     all_captions = define_learning_data(data)
-    cleaned_descriptions = clean_descriptions(train_captions_mapping)
-    train_captions_preprocessed = wrap_captions_in_start_stop(cleaned_descriptions)
-    # preprocess_images(train_images, test_images, configuration)
-    all_train_captions = get_all_train_captions_list(train_captions_preprocessed)
+    clean_descriptions(train_captions_mapping)
+    print("Descriptions cleaned.")
+    print(train_captions_mapping[list(train_images_mapping.keys())[0]])
+    train_captions_wrapped = wrap_captions_in_start_stop(train_captions_mapping)
+    print("Descriptions wraped into start and stop words.")
+    print(train_captions_wrapped[list(train_captions_wrapped.keys())[0]])
+    data.encoded_images_train, data.encoded_images_test = preprocess_images(train_images_mapping, test_images_mapping,
+                                                                            data.configuration)
+    all_train_captions = get_all_train_captions_list(train_captions_wrapped)
     print("Number of training captions ", len(all_train_captions))
     max_length = get_max_length(all_train_captions)
     print('Description Length: %d' % max_length)
     # Count words and consider only words which occur at least 10 times in the corpus
-    vocab = count_words_and_threshold(all_train_captions)
-    ixtoword, wordtoix = ixtowordandbackward(vocab, data.configuration)
-    vocab_size = len(ixtoword) + 1  # one for appended 0's
-    print("Vocab size: ", vocab_size)
+    data.vocab = count_words_and_threshold(all_train_captions)
+    ixtoword, wordtoix = ixtowordandbackward(data.vocab, data.configuration)
+    data.vocab_size = len(ixtoword) + 1  # one for appended 0's
+    print("Vocab size: ", data.vocab_size)
 
-    embedding_matrix, embedding_vector = get_embedding_matrix(vocab_size, wordtoix,
+    embedding_matrix, embedding_vector = get_embedding_matrix(data.vocab_size, wordtoix,
                                                               general[data.language]["word_embedings_path"],
                                                               general[data.language]["embedings_dim"])
+    return data
