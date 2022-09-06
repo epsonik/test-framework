@@ -289,27 +289,27 @@ def preprocess_data(data):
     train_images_mapping, \
     train_captions_mapping, \
     test_images_mapping, \
-    test_captions_mapping, \
+    data.test_captions_mapping, \
     all_captions = define_learning_data(data)
     clean_descriptions(train_captions_mapping)
     print("Descriptions cleaned.")
     print(train_captions_mapping[list(train_images_mapping.keys())[0]])
-    train_captions_wrapped = wrap_captions_in_start_stop(train_captions_mapping)
+    data.train_captions_wrapped = wrap_captions_in_start_stop(train_captions_mapping)
     print("Descriptions wraped into start and stop words.")
-    print(train_captions_wrapped[list(train_captions_wrapped.keys())[0]])
+    print(data.train_captions_wrapped[list(data.train_captions_wrapped.keys())[0]])
     data.encoded_images_train, data.encoded_images_test = preprocess_images(train_images_mapping, test_images_mapping,
                                                                             data.configuration)
-    all_train_captions = get_all_train_captions_list(train_captions_wrapped)
+    all_train_captions = get_all_train_captions_list(data.train_captions_wrapped)
     print("Number of training captions ", len(all_train_captions))
-    max_length = get_max_length(all_train_captions)
-    print('Description Length: %d' % max_length)
+    data.max_length = get_max_length(all_train_captions)
+    print('Description Length: %d' % data.max_length)
     # Count words and consider only words which occur at least 10 times in the corpus
     data.vocab = count_words_and_threshold(all_train_captions)
-    ixtoword, wordtoix = ixtowordandbackward(data.vocab, data.configuration)
-    data.vocab_size = len(ixtoword) + 1  # one for appended 0's
+    data.ixtoword, data.wordtoix = ixtowordandbackward(data.vocab, data.configuration)
+    data.vocab_size = len(data.ixtoword) + 1  # one for appended 0's
     print("Vocab size: ", data.vocab_size)
 
-    embedding_matrix, embedding_vector = get_embedding_matrix(data.vocab_size, wordtoix,
+    data.embedding_matrix, data.embedding_vector = get_embedding_matrix(data.vocab_size, data.wordtoix,
                                                               general[data.language]["word_embedings_path"],
                                                               general[data.language]["embedings_dim"])
     return data
