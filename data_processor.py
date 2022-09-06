@@ -111,7 +111,7 @@ def wrap_captions_in_start_stop(training_captions):
             train_captions_preprocessed[image_id] = list()
         for sentence in sentences:
             # wrap descriion in START and STOP tokens
-            desc = general['START'] + " ".join(sentence) + general['STOP']
+            desc = general['START'] + " " + " ".join(sentence) + " " + general['STOP']
             # store
             train_captions_preprocessed[image_id].append(desc)
     return train_captions_preprocessed
@@ -310,6 +310,6 @@ def preprocess_data(data):
     print("Vocab size: ", data.vocab_size)
 
     data.embedding_matrix, data.embedding_vector = get_embedding_matrix(data.vocab_size, data.wordtoix,
-                                                              general[data.language]["word_embedings_path"],
-                                                              general[data.language]["embedings_dim"])
+                                                                        general[data.language]["word_embedings_path"],
+                                                                        general[data.language]["embedings_dim"])
     return data

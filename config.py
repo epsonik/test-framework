@@ -11,8 +11,8 @@ general = {
     },
     "results_directory": "/results",
     "coco-caption_path": "./coco-caption",
-    "START": 'START ',
-    "STOP": ' STOP',
+    "START": 'START',
+    "STOP": 'STOP',
     "word_count_threshold": 10
 }
 config_mixed_flickr8k_flickr8k_n = {

@@ -15,11 +15,10 @@ def calculate_results(expected, results, config):
     sys.path.append(general["coco-caption_path"])
     from pycocoevalcap.eval_any import COCOEvalCap
     cocoEval = COCOEvalCap(expected, results)
-    eval_res = cocoEval.evaluate()
     out = {}
     for metric, score in cocoEval.eval.items():
         out[metric] = score
-
+    print("Calculating final results")
     imgToEval = cocoEval.imgToEval
     for p in results:
         image_id, caption = p, results[p][0]['caption']
@@ -29,6 +28,7 @@ def calculate_results(expected, results, config):
     if not os.path.isdir("./" + general["results_directory"]):
         os.makedirs("./" + general["results_directory"])
     cache_path = os.path.join(general["results_directory"], config["data_name"] + '.json')
+    print("Results saved to ")
     print(cache_path)
     with open(cache_path, 'w') as outfile:
         json.dump({'overall': out, 'imgToEval': imgToEval}, outfile)
@@ -36,7 +36,7 @@ def calculate_results(expected, results, config):
 
 
 def greedySearch(photo, model, wordtoix, ixtoword, max_length):
-    in_text = 'startseq'
+    in_text = general["START"]
     for i in range(max_length):
         sequence = [wordtoix[w] for w in in_text.split() if w in wordtoix]
         sequence = pad_sequences([sequence], maxlen=max_length)
@@ -44,7 +44,7 @@ def greedySearch(photo, model, wordtoix, ixtoword, max_length):
         yhat = np.argmax(yhat)
         word = ixtoword[yhat]
         in_text += ' ' + word
-        if word == 'endseq':
+        if word == general["STOP"]:
             break
     final = in_text.split()
     final = final[1:-1]
@@ -57,7 +57,9 @@ def prepare_for_evaluation(encoding_test, data, model):
     test_pics = list(encoding_test.keys())
     expected = {}
     results = {}
+    print("Preparing for evaluation")
     # calculation of metrics for test images dataset
+    index = 0
     for j in tqdm(range(0, len(test_pics))):
         image_id = test_pics[j]
         expected[image_id] = []
@@ -66,4 +68,8 @@ def prepare_for_evaluation(encoding_test, data, model):
             expected[image_id].append({"image_id": image_id, "caption": desc})
         generated = greedySearch(image, model, data.wordtoix, data.ixtoword, data.max_length)
         results[image_id] = [{"image_id": image_id, "caption": generated}]
+        if index % 100 == 0:
+            print("Processed:")
+            print(index)
+        index += 1
     return expected, results
