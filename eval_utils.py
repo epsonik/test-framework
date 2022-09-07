@@ -14,7 +14,13 @@ from config import general
 def calculate_results(expected, results, config):
     sys.path.append(general["coco-caption_path"])
     from pycocoevalcap.eval_any import COCOEvalCap
+    print("Exp")
+    print(expected)
+    print("res")
+    print(results)
     cocoEval = COCOEvalCap(expected, results)
+    print("cocoEval")
+    print(cocoEval.params)
     out = {}
     for metric, score in cocoEval.eval.items():
         out[metric] = score
