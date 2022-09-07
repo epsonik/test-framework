@@ -271,26 +271,35 @@ def load_dataset(configuration):
         # Datasets Flickr30k, COCO2017, COCO2014 have the same strucutre of files with captions and split informations.
         if dataset_configuration["data_name"] in ["flickr30k", "coco17", "coco14"]:
             # Load train images and test images and assign them to specific splits
+            print("Loading images splits")
             train_images_mapping_original, test_images_mapping_original = load_images_coco(dataset_configuration)
+            print("Images splits loaded")
             # Load all captions from dataset, that is COCO type
+            print("Loading all captions")
             all_captions = load_all_captions_coco(dataset_configuration["captions_file_path"])
+            print("All captions loaded")
         # Datasets Flickr30k, Flickr8k_polish, AIDe, Flickr8k  have the same strucutre of files with captions and split informations.
         if dataset_configuration["data_name"] in ["flickr30k_polish", "flickr8k_polish", "aide", "flickr8k"]:
             # Load train images and test images and assign them to specific splits
+            print("Loading images splits")
             train_images_mapping_original, test_images_mapping_original = load_images_flickr(
                 dataset_configuration["images_dir"], dataset_configuration[
                     "train_images_names_file_path"],
                 dataset_configuration[
                     "test_images_names_file_path"])
+            print("Images splits loaded")
             # Load all captions from dataset, that is Flickr8k type
+            print("Loading all captions")
             all_captions = load_all_captions_flickr(dataset_configuration["captions_file_path"])
-
+            print("All captions loaded")
         # Assign captions to specific splits
+        print("Loading captions splits")
         train_captions_mapping_original, test_captions_mapping_original = split_captions(all_captions,
                                                                                          list(
                                                                                              train_images_mapping_original.keys()),
                                                                                          list(
                                                                                              test_images_mapping_original.keys()))
+        print("Captions splits loaded")
         return {
             "train": {
                 "train_images_mapping_original": train_images_mapping_original,
@@ -303,8 +312,9 @@ def load_dataset(configuration):
             "all_captions": all_captions,
             "language": dataset_configuration['language']
         }
-
+    print("Loading train dataset")
     train = get_data_for_split("train")
+    print("Loading test dataset")
     test = get_data_for_split("test")
     language = train['language']
     return train, test, language
@@ -312,6 +322,6 @@ def load_dataset(configuration):
 
 class DataLoader:
     def __init__(self, configuration):
-
+        print("Loading dataset")
         self.train, self.test, self.language = load_dataset(configuration)
         self.configuration = configuration
