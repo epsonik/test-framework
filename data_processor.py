@@ -282,7 +282,8 @@ def create_dir_structure(configuration):
         os.makedirs("./" + configuration["data_name"] + "/" + configuration["pickles_dir"])
     if not os.path.isdir("./" + configuration["data_name"] + "/" + configuration["model_save_dir"]):
         os.makedirs("./" + configuration["data_name"] + "/" + configuration["model_save_dir"])
-
+    if not os.path.isdir(general["results_directory"]):
+        os.makedirs(general["results_directory"])
 
 def preprocess_data(data):
     create_dir_structure(data.configuration)

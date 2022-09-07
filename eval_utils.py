@@ -14,25 +14,20 @@ from config import general
 def calculate_results(expected, results, config):
     sys.path.append(general["coco-caption_path"])
     from pycocoevalcap.eval_any import COCOEvalCap
-    print("Exp")
-    print(expected)
-    print("res")
-    print(results)
     cocoEval = COCOEvalCap(expected, results)
-    print("cocoEval")
-    print(cocoEval.params)
+    cocoEval.evaluate()
     out = {}
     for metric, score in cocoEval.eval.items():
         out[metric] = score
+    print(out)
     print("Calculating final results")
     imgToEval = cocoEval.imgToEval
     for p in results:
+        print(imgToEval)
         image_id, caption = p, results[p][0]['caption']
         imgToEval[image_id]['caption'] = caption
         imgToEval[image_id]['ground_truth_captions'] = [x['caption'] for x in expected[p]]
 
-    if not os.path.isdir("./" + general["results_directory"]):
-        os.makedirs("./" + general["results_directory"])
     cache_path = os.path.join(general["results_directory"], config["data_name"] + '.json')
     print("Results saved to ")
     print(cache_path)
