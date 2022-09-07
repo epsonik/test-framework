@@ -20,6 +20,22 @@ config_mixed_flickr8k_flickr8k_n = {
     "test": {"dataset_name": "flickr8k", "subset_name": "test"},
     "encode_images": False,
     "save_ix_to_word": False,
+    "train_model": False,
+    "save_model": False,
+    "ixtoword_path": "ixtoword.pkl",
+    "wordtoix_path": "wordtoix.pkl",
+    "pickles_dir": "/Pickle",
+    "encoded_images_test_path": "/encoded_test_images.pkl",
+    "encoded_images_train_path": "/encoded_train_images.pkl",
+    "model_save_dir": "/model_weights",
+    "model_save_path": "/model_Base_3_Batch_Komninos.h5",
+    "data_name": "mixed_flickr8k_8k_n",
+}
+config_mixed_aide_n = {
+    "train": {"dataset_name": "aide", "subset_name": "aide"},
+    "test": {"dataset_name": "aide", "subset_name": "aide"},
+    "encode_images": True,
+    "save_ix_to_word": True,
     "train_model": True,
     "save_model": True,
     "ixtoword_path": "ixtoword.pkl",
@@ -29,7 +45,7 @@ config_mixed_flickr8k_flickr8k_n = {
     "encoded_images_train_path": "/encoded_train_images.pkl",
     "model_save_dir": "/model_weights",
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
-    "data_name": "mixed_flickr8k_8k_n",
+    "data_name": "mixed_aide_n",
 }
 config_mixed_flickr8k_flickr8k = {
     "train": {"dataset_name": "flickr8 k", "subset_name": "test"},
