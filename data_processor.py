@@ -21,10 +21,26 @@ def isfloat(value):
 
 
 def get_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_dim):
-    # Load Glove vectors
-
-    embeddings_index = {}  # empty dictionary
-
+    """
+    Method to represent words from created vocabulary(non repeatable words from all captions in dataset) in the
+     multi dimensional vector representation
+    Parameters
+    ----------
+    vocab_size: int
+        Number of individual words
+    wordtoix:
+        Dictionary of individual words in vocabulary with explicit indexes
+    word_embedings_path
+        Path to te file with embeddings
+    embedings_dim: int
+        Number of dimensions in the embeddings file.
+    Returns
+    -------
+    embedding_matrix: 2d array
+        Matrix, where each row represents coefficients of giwen word from vocabulry to other words.
+    """
+    embeddings_index = {}
+    # From the embeddings matrix get coefficients of particular words and store the in dictionarym by key - words
     f = open(word_embedings_path, encoding="utf-8")
     for line in f:
         values = line.split()
@@ -43,7 +59,7 @@ def get_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_di
         embeddings_index[word] = coefs
     f.close()
     print('Found %s word vectors.' % len(embeddings_index))
-    # Get 200-dim dense vector for each of the 10000 words in out vocabulary
+    # Get 200-dim/100 dense vector for each of the 10000 words in out vocabulary
     embedding_matrix = np.zeros((vocab_size, embedings_dim))
     for word, i in wordtoix.items():
         # if i < max_words:
@@ -52,10 +68,19 @@ def get_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_di
             # Words not found in the embedding index will be all zeros
             # 1655,299 199
             embedding_matrix[i] = embedding_vector
-    return embedding_matrix, embedding_vector
+    return embedding_matrix
 
 
 def define_images_feature_model():
+    """
+    Method to define model to encode images.
+    Parameters
+    ----------
+    Returns
+    -------
+    model_new
+        model to encode image
+    """
     # Load the inception v3 model
     model = InceptionV3(weights='imagenet')
     # Create a new model, by removing the last layer (output layer) from the inception v3
@@ -64,7 +89,8 @@ def define_images_feature_model():
 
 
 def clean_descriptions(captions_mapping):
-    """Method to:
+    """
+    Method to:
     *lower all letters
     *remove punctuation
     *remove tokens with numbers
@@ -93,7 +119,8 @@ def clean_descriptions(captions_mapping):
 
 
 def wrap_captions_in_start_stop(training_captions):
-    """Method to wrap captions into START and STOP tokens
+    """
+    Method to wrap captions into START and STOP tokens
     Parameters
     ----------
     training_captions : dict
@@ -118,6 +145,20 @@ def wrap_captions_in_start_stop(training_captions):
 
 
 def preprocess(image_path):
+    """
+    Method to preprocess images by:
+    *resizing to be acceptable by model that encodes images
+    *represent in 3D matrix
+    Parameters
+    ----------
+    training_captions : dict
+        Dictionary with keys - image_id and values-list od ground truth captions
+
+    Returns
+    -------
+    train_captions_preprocessed: dict-
+            Dictionary with wrapped into START and STOP tokens captions.
+    """
     # Convert all the images to size 299x299 as expected by the inception v3 model
     img = image.load_img(image_path, target_size=(299, 299))
     # Convert PIL image to numpy array of 3-dimensions
@@ -129,15 +170,44 @@ def preprocess(image_path):
     return x
 
 
-# Function to encode a given image into a vector of size (2048, )
 def encode(image_path, images_feature_model):
-    image = preprocess(image_path)  # preprocess the image
+    """
+    Function to encode a given image into a vector of size (2048, )
+    Parameters
+    ----------
+    image_path: str
+        Path to the image
+    images_feature_model:
+        Model to predict image feature
+    Returns
+    -------
+    fea_vec:
+        Vector that reoresents the image
+    """
+    image = preprocess(image_path)  # resize the image and represent it in numpy 3D array
     fea_vec = images_feature_model.predict(image)  # Get the encoding vector for the image
     fea_vec = np.reshape(fea_vec, fea_vec.shape[1])  # reshape from (1, 2048) to (2048, )
     return fea_vec
 
 
 def preprocess_images(train_images, test_images, configuration):
+    """
+    Method to preprocess all iamges and store it in unified dict structure.
+    Parameters
+    ----------
+    train_images: dict
+        Dictionary with keys - image-id's values - global paths to the images
+    test_images: dict
+        Dictionary with keys - image-id's values - global paths to the images
+    configuration
+        Input file with all configurations
+    Returns
+    -------
+    encoded_images_train: dict
+        Dctionary with keys - image_id's and values - images encoded as vectors for images from train set
+    encoded_images_test: dict
+        Dctionary with keys - image_id's and values - images encoded as vectors for images from test set
+    """
     # Call the funtion to encode all the train images
     # This will take a while on CPU - Execute this only once
     images_feature_model = define_images_feature_model()
@@ -190,10 +260,11 @@ def preprocess_images(train_images, test_images, configuration):
 
 
 def get_all_train_captions_list(train_captions):
-    """Method to create a list of all the training captions.
+    """
+    Method to create a 1D list of all the flattened training captions
     Parameters
     ----------
-    captions_mapping : dict
+    train_captions : dict
         Dictionary with keys - image_id and values-list of ground truth captions from training set.
 
     Returns
@@ -205,20 +276,32 @@ def get_all_train_captions_list(train_captions):
 
 
 def get_max_length(captions):
-    """Calculate the length of the description with the most words.
+    """
+    Calculate the length of the description with the most words.
     Parameters
     ----------
-    captions_mapping : dict
-        Dictionary with keys - image_id and values-list of ground truth captions from training set.
+    captions : dict
+        List of all captions from set
 
     Returns
     -------
-    all_train_captions_flattened
+        Number of the words in longest captions
     """
     return max(len(d.split()) for d in captions)
 
 
 def count_words_and_threshold(all_train_captions):
+    """
+    Count the occurences of words. Return only ones above threshold.
+    Parameters
+    ----------
+    all_train_captions: dict
+        Dictionary with keys - image_id and values-list of ground truth captions from training set.
+    Returns
+    -------
+    vocab
+        List of non repeatable words.
+    """
     word_counts = {}
     nsents = 0
     for sent in all_train_captions:
@@ -232,6 +315,21 @@ def count_words_and_threshold(all_train_captions):
 
 
 def ixtowordandbackward(vocab, configuration):
+    """
+    Method to get a dictionary of words, where keys are words and values are indexes and
+    revert this opperations. Dictionary to get word by indexes
+    Parameters
+    ----------
+    vocab: list
+        List of non repeatable words
+    configuration
+    Returns
+    -------
+    ixtoword
+        Dictionary to get word by index
+    wordtoix
+        Dictionary of words, where keys are words and values are indexes
+    """
     word_indexing_path = "./" + configuration["data_name"] + configuration["pickles_dir"]
     if configuration["save_ix_to_word"]:
         ixtoword = {}
@@ -242,13 +340,9 @@ def ixtowordandbackward(vocab, configuration):
             ixtoword[ix] = w
             ix += 1
 
-        with open(
-                word_indexing_path + "/" + configuration["ixtoword_path"],
-                "wb") as encoded_pickle:
+        with open(word_indexing_path + "/" + configuration["ixtoword_path"], "wb") as encoded_pickle:
             pickle.dump(ixtoword, encoded_pickle)
-        with open(
-                word_indexing_path + "/" + configuration["wordtoix_path"],
-                "wb") as encoded_pickle:
+        with open(word_indexing_path + "/" + configuration["wordtoix_path"], "wb") as encoded_pickle:
             pickle.dump(wordtoix, encoded_pickle)
         return ixtoword, wordtoix
 
@@ -260,6 +354,27 @@ def ixtowordandbackward(vocab, configuration):
 
 
 def define_learning_data(data):
+    """
+    Return the data tha t wil be used in training testing stages
+    Parameters
+    ----------
+    data
+        Datasets that are loaded for the training and testing stage.
+        From the splits the direct data for training and testing will be excluded.
+    Returns
+    -------
+    train_images_mapping: dict
+        Paths to the images used for training.
+    train_captions_mapping:dict
+        Captions for training  identified by image_id
+    test_images_mapping:dict
+        Path to the images used for testing.
+    test_captions_mapping:dict
+        Captions for testing identified by image_id
+    data.train["all_captions"]:dict
+        All captions from a dataset used for training
+    """
+
     def get_split(split, subset_data):
         if data.configuration[split]['subset_name'] == 'train':
             return subset_data["train"]['train_images_mapping_original'], \
@@ -276,6 +391,20 @@ def define_learning_data(data):
 
 
 def create_dir_structure(configuration):
+    """
+    Create directiories to store results of specific steps from processing data during learning process:
+    *data_name name of the configurations
+    *pickles_dir - directory to store encoded train and test images and dictionaries of words
+    *model_save_dir - store weights of trained model and exact model
+    *results_directory - directory that cointains files with the results of testing on test data
+                         defined in configurations file.
+    Parameters
+    ----------
+    configurations
+        File that represents the configiation data specicif for the run
+    Returns
+    -------
+    """
     if not os.path.isdir("./" + configuration["data_name"]):
         os.makedirs("./" + configuration["data_name"])
     if not os.path.isdir("./" + configuration["data_name"] + "/" + configuration["pickles_dir"]):
@@ -284,6 +413,7 @@ def create_dir_structure(configuration):
         os.makedirs("./" + configuration["data_name"] + "/" + configuration["model_save_dir"])
     if not os.path.isdir(general["results_directory"]):
         os.makedirs(general["results_directory"])
+
 
 def preprocess_data(data):
     create_dir_structure(data.configuration)
@@ -315,7 +445,7 @@ def preprocess_data(data):
     data.vocab_size = len(data.ixtoword) + 1  # one for appended 0's
     print("Vocab size: ", data.vocab_size)
 
-    data.embedding_matrix, data.embedding_vector = get_embedding_matrix(data.vocab_size, data.wordtoix,
-                                                                        general[data.language]["word_embedings_path"],
-                                                                        general[data.language]["embedings_dim"])
+    data.embedding_matrix = get_embedding_matrix(data.vocab_size, data.wordtoix,
+                                                 general[data.language]["word_embedings_path"],
+                                                 general[data.language]["embedings_dim"])
     return data
