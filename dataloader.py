@@ -274,13 +274,13 @@ def load_dataset(configuration):
             print("Loading images splits")
             train_images_mapping_original, test_images_mapping_original = load_images_coco(dataset_configuration)
             print("Images splits loaded")
-            print("Number of train images {}", len(train_images_mapping_original))
-            print("Number of test images {}", len(test_images_mapping_original))
+            print("Number of train images: ", len(train_images_mapping_original))
+            print("Number of test images: ", len(test_images_mapping_original))
             # Load all captions from dataset, that is COCO type
             print("Loading all captions")
             all_captions = load_all_captions_coco(dataset_configuration["captions_file_path"])
             print("All captions loaded")
-            print("Nuber of all captions {}", len(all_captions))
+            print("Nuber of all captions: ", len(all_captions))
         # Datasets Flickr30k, Flickr8k_polish, AIDe, Flickr8k  have the same strucutre of files with captions and split informations.
         if dataset_configuration["data_name"] in ["flickr30k_polish", "flickr8k_polish", "aide", "flickr8k"]:
             # Load train images and test images and assign them to specific splits
@@ -291,13 +291,13 @@ def load_dataset(configuration):
                 dataset_configuration[
                     "test_images_names_file_path"])
             print("Images splits loaded")
-            print("Number of train images{ }", len(train_images_mapping_original))
-            print("Number of test images {}", len(test_images_mapping_original))
+            print("Number of train images: ", len(train_images_mapping_original))
+            print("Number of test images: ", len(test_images_mapping_original))
             # Load all captions from dataset, that is Flickr8k type
             print("Loading all captions")
             all_captions = load_all_captions_flickr(dataset_configuration["captions_file_path"])
             print("All captions loaded")
-            print("Nuber of all captions {}", len(all_captions))
+            print("Nuber of all captions: ", len(all_captions))
         # Assign captions to specific splits
         print("Loading captions splits")
         train_captions_mapping_original, test_captions_mapping_original = split_captions(all_captions,
@@ -306,8 +306,8 @@ def load_dataset(configuration):
                                                                                          list(
                                                                                              test_images_mapping_original.keys()))
         print("Captions splits loaded")
-        print("Number of train captions {}", len(train_captions_mapping_original))
-        print("Number of test test {}", len(test_captions_mapping_original))
+        print("Number of train captions: ", len(train_captions_mapping_original))
+        print("Number of test test: ", len(test_captions_mapping_original))
         return {
             "train": {
                 "train_images_mapping_original": train_images_mapping_original,
