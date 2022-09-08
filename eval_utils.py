@@ -32,7 +32,7 @@ def calculate_results(expected, results, config):
     print("Results saved to ")
     print(cache_path)
     with open(cache_path, 'w') as outfile:
-        json.dump({'overall': out, 'imgToEval': imgToEval}, outfile)
+        json.dump({'overall': out, 'dataset_name': config["test"]["dataset_name"], 'imgToEval': imgToEval}, outfile)
     return out
 
 
@@ -74,3 +74,20 @@ def prepare_for_evaluation(encoding_test, data, model):
             print(index)
         index += 1
     return expected, results
+
+
+def generate_report(results_path):
+
+    import csv
+    header = ["config_name", "Bleu_1", "Bleu_2", "Bleu_3", "Bleu_4", "METEOR", "ROUGE_L", "CIDEr", "SPICE", "WMD"]
+    print(f'\n Final results saved to final_results.csv')
+    overall = []
+    for x in os.listdir(results_path):
+        if x.endswith(".json"):
+            results_for_report = json.load(open("./" + results_path + "/" + x, 'r'))
+            results_for_report["overall"]["config_name"] = x.split(".")[0]
+            overall.append(results_for_report["overall"])
+    with open("./" + results_path + "/final_results.csv", 'w') as f:
+        writer = csv.DictWriter(f, fieldnames=header)
+        writer.writeheader()
+        writer.writerows(overall)

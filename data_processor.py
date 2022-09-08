@@ -292,7 +292,12 @@ def preprocess_data(data):
     test_images_mapping, \
     data.test_captions_mapping, \
     all_captions = define_learning_data(data)
+    print("Number of train images {}", len(train_images_mapping))
+    print("Number of test images {}", len(test_images_mapping))
+    print("Number of train captions {}", len(train_captions_mapping))
+    print("Number of test captions {}", len(data.test_captions_mapping))
     clean_descriptions(train_captions_mapping)
+
     print("Descriptions cleaned.")
     print(train_captions_mapping[list(train_images_mapping.keys())[0]])
     data.train_captions_wrapped = wrap_captions_in_start_stop(train_captions_mapping)
