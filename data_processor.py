@@ -212,51 +212,40 @@ def preprocess_images(train_images, test_images, configuration):
     # This will take a while on CPU - Execute this only once
     images_feature_model = define_images_feature_model()
     word_indexing_path = "./" + configuration["data_name"] + configuration["pickles_dir"]
-    if configuration["encode_images"]:
-        start = time()
-        encoding_test = {}
-        index = 1
-        for image_id, image_path in test_images.items():
-            encoding_test[image_id] = encode(image_path, images_feature_model)
-            if index % 100 == 0:
-                print("Processed:")
-                print(index)
-            index += 1
-        print("Test images encoded")
-        print("Time taken in seconds =", time() - start)
 
-        # Save the bottleneck train features to disk
-        with open(word_indexing_path + configuration["encoded_images_test_path"], 'w+b') as encoded_pickle:
-            pickle.dump(encoding_test, encoded_pickle)
-        print("Encoded test images saved under ")
-        print(word_indexing_path + configuration["encoded_images_test_path"])
-        start = time()
-        encoding_train = {}
-        index = 1
-        for image_id, image_path in train_images.items():
-            encoding_train[image_id] = encode(image_path, images_feature_model)
-            if index % 100 == 0:
-                print("Processed:")
-                print(index)
-            index += 1
-        # Save the bottleneck train features to disk
-        with open(word_indexing_path + configuration["encoded_images_train_path"], 'w+b') as encoded_pickle:
-            pickle.dump(encoding_train, encoded_pickle)
-        print("Train images encoded")
-        print("Time taken in seconds =", time() - start)
-        print("Encoded train images saved under ")
+    def iterate_over_images(images_set, save_path):
+        if configuration["encode_images"]:
+            start = time()
+            encoding_set = {}
+            index = 1
+            for image_id, image_path in images_set.items():
+                encoding_set[image_id] = encode(image_path, images_feature_model)
+                if index % 100 == 0:
+                    print("Processed:")
+                    print(index)
+                index += 1
+            # Save the bottleneck train features to disk
+            with open(word_indexing_path + save_path, 'w+b') as encoded_pickle:
+                pickle.dump(encoding_set, encoded_pickle)
+            print("Encoded images saved under ")
+            print(word_indexing_path + configuration["encoded_images_test_path"])
+            print("Images encoded")
+            print("Time taken in seconds =", time() - start)
+        encoding_set = load_encoded(save_path)
+        return encoding_set
+
+    def load_encoded(load_path):
+        with open(word_indexing_path + load_path, "rb") as encoded_pickle:
+            encoded_images_set = pickle.load(encoded_pickle)
+        print("Encoded images loaded from: ")
         print(word_indexing_path + configuration["encoded_images_train_path"])
-        return encoding_train, encoding_test
+        return encoded_images_set
 
-    with open(word_indexing_path + configuration["encoded_images_train_path"], "rb") as encoded_pickle:
-        encoded_images_train = pickle.load(encoded_pickle)
-    print("Encoded train images loaded from: ")
-    print(word_indexing_path + configuration["encoded_images_train_path"])
-    with open(word_indexing_path + configuration["encoded_images_test_path"], "rb") as encoded_pickle:
-        encoded_images_test = pickle.load(encoded_pickle)
-    print("Encoded train images loaded from:  ")
-    print(word_indexing_path + configuration["encoded_images_test_path"])
-    return encoded_images_train, encoded_images_test
+    encoding_test = iterate_over_images(test_images, configuration["encoded_images_test_path"])
+
+    encoding_train = iterate_over_images(train_images, configuration["encoded_images_train_path"])
+
+    return encoding_train, encoding_test
 
 
 def get_all_train_captions_list(train_captions):
@@ -269,11 +258,9 @@ def get_all_train_captions_list(train_captions):
 
     Returns
     -------
-    all_train_captions_flattened
+    Flattened list of captions
     """
-    all_train_captions_flattened = list(itertools.chain(*train_captions.values()))
-    return all_train_captions_flattened
-
+    return list(itertools.chain(*train_captions.values()))
 
 def get_max_length(captions):
     """

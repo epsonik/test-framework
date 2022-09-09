@@ -266,7 +266,7 @@ def load_dataset(configuration):
     def get_data_for_split(split_name):
         # Load dataset configuration, by the name of the dataset assigned for training/testing
         dataset_configuration = get_dataset_configuration(configuration[split_name]["dataset_name"])
-        # Therefore Flickr and COCO have different file an Fd data structures, to show captions and split of data
+        # Therefore Flickr and COCO have different file and data structures, to show captions and split of data
         # different methods for loading captions and images are used.
         # Datasets Flickr30k, COCO2017, COCO2014 have the same strucutre of files with captions and split informations.
         if dataset_configuration["data_name"] in ["flickr30k", "coco17", "coco14"]:
