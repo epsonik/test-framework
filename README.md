@@ -143,4 +143,5 @@ Supported configurations(Datasets) :
 | config_flickr8k_polish | Flickr8k in Polish|
 | config_flickr30k_polish | Flickr30k in Polish|
 
-
+#SPACY-PL
+https://github.com/ipipan/spacy-pl

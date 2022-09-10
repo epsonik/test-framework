@@ -21,7 +21,7 @@ config_flickr8k_polish = {
     "train_images_names_file_path": data_path + "images/flickr8k_polish/Flickr8k_polish_text/Flickr_8k_polish.trainImages.txt",
     "test_images_names_file_path": data_path + "images/flickr8k_polish/Flickr8k_polish_text/Flickr_8k_polish.testImages.txt",
     "captions_file_path": data_path + "images/flickr8k_polish/Flickr8k_polish_text/Flickr_8k_polish.token.txt",
-    "data_name": "flickr30k_polish",
+    "data_name": "flickr8k_polish",
     "language": "pl"
 }
 config_flickr30k_polish = {
