@@ -10,6 +10,7 @@ from keras.preprocessing import image
 from keras.models import Model
 from keras.applications.inception_v3 import preprocess_input
 import itertools
+import spacy
 
 
 def isfloat(value):
@@ -88,7 +89,7 @@ def define_images_feature_model():
     return model_new
 
 
-def clean_descriptions(captions_mapping):
+def clean_descriptions(captions_mapping, language):
     """
     Method to:
     *lower all letters
@@ -103,14 +104,23 @@ def clean_descriptions(captions_mapping):
     -------
     cleaned_descriptions_mapping: dict
     """
+    #Load spacy model for polish if dataset is in polish
+    if language == "pl":
+        import spacy
+        nlp = spacy.load('pl_spacy_model')
     table = str.maketrans('', '', string.punctuation)
     for key, desc_list in captions_mapping.items():
         for i in range(len(desc_list)):
             desc = desc_list[i]
+            if language == "pl":
+                doc = nlp(desc)
             # tokenize
             desc = desc.split()
             # convert to lower case
             desc = [word.lower() for word in desc]
+            # Lematyzacja0
+            if language == "pl":
+                desc = [word.lemma_ for word in doc]
             # remove punctuation from each token
             desc = [w.translate(table) for w in desc]
             # remove tokens with numbers in them
@@ -261,6 +271,7 @@ def get_all_train_captions_list(train_captions):
     Flattened list of captions
     """
     return list(itertools.chain(*train_captions.values()))
+
 
 def get_max_length(captions):
     """
@@ -413,7 +424,7 @@ def preprocess_data(data):
     print("Number of test images: ", len(test_images_mapping))
     print("Number of train captions: ", len(train_captions_mapping))
     print("Number of test captions: ", len(data.test_captions_mapping))
-    clean_descriptions(train_captions_mapping)
+    clean_descriptions(train_captions_mapping, data.language)
 
     print("Descriptions cleaned.")
     print(train_captions_mapping[list(train_images_mapping.keys())[0]])
