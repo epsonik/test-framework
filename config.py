@@ -1,9 +1,9 @@
 #### Config
 data_path = "/Users/mateuszb/PycharmProjects/test-framework/"
 general = {
-    "PL": {
+    "pl": {
         "word_embedings_path": data_path + "images/glovePL/glove_100_3_polish.txt",
-        "embedings_dim": 299
+        "embedings_dim": 99
     },
     "eng": {
         "word_embedings_path": data_path + "images/glove/glove.6B.200d.txt",
@@ -19,8 +19,8 @@ general = {
 config_mixed_flickr8k_flickr8k_polish = {
     "train": {"dataset_name": "flickr8k_polish", "subset_name": "train"},
     "test": {"dataset_name": "flickr8k_polish", "subset_name": "test"},
-    "encode_images": True,
-    "save_ix_to_word": True,
+    "encode_images": False,
+    "save_ix_to_word": False,
     "train_model": True,
     "save_model": True,
     "ixtoword_path": "ixtoword.pkl",
