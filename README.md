@@ -30,8 +30,12 @@ ssh wisla@10.44.27.164
 (password)
 ```
 ```
-
+After log
 ```
+```
+jupyter notebook --no-browser --port=54321
+```
+
 ## Configuration file
 File In `config.py`  is a configuration file that allows to automatically load data for testing framework.
 
