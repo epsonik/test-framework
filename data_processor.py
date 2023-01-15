@@ -105,22 +105,22 @@ def clean_descriptions(captions_mapping, language):
     cleaned_descriptions_mapping: dict
     """
     #Load spacy model for polish if dataset is in polish
-    if language == "pl":
-        import spacy
-        nlp = spacy.load('pl_spacy_model')
+#     if language == "pl":
+#         import spacy
+#         nlp = spacy.load('pl_spacy_model')
     table = str.maketrans('', '', string.punctuation)
     for key, desc_list in captions_mapping.items():
         for i in range(len(desc_list)):
             desc = desc_list[i]
-            if language == "pl":
-                doc = nlp(desc)
+#             if language == "pl":
+#                 doc = nlp(desc)
             # tokenize
             desc = desc.split()
             # convert to lower case
             desc = [word.lower() for word in desc]
             # Lematyzacja0
-            if language == "pl":
-                desc = [word.lemma_ for word in doc]
+#             if language == "pl":
+#                 desc = [word.lemma_ for word in doc]
             # remove punctuation from each token
             desc = [w.translate(table) for w in desc]
             # remove tokens with numbers in them

@@ -1,5 +1,5 @@
 #### Config
-data_path = "/Users/mateuszb/PycharmProjects/test-framework/"
+data_path = "/home2/data/"
 general = {
     "pl": {
         "word_embedings_path": data_path + "images/glovePL/glove_100_3_polish.txt",
@@ -35,10 +35,10 @@ config_mixed_flickr8k_flickr8k_polish = {
 config_mixed_flickr8k_flickr8k_n = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
     "test": {"dataset_name": "flickr8k", "subset_name": "test"},
-    "encode_images": True,
-    "save_ix_to_word": True,
-    "train_model": True,
-    "save_model": True,
+    "encode_images": False,
+    "save_ix_to_word": False,
+    "train_model": False,
+    "save_model": False,
     "ixtoword_path": "ixtoword.pkl",
     "wordtoix_path": "wordtoix.pkl",
     "pickles_dir": "/Pickle",
