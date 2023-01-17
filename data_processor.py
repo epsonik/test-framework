@@ -171,7 +171,7 @@ def wrap_captions_in_start_stop(training_captions):
     return train_captions_preprocessed
 
 
-def preprocess(image_path, preprocess_input):
+def preprocess(image_path, preprocess_input, images_processor):
     """
     Method to preprocess images by:
     *resizing to be acceptable by model that encodes images
@@ -187,7 +187,10 @@ def preprocess(image_path, preprocess_input):
             Dictionary with wrapped into START and STOP tokens captions.
     """
     # Convert all the images to size 299x299 as expected by the inception v3 model, xception
-    img = image.load_img(image_path, target_size=(224, 224))
+    target_size = (299, 299)
+    if images_processor == 'vgg16':
+        target_size = (224, 224)
+    img = image.load_img(image_path, target_size)
     # Convert PIL image to numpy array of 3-dimensions
     x = image.img_to_array(img)
     # Add one more dimension
@@ -197,7 +200,7 @@ def preprocess(image_path, preprocess_input):
     return x
 
 
-def encode(image_path, preprocess_input, images_feature_model):
+def encode(image_path, preprocess_input, images_feature_model, images_processor):
     """
     Function to encode a given image into a vector of size (2048, )
     Parameters
@@ -211,7 +214,8 @@ def encode(image_path, preprocess_input, images_feature_model):
     fea_vec:
         Vector that reoresents the image
     """
-    image = preprocess(image_path, preprocess_input)  # resize the image and represent it in numpy 3D array
+    image = preprocess(image_path, preprocess_input,
+                       images_processor)  # resize the image and represent it in numpy 3D array
     fea_vec = images_feature_model.predict(image)  # Get the encoding vector for the image
     print(fea_vec.shape)
     fea_vec = np.reshape(fea_vec, fea_vec.shape[1])  # reshape from (1, 2048) to (2048, )
@@ -247,7 +251,8 @@ def preprocess_images(train_images, test_images, configuration):
             encoding_set = {}
             index = 1
             for image_id, image_path in images_set.items():
-                encoding_set[image_id] = encode(image_path, preprocess_input, images_feature_model)
+                encoding_set[image_id] = encode(image_path, preprocess_input, images_feature_model,
+                                                configuration["images_processor"])
                 if index % 100 == 0:
                     print("Processed:")
                     print(index)
