@@ -89,10 +89,14 @@ def define_images_feature_model(images_processor):
 
     if images_processor == "vgg16":
         model = VGG16(weights='imagenet')
+        print("Used: vgg16")
     if images_processor == "EfficientNetB7":
         model = EfficientNetB7(weights='imagenet')
+        print("Used: EfficientNetB7")
     if images_processor == "Xception":
         model = Xception(weights='imagenet')
+        print("Used: Xception")
+
 
     # Create a new model, by removing the last layer (output layer) from the inception v3
     model_new = Model(model.input, model.layers[-2].output)
