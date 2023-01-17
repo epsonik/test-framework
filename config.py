@@ -30,7 +30,7 @@ config_mixed_flickr8k_flickr8k_vgg16 = {
     "encoded_images_train_path": "/encoded_train_images.pkl",
     "model_save_dir": "/model_weights",
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
-```    "data_name": "mixed_flickr8k_flickr8k_vgg16",
+    "data_name": "mixed_flickr8k_flickr8k_vgg16",
     "images_processor": "vgg16",
     "text_processor": "glove"
 }
