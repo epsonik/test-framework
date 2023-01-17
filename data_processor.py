@@ -91,7 +91,7 @@ def define_images_feature_model(images_processor):
         model = VGG16(weights='imagenet')
         print("Used: vgg16")
     if images_processor == "EfficientNetB7":
-        model = EfficientNetB7(weights='imagenet')
+        model = EfficientNetB7(weights='imagenet', include_top=False)
         print("Used: EfficientNetB7")
     if images_processor == "Xception":
         model = Xception(weights='imagenet')
@@ -183,7 +183,7 @@ def preprocess(image_path):
     train_captions_preprocessed: dict-
             Dictionary with wrapped into START and STOP tokens captions.
     """
-    # Convert all the images to size 299x299 as expected by the inception v3 model
+    # Convert all the images to size 299x299 as expected by the inception v3 model, xception
     img = image.load_img(image_path, target_size=(299, 299))
     # Convert PIL image to numpy array of 3-dimensions
     x = image.img_to_array(img)
