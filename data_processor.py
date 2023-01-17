@@ -464,4 +464,5 @@ def preprocess_data(data):
     data.embedding_matrix = get_embedding_matrix(data.vocab_size, data.wordtoix,
                                                  general[data.language]["word_embedings_path"],
                                                  general[data.language]["embedings_dim"])
+    print(data.embedding_matrix.shape)
     return data
