@@ -85,15 +85,15 @@ def define_images_feature_model(images_processor):
     images_processor_name
         name of the image processor
     """
-    if images_processor == "vgg16":
+    if images_processor == 'vgg16':
         model_images_processor_name = VGG16(weights='imagenet', include_top=False)
         from keras.applications.inception_v3 import preprocess_input
         print("Used: vgg16")
-    if images_processor == "EfficientNetB7":
+    elif images_processor == 'EfficientNetB7':
         model_images_processor_name = EfficientNetB7(weights='imagenet', include_top=False)
         from keras.applications.efficientnet import preprocess_input
         print("Used: EfficientNetB7")
-    if images_processor == "Xception":
+    elif images_processor == 'Xception':
         model_images_processor_name = Xception(weights='imagenet')
         from keras.applications.xception import preprocess_input
         print("Used: Xception")
@@ -213,7 +213,6 @@ def encode(image_path, preprocess_input, images_feature_model):
     """
     image = preprocess(image_path, preprocess_input)  # resize the image and represent it in numpy 3D array
     fea_vec = images_feature_model.predict(image)  # Get the encoding vector for the image
-    print(fea_vec.shape)
     fea_vec = np.reshape(fea_vec, fea_vec.shape[1])  # reshape from (1, 2048) to (2048, )
     return fea_vec
 
