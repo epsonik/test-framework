@@ -31,7 +31,7 @@ config_mixed_flickr8k_flickr8k_vgg16 = {
     "model_save_dir": "/model_weights",
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_8k_n",
-    "image_processor": "vgg16",
+    "images_processor": "vgg16",
     "text_processor": "glove"
 }
 config_mixed_flickr8k_flickr8k_EfficientNetB7 = {
@@ -49,7 +49,7 @@ config_mixed_flickr8k_flickr8k_EfficientNetB7 = {
     "model_save_dir": "/model_weights",
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_8k_n",
-    "image_processor": "EfficientNetB7",
+    "images_processor": "EfficientNetB7",
     "text_processor": "glove"
 }
 config_mixed_flickr8k_flickr8k_Xception = {
@@ -67,7 +67,7 @@ config_mixed_flickr8k_flickr8k_Xception = {
     "model_save_dir": "/model_weights",
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_8k_n",
-    "image_processor": "Xception",
+    "images_processor": "Xception",
     "text_processor": "glove"
 }
 config_mixed_coco2014_coco2014 = {
