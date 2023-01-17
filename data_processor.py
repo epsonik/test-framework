@@ -87,7 +87,7 @@ def define_images_feature_model(images_processor):
     """
     if images_processor == 'vgg16':
         model_images_processor_name = VGG16(weights='imagenet', include_top=False, input_shape=(299, 299, 3))
-        from keras.applications.inception_v3 import preprocess_input
+        from keras.applications.vgg16 import preprocess_input
         print("Used: vgg16")
     elif images_processor == 'EfficientNetB7':
         model_images_processor_name = EfficientNetB7(weights='imagenet', include_top=False, input_shape=(299, 299, 3))
