@@ -213,6 +213,7 @@ def encode(image_path, preprocess_input, images_feature_model):
     """
     image = preprocess(image_path, preprocess_input)  # resize the image and represent it in numpy 3D array
     fea_vec = images_feature_model.predict(image)  # Get the encoding vector for the image
+    print(fea_vec.shape)
     fea_vec = np.reshape(fea_vec, fea_vec.shape[1])  # reshape from (1, 2048) to (2048, )
     return fea_vec
 
