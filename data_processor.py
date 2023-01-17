@@ -4,8 +4,10 @@ import numpy as np
 from config import general
 import os
 import string
-
 from keras.applications.inception_v3 import InceptionV3
+from keras.applications.efficientnet import EfficientNetB7
+from keras.applications.vgg16 import VGG16
+from keras.applications.xception import Xception
 from keras.preprocessing import image
 from keras.models import Model
 from keras.applications.inception_v3 import preprocess_input
@@ -72,7 +74,7 @@ def get_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_di
     return embedding_matrix
 
 
-def define_images_feature_model():
+def define_images_feature_model(images_processor):
     """
     Method to define model to encode images.
     Parameters
@@ -84,6 +86,14 @@ def define_images_feature_model():
     """
     # Load the inception v3 model
     model = InceptionV3(weights='imagenet')
+
+    if images_processor == "vgg16":
+        model = VGG16(weights='imagenet')
+    if images_processor == "EfficientNetB7":
+        model = EfficientNetB7(weights='imagenet')
+    if images_processor == "Xception":
+        model = Xception(weights='imagenet')
+
     # Create a new model, by removing the last layer (output layer) from the inception v3
     model_new = Model(model.input, model.layers[-2].output)
     return model_new
@@ -220,7 +230,7 @@ def preprocess_images(train_images, test_images, configuration):
     """
     # Call the funtion to encode all the train images
     # This will take a while on CPU - Execute this only once
-    images_feature_model = define_images_feature_model()
+    images_feature_model = define_images_feature_model(configuration["images_processor"])
     word_indexing_path = "./" + configuration["data_name"] + configuration["pickles_dir"]
 
     def iterate_over_images(images_set, save_path):
