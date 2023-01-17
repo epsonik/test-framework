@@ -88,7 +88,7 @@ def define_images_feature_model(images_processor):
     model = InceptionV3(weights='imagenet')
 
     if images_processor == "vgg16":
-        model = VGG16(weights='imagenet')
+        model = VGG16(weights='imagenet', include_top=False)
         print("Used: vgg16")
     if images_processor == "EfficientNetB7":
         model = EfficientNetB7(weights='imagenet', include_top=False)
