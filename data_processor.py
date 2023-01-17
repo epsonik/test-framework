@@ -10,7 +10,6 @@ from keras.applications.vgg16 import VGG16
 from keras.applications.xception import Xception
 from keras.preprocessing import image
 from keras.models import Model
-from keras.applications.inception_v3 import preprocess_input
 import itertools
 import spacy
 
@@ -83,24 +82,26 @@ def define_images_feature_model(images_processor):
     -------
     model_new
         model to encode image
+    images_processor_name
+        name of the image processor
     """
-    # Load the inception v3 model
-    model = InceptionV3(weights='imagenet')
 
     if images_processor == "vgg16":
-        model = VGG16(weights='imagenet', include_top=False)
+        model_images_processor_name = VGG16(weights='imagenet', include_top=False)
         print("Used: vgg16")
     if images_processor == "EfficientNetB7":
-        model = EfficientNetB7(weights='imagenet', include_top=False)
+        model_images_processor_name = EfficientNetB7(weights='imagenet', include_top=False)
         print("Used: EfficientNetB7")
     if images_processor == "Xception":
-        model = Xception(weights='imagenet')
+        model_images_processor_name = Xception(weights='imagenet')
         print("Used: Xception")
-
+    else:
+        model_images_processor_name = InceptionV3(weights='imagenet')
+        print("Used: InceptionV3")
 
     # Create a new model, by removing the last layer (output layer) from the inception v3
-    model_new = Model(model.input, model.layers[-2].output)
-    return model_new
+    model_new = Model(model_images_processor_name.input, model_images_processor_name.layers[-2].output)
+    return model_images_processor_name, model_new
 
 
 def clean_descriptions(captions_mapping, language):
@@ -168,7 +169,7 @@ def wrap_captions_in_start_stop(training_captions):
     return train_captions_preprocessed
 
 
-def preprocess(image_path):
+def preprocess(image_path, model_images_processor_name):
     """
     Method to preprocess images by:
     *resizing to be acceptable by model that encodes images
@@ -190,11 +191,11 @@ def preprocess(image_path):
     # Add one more dimension
     x = np.expand_dims(x, axis=0)
     # preprocess the images using preprocess_input() from inception module
-    x = preprocess_input(x)
+    x = model_images_processor_name.preprocess_input(x)
     return x
 
 
-def encode(image_path, images_feature_model):
+def encode(image_path, model_images_processor_name, images_feature_model):
     """
     Function to encode a given image into a vector of size (2048, )
     Parameters
@@ -208,8 +209,9 @@ def encode(image_path, images_feature_model):
     fea_vec:
         Vector that reoresents the image
     """
-    image = preprocess(image_path)  # resize the image and represent it in numpy 3D array
+    image = preprocess(image_path, model_images_processor_name)  # resize the image and represent it in numpy 3D array
     fea_vec = images_feature_model.predict(image)  # Get the encoding vector for the image
+    print(fea_vec.shape)
     fea_vec = np.reshape(fea_vec, fea_vec.shape[1])  # reshape from (1, 2048) to (2048, )
     return fea_vec
 
@@ -234,7 +236,7 @@ def preprocess_images(train_images, test_images, configuration):
     """
     # Call the funtion to encode all the train images
     # This will take a while on CPU - Execute this only once
-    images_feature_model = define_images_feature_model(configuration["images_processor"])
+    model_images_processor_name, images_feature_model = define_images_feature_model(configuration["images_processor"])
     word_indexing_path = "./" + configuration["data_name"] + configuration["pickles_dir"]
 
     def iterate_over_images(images_set, save_path):
@@ -243,7 +245,7 @@ def preprocess_images(train_images, test_images, configuration):
             encoding_set = {}
             index = 1
             for image_id, image_path in images_set.items():
-                encoding_set[image_id] = encode(image_path, images_feature_model)
+                encoding_set[image_id] = encode(image_path, model_images_processor_name, images_feature_model)
                 if index % 100 == 0:
                     print("Processed:")
                     print(index)
