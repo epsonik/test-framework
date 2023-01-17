@@ -86,7 +86,7 @@ def define_images_feature_model(images_processor):
         name of the image processor
     """
     if images_processor == 'vgg16':
-        model_images_processor_name = VGG16(weights='imagenet', include_top=False, input_shape=(299, 299, 3))
+        model_images_processor_name = VGG16(weights='imagenet')
         from keras.applications.vgg16 import preprocess_input
         print("Used: vgg16")
     elif images_processor == 'EfficientNetB7':
@@ -187,7 +187,7 @@ def preprocess(image_path, preprocess_input):
             Dictionary with wrapped into START and STOP tokens captions.
     """
     # Convert all the images to size 299x299 as expected by the inception v3 model, xception
-    img = image.load_img(image_path, target_size=(299, 299))
+    img = image.load_img(image_path, target_size=(224, 224))
     # Convert PIL image to numpy array of 3-dimensions
     x = image.img_to_array(img)
     # Add one more dimension
