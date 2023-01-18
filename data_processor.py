@@ -5,7 +5,7 @@ from config import general
 import os
 import string
 from keras.applications.inception_v3 import InceptionV3
-from keras.applications.efficientnet import EfficientNetB7
+from keras.applications.nasnet import NASNetLarge
 from keras.applications.vgg16 import VGG16
 from keras.applications.xception import Xception
 from keras.preprocessing import image
@@ -89,9 +89,9 @@ def define_images_feature_model(images_processor):
         model_images_processor_name = VGG16(weights='imagenet')
         from keras.applications.vgg16 import preprocess_input
         print("Used: vgg16")
-    elif images_processor == 'EfficientNetB7':
-        model_images_processor_name = EfficientNetB7(weights='imagenet')
-        from keras.applications.efficientnet import preprocess_input
+    elif images_processor == 'NASNetLarge':
+        model_images_processor_name = NASNetLarge(weights='imagenet')
+        from keras.applications.nasnet import preprocess_input
         print("Used: EfficientNetB7")
     elif images_processor == 'Xception':
         model_images_processor_name = Xception(weights='imagenet')
@@ -190,6 +190,8 @@ def preprocess(image_path, preprocess_input, images_processor):
     target_size = (299, 299)
     if images_processor == 'vgg16':
         target_size = (224, 224)
+    if images_processor == 'NASNetLarge':
+        target_size = (331, 331)
     img = image.load_img(image_path, target_size)
     # Convert PIL image to numpy array of 3-dimensions
     x = image.img_to_array(img)
