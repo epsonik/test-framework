@@ -90,7 +90,7 @@ def define_images_feature_model(images_processor):
         from keras.applications.vgg16 import preprocess_input
         print("Used: vgg16")
     elif images_processor == 'EfficientNetB7':
-        model_images_processor_name = EfficientNetB7(weights='imagenet', include_top=False, input_shape=(299, 299, 3))
+        model_images_processor_name = EfficientNetB7(weights='imagenet')
         from keras.applications.efficientnet import preprocess_input
         print("Used: EfficientNetB7")
     elif images_processor == 'Xception':
