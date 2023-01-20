@@ -227,7 +227,7 @@ def preprocess_images(train_images, test_images, configuration):
     """
     # Call the funtion to encode all the train images
     # This will take a while on CPU - Execute this only once
-    preprocess_input_function, images_feature_model = define_images_feature_model()
+    preprocess_input_function, images_feature_model = define_images_feature_model(configuration["images_processor"])
     word_indexing_path = "./" + configuration["data_name"] + configuration["pickles_dir"]
 
     def iterate_over_images(images_set, save_path):
