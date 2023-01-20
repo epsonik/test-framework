@@ -89,9 +89,9 @@ def define_images_feature_model(images_processor):
         model_images_processor_name = VGG16(weights='imagenet')
         from keras.applications.vgg16 import preprocess_input
         print("Used: vgg16")
-    elif images_processor == 'NASNetLarge':
-        model_images_processor_name = NASNetLarge(weights='imagenet')
-        from keras.applications.nasnet import preprocess_input
+    elif images_processor == 'EfficientNetB7':
+        model_images_processor_name = EfficientNetB7(weights='imagenet', include_top=False, input_shape=(299, 299, 3))
+        from keras.applications.efficientnet import preprocess_input
         print("Used: EfficientNetB7")
     elif images_processor == 'Xception':
         model_images_processor_name = Xception(weights='imagenet')
@@ -190,8 +190,6 @@ def preprocess(image_path, preprocess_input, images_processor):
     target_size = (299, 299)
     if images_processor == 'vgg16':
         target_size = (224, 224)
-    if images_processor == 'NASNetLarge':
-        target_size = (331, 331)
     img = image.load_img(image_path, target_size)
     # Convert PIL image to numpy array of 3-dimensions
     x = image.img_to_array(img)
@@ -218,7 +216,6 @@ def encode(image_path, preprocess_input, images_feature_model, images_processor)
     """
     image = preprocess(image_path, preprocess_input,
                        images_processor)  # resize the image and represent it in numpy 3D array
-    print(image.shape)
     fea_vec = images_feature_model.predict(image)  # Get the encoding vector for the image
     print(fea_vec.shape)
     fea_vec = np.reshape(fea_vec, fea_vec.shape[1])  # reshape from (1, 2048) to (2048, )
