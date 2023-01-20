@@ -160,7 +160,7 @@ def wrap_captions_in_start_stop(training_captions):
     return train_captions_preprocessed
 
 
-def preprocess(image_path, preprocess_input_function):
+def preprocess(image_path, preprocess_input_function, images_processor):
     """
     Method to preprocess images by:
     *resizing to be acceptable by model that encodes images
@@ -177,17 +177,20 @@ def preprocess(image_path, preprocess_input_function):
     """
     # Convert all the images to size 299x299 as expected by the inception v3 model
     img = image.load_img(image_path, target_size=(299, 299))
+    if images_processor == "NASNetLarge":
+        img = image.load_img(image_path, target_size=(331, 331))
+    if images_processor == "vgg16":
+        img = image.load_img(image_path, target_size=(224, 224))
     # Convert PIL image to numpy array of 3-dimensions
     x = image.img_to_array(img)
     # Add one more dimension
     x = np.expand_dims(x, axis=0)
     # preprocess the images using preprocess_input() from inception module
     x = preprocess_input_function(x)
-    print(x.shape)
     return x
 
 
-def encode(image_path, images_feature_model, preprocess_input_function):
+def encode(image_path, images_feature_model, preprocess_input_function, images_processor):
     """
     Function to encode a given image into a vector of size (2048, )
     Parameters
@@ -201,7 +204,8 @@ def encode(image_path, images_feature_model, preprocess_input_function):
     fea_vec:
         Vector that reoresents the image
     """
-    image = preprocess(image_path, preprocess_input_function)  # resize the image and represent it in numpy 3D array
+    image = preprocess(image_path, preprocess_input_function,
+                       images_processor)  # resize the image and represent it in numpy 3D array
     fea_vec = images_feature_model.predict(image)  # Get the encoding vector for the image
     fea_vec = np.reshape(fea_vec, fea_vec.shape[1])  # reshape from (1, 2048) to (2048, )
     return fea_vec
@@ -236,7 +240,8 @@ def preprocess_images(train_images, test_images, configuration):
             encoding_set = {}
             index = 1
             for image_id, image_path in images_set.items():
-                encoding_set[image_id] = encode(image_path, images_feature_model, preprocess_input_function)
+                encoding_set[image_id] = encode(image_path, images_feature_model, preprocess_input_function,
+                                                configuration["images_processor"])
                 if index % 100 == 0:
                     print("Processed:")
                     print(index)
