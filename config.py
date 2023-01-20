@@ -19,8 +19,8 @@ general = {
 config_mixed_flickr8k_flickr8k_vgg16 = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
     "test": {"dataset_name": "flickr8k", "subset_name": "test"},
-    "encode_images": True,
-    "save_ix_to_word": True,
+    "encode_images": False,
+    "save_ix_to_word": False,
     "train_model": True,
     "save_model": True,
     "ixtoword_path": "ixtoword.pkl",
@@ -55,8 +55,8 @@ config_mixed_flickr8k_flickr8k_NASNetLarge = {
 config_mixed_flickr8k_flickr8k_Xception = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
     "test": {"dataset_name": "flickr8k", "subset_name": "test"},
-    "encode_images": True,
-    "save_ix_to_word": True,
+    "encode_images": False,
+    "save_ix_to_word": False,
     "train_model": True,
     "save_model": True,
     "ixtoword_path": "ixtoword.pkl",
@@ -73,8 +73,8 @@ config_mixed_flickr8k_flickr8k_Xception = {
 config_mixed_flickr8k_flickr8k_inception = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
     "test": {"dataset_name": "flickr8k", "subset_name": "test"},
-    "encode_images": True,
-    "save_ix_to_word": True,
+    "encode_images": False,
+    "save_ix_to_word": False,
     "train_model": True,
     "save_model": True,
     "ixtoword_path": "ixtoword.pkl",
