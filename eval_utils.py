@@ -53,9 +53,11 @@ def calculate_results(expected, results, config):
     evaluation_results_save_path = os.path.join(general["results_directory"], config["data_name"] + '.json')
     print("Results saved to ")
     print(evaluation_results_save_path)
-    #Path to save evaluation results
+    # Path to save evaluation results
     with open(evaluation_results_save_path, 'w') as outfile:
-        json.dump({'overall': calculated_metrics, 'dataset_name': config["test"]["dataset_name"], 'imgToEval': imgToEval}, outfile)
+        json.dump(
+            {'overall': calculated_metrics, 'dataset_name': config["test"]["dataset_name"], 'imgToEval': imgToEval},
+            outfile)
     return calculated_metrics
 
 
@@ -87,29 +89,30 @@ def greedySearch(photo, model, wordtoix, ixtoword, max_length):
     """
     in_text = general["START"]
     for i in range(max_length):
-        #Get previously generated sequence
+        # Get previously generated sequence
         sequence = [wordtoix[w] for w in in_text.split() if w in wordtoix]
-        #Pad sewuences to the maximum length
+        # Pad sewuences to the maximum length
         sequence = pad_sequences([sequence], maxlen=max_length)
-        #Predict sequence with the learned model
+        # Predict sequence with the learned model
         yhat = model.predict([photo, sequence], verbose=0)
-        #Get word with the highest propability
+        # Get word with the highest propability
         yhat = np.argmax(yhat)
-        #Transform index of word to the word by previously created dictionary
+        # Transform index of word to the word by previously created dictionary
         word = ixtoword[yhat]
         in_text += ' ' + word
-        #When we achieve STOP word, sequence is generated
+        # When we achieve STOP word, sequence is generated
         if word == general["STOP"]:
             break
     final = in_text.split()
-    #remove start and stop words
+    # remove start and stop words
     final = final[1:-1]
-    #Create sencece by joining tokens
+    # Create sencece by joining tokens
     final = ' '.join(final)
     return final
 
 
-def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtoword, max_length, model):
+def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtoword, max_length, model,
+                           images_processor):
     """
     Method to put ground truth captions and results to the structure accepted by evaluation framework
 
@@ -127,6 +130,8 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
         Max number of words in caption on dataset
     model
         Image captioning model to predict captions
+    images_processor
+
     Returns
     -------
     expected: dict
@@ -135,7 +140,7 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
         Dictionary with predicted captions, identified by image_id
 
     """
-    #Get all image-ids from test dataset
+    # Get all image-ids from test dataset
     test_pics = list(encoding_test.keys())
     expected = dict()
     results = dict()
@@ -145,14 +150,16 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
     for j in range(0, len(test_pics)):
         image_id = test_pics[j]
         expected[image_id] = []
-
-        image = encoding_test[image_id].reshape((1, 2048))
-        #Put ground truth captions to the structure accepted by evaluation framework.
+        shape = (1, 2048)
+        if images_processor == 'vgg16':
+            shape = (1, 4096)
+        image = encoding_test[image_id].reshape(shape)
+        # Put ground truth captions to the structure accepted by evaluation framework.
         for desc in test_captions_mapping[image_id]:
             expected[image_id].append({"image_id": image_id, "caption": desc})
-        #Predict captions
+        # Predict captions
         generated = greedySearch(image, model, wordtoix, ixtoword, max_length)
-        #Put predicted captions to the structure accepted by evaluation framework.
+        # Put predicted captions to the structure accepted by evaluation framework.
         results[image_id] = [{"image_id": image_id, "caption": generated}]
         if index % 100 == 0:
             print("Processed:")
