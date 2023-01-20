@@ -6,6 +6,8 @@ from config import general
 import os
 import string
 from keras.applications.inception_v3 import InceptionV3
+from keras.applications.vgg16 import VGG16
+from keras.applications.nasnet import NASNetLarge
 from keras.applications.xception import Xception
 from keras.preprocessing import image
 from keras.models import Model
@@ -86,6 +88,14 @@ def define_images_feature_model(images_processor):
         model_images_processor_name = Xception(weights='imagenet')
         from keras.applications.xception import preprocess_input
         print("Used: Xception")
+    elif images_processor == 'vgg16':
+        model_images_processor_name = VGG16(weights='imagenet')
+        from keras.applications.vgg16 import preprocess_input
+        print("Used: Vgg16")
+    elif images_processor == 'NASNetLarge':
+        model_images_processor_name = NASNetLarge(weights='imagenet')
+        from keras.applications.nasnet import preprocess_input
+        print("Used: NASNetLarge")
     else:
         model_images_processor_name = InceptionV3(weights='imagenet')
         from keras.applications.inception_v3 import preprocess_input
