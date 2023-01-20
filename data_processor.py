@@ -5,7 +5,7 @@ from config import general
 import os
 import string
 from keras.applications.inception_v3 import InceptionV3
-from keras.applications.nasnet import NASNetLarge
+from keras.applications.efficientnet import EfficientNetB7
 from keras.applications.vgg16 import VGG16
 from keras.applications.xception import Xception
 from keras.preprocessing import image
