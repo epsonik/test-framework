@@ -176,11 +176,7 @@ def preprocess(image_path, preprocess_input_function):
             Dictionary with wrapped into START and STOP tokens captions.
     """
     # Convert all the images to size 299x299 as expected by the inception v3 model
-<<<<<<< HEAD
-    img = image.load_img(image_path, target_size = (299, 299))
-=======
     img = image.load_img(image_path, target_size=(299, 299))
->>>>>>> f3db226c7bb57bdd08699ba504bcfe6f23010462
     # Convert PIL image to numpy array of 3-dimensions
     x = image.img_to_array(img)
     # Add one more dimension
