@@ -151,9 +151,9 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
         image_id = test_pics[j]
         expected[image_id] = []
         if images_processor == 'vgg16':
-            image = encoding_test[image_id].reshape(shape=(1, 4096))
+            image = encoding_test[image_id].reshape((1, 4096))
         else:
-            image = encoding_test[image_id].reshape(shape=(1, 2048))
+            image = encoding_test[image_id].reshape((1, 2048))
 
         # Put ground truth captions to the structure accepted by evaluation framework.
         for desc in test_captions_mapping[image_id]:
