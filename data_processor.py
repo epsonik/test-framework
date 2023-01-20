@@ -1,12 +1,12 @@
 import pickle
 from time import time
 import numpy as np
-from keras.applications.xception import Xception
 
 from config import general
 import os
 import string
 from keras.applications.inception_v3 import InceptionV3
+from keras.applications.xception import Xception
 from keras.preprocessing import image
 from keras.models import Model
 import itertools
@@ -110,23 +110,23 @@ def clean_descriptions(captions_mapping, language):
     -------
     cleaned_descriptions_mapping: dict
     """
-    #Load spacy model for polish if dataset is in polish
-#     if language == "pl":
-#         import spacy
-#         nlp = spacy.load('pl_spacy_model')
+    # Load spacy model for polish if dataset is in polish
+    #     if language == "pl":
+    #         import spacy
+    #         nlp = spacy.load('pl_spacy_model')
     table = str.maketrans('', '', string.punctuation)
     for key, desc_list in captions_mapping.items():
         for i in range(len(desc_list)):
             desc = desc_list[i]
-#             if language == "pl":
-#                 doc = nlp(desc)
+            #             if language == "pl":
+            #                 doc = nlp(desc)
             # tokenize
             desc = desc.split()
             # convert to lower case
             desc = [word.lower() for word in desc]
             # Lematyzacja0
-#             if language == "pl":
-#                 desc = [word.lemma_ for word in doc]
+            #             if language == "pl":
+            #                 desc = [word.lemma_ for word in doc]
             # remove punctuation from each token
             desc = [w.translate(table) for w in desc]
             # remove tokens with numbers in them
@@ -176,7 +176,11 @@ def preprocess(image_path, preprocess_input_function):
             Dictionary with wrapped into START and STOP tokens captions.
     """
     # Convert all the images to size 299x299 as expected by the inception v3 model
+<<<<<<< HEAD
     img = image.load_img(image_path, target_size = (299, 299))
+=======
+    img = image.load_img(image_path, target_size=(299, 299))
+>>>>>>> f3db226c7bb57bdd08699ba504bcfe6f23010462
     # Convert PIL image to numpy array of 3-dimensions
     x = image.img_to_array(img)
     # Add one more dimension
