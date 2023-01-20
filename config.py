@@ -16,6 +16,18 @@ general = {
     "STOP": 'STOP',
     "word_count_threshold": 10
 }
+glove={
+    "eng": {
+        "word_embedings_path": data_path + "images/glove/glove.6B.200d.txt",
+        "embedings_dim": 199
+    }
+}
+bert={
+    "eng": {
+        "word_embedings_path": data_path + "images/glove/glove.6B.200d.txt",
+        "embedings_dim": 768
+    }
+}
 config_mixed_flickr8k_flickr8k_vgg16 = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
     "test": {"dataset_name": "flickr8k", "subset_name": "test"},
@@ -34,7 +46,7 @@ config_mixed_flickr8k_flickr8k_vgg16 = {
     "images_processor": "vgg16",
     "text_processor": "glove"
 }
-config_mixed_flickr8k_flickr8k_NASNetLarge = {
+config_mixed_flickr8k_flickr8k_inception_resnet_v2 = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
     "test": {"dataset_name": "flickr8k", "subset_name": "test"},
     "encode_images": True,
@@ -49,7 +61,7 @@ config_mixed_flickr8k_flickr8k_NASNetLarge = {
     "model_save_dir": "/model_weights",
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_NASNetLarge",
-    "images_processor": "NASNetLarge",
+    "images_processor": "inception_resnet_v2",
     "text_processor": "glove"
 }
 config_mixed_flickr8k_flickr8k_Xception = {
