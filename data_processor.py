@@ -5,11 +5,9 @@ from config import general
 import os
 import string
 from keras.applications.inception_v3 import InceptionV3
-from keras.applications.efficientnet import EfficientNetB7
-from keras.applications.vgg16 import VGG16
-from keras.applications.xception import Xception
 from keras.preprocessing import image
 from keras.models import Model
+from keras.applications.inception_v3 import preprocess_input
 import itertools
 import spacy
 
@@ -73,7 +71,7 @@ def get_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_di
     return embedding_matrix
 
 
-def define_images_feature_model(images_processor):
+def define_images_feature_model():
     """
     Method to define model to encode images.
     Parameters
@@ -82,28 +80,12 @@ def define_images_feature_model(images_processor):
     -------
     model_new
         model to encode image
-    images_processor_name
-        name of the image processor
     """
-    if images_processor == 'vgg16':
-        model_images_processor_name = VGG16(weights='imagenet')
-        from keras.applications.vgg16 import preprocess_input
-        print("Used: vgg16")
-    elif images_processor == 'EfficientNetB7':
-        model_images_processor_name = EfficientNetB7(weights='imagenet', include_top=False, input_shape=(299, 299, 3))
-        from keras.applications.efficientnet import preprocess_input
-        print("Used: EfficientNetB7")
-    elif images_processor == 'Xception':
-        model_images_processor_name = Xception(weights='imagenet')
-        from keras.applications.xception import preprocess_input
-        print("Used: Xception")
-    else:
-        model_images_processor_name = InceptionV3(weights='imagenet')
-        from keras.applications.inception_v3 import preprocess_input
-        print("Used: InceptionV3")
+    # Load the inception v3 model
+    model = InceptionV3(weights='imagenet')
     # Create a new model, by removing the last layer (output layer) from the inception v3
-    model_new = Model(model_images_processor_name.input, model_images_processor_name.layers[-2].output)
-    return preprocess_input, model_new
+    model_new = Model(model.input, model.layers[-2].output)
+    return model_new
 
 
 def clean_descriptions(captions_mapping, language):
@@ -121,23 +103,23 @@ def clean_descriptions(captions_mapping, language):
     -------
     cleaned_descriptions_mapping: dict
     """
-    # Load spacy model for polish if dataset is in polish
-    #     if language == "pl":
-    #         import spacy
-    #         nlp = spacy.load('pl_spacy_model')
+    #Load spacy model for polish if dataset is in polish
+#     if language == "pl":
+#         import spacy
+#         nlp = spacy.load('pl_spacy_model')
     table = str.maketrans('', '', string.punctuation)
     for key, desc_list in captions_mapping.items():
         for i in range(len(desc_list)):
             desc = desc_list[i]
-            #             if language == "pl":
-            #                 doc = nlp(desc)
+#             if language == "pl":
+#                 doc = nlp(desc)
             # tokenize
             desc = desc.split()
             # convert to lower case
             desc = [word.lower() for word in desc]
             # Lematyzacja0
-            #             if language == "pl":
-            #                 desc = [word.lemma_ for word in doc]
+#             if language == "pl":
+#                 desc = [word.lemma_ for word in doc]
             # remove punctuation from each token
             desc = [w.translate(table) for w in desc]
             # remove tokens with numbers in them
@@ -171,7 +153,7 @@ def wrap_captions_in_start_stop(training_captions):
     return train_captions_preprocessed
 
 
-def preprocess(image_path, preprocess_input, images_processor):
+def preprocess(image_path):
     """
     Method to preprocess images by:
     *resizing to be acceptable by model that encodes images
@@ -186,11 +168,8 @@ def preprocess(image_path, preprocess_input, images_processor):
     train_captions_preprocessed: dict-
             Dictionary with wrapped into START and STOP tokens captions.
     """
-    # Convert all the images to size 299x299 as expected by the inception v3 model, xception
-    target_size = (299, 299)
-    if images_processor == 'vgg16':
-        target_size = (224, 224)
-    img = image.load_img(image_path, target_size)
+    # Convert all the images to size 299x299 as expected by the inception v3 model
+    img = image.load_img(image_path, target_size=(299, 299))
     # Convert PIL image to numpy array of 3-dimensions
     x = image.img_to_array(img)
     # Add one more dimension
@@ -200,7 +179,7 @@ def preprocess(image_path, preprocess_input, images_processor):
     return x
 
 
-def encode(image_path, preprocess_input, images_feature_model, images_processor):
+def encode(image_path, images_feature_model):
     """
     Function to encode a given image into a vector of size (2048, )
     Parameters
@@ -214,10 +193,8 @@ def encode(image_path, preprocess_input, images_feature_model, images_processor)
     fea_vec:
         Vector that reoresents the image
     """
-    image = preprocess(image_path, preprocess_input,
-                       images_processor)  # resize the image and represent it in numpy 3D array
+    image = preprocess(image_path)  # resize the image and represent it in numpy 3D array
     fea_vec = images_feature_model.predict(image)  # Get the encoding vector for the image
-    print(fea_vec.shape)
     fea_vec = np.reshape(fea_vec, fea_vec.shape[1])  # reshape from (1, 2048) to (2048, )
     return fea_vec
 
@@ -242,7 +219,7 @@ def preprocess_images(train_images, test_images, configuration):
     """
     # Call the funtion to encode all the train images
     # This will take a while on CPU - Execute this only once
-    preprocess_input, images_feature_model = define_images_feature_model(configuration["images_processor"])
+    images_feature_model = define_images_feature_model()
     word_indexing_path = "./" + configuration["data_name"] + configuration["pickles_dir"]
 
     def iterate_over_images(images_set, save_path):
@@ -251,8 +228,7 @@ def preprocess_images(train_images, test_images, configuration):
             encoding_set = {}
             index = 1
             for image_id, image_path in images_set.items():
-                encoding_set[image_id] = encode(image_path, preprocess_input, images_feature_model,
-                                                configuration["images_processor"])
+                encoding_set[image_id] = encode(image_path, images_feature_model)
                 if index % 100 == 0:
                     print("Processed:")
                     print(index)
