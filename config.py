@@ -46,7 +46,7 @@ config_mixed_flickr8k_flickr8k_vgg16 = {
     "images_processor": "vgg16",
     "text_processor": "glove"
 }
-config_mixed_flickr8k_flickr8k_inception_resnet_v2 = {
+config_mixed_flickr8k_flickr8k_inception_resnet = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
     "test": {"dataset_name": "flickr8k", "subset_name": "test"},
     "encode_images": True,
@@ -60,8 +60,8 @@ config_mixed_flickr8k_flickr8k_inception_resnet_v2 = {
     "encoded_images_train_path": "/encoded_train_images.pkl",
     "model_save_dir": "/model_weights",
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
-    "data_name": "mixed_flickr8k_flickr8k_NASNetLarge",
-    "images_processor": "inception_resnet_v2",
+    "data_name": "mixed_flickr8k_flickr8k_resnet",
+    "images_processor": "resnet",
     "text_processor": "glove"
 }
 config_mixed_flickr8k_flickr8k_Xception = {

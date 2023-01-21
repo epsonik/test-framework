@@ -152,6 +152,8 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
         expected[image_id] = []
         if images_processor == 'vgg16':
             image = encoding_test[image_id].reshape((1, 4096))
+        elif images_processor == 'resnet':
+            image = encoding_test[image_id].reshape((1, 4096))
         else:
             image = encoding_test[image_id].reshape((1, 2048))
 

@@ -7,7 +7,7 @@ import os
 import string
 from keras.applications.inception_v3 import InceptionV3
 from keras.applications.vgg16 import VGG16
-from keras.applications.inception_resnet_v2 import InceptionResNetV2
+from keras.applications.resnet50 import ResNet50
 from keras.applications.xception import Xception
 from keras.preprocessing import image
 from keras.models import Model
@@ -92,10 +92,10 @@ def define_images_feature_model(images_processor):
         model_images_processor_name = VGG16(weights='imagenet')
         from keras.applications.vgg16 import preprocess_input
         print("Used: Vgg16")
-    elif images_processor == 'inception_resnet_v2':
-        model_images_processor_name = InceptionResNetV2(weights='imagenet')
-        from keras.applications.inception_resnet_v2 import preprocess_input
-        print("Used: NASNetLarge")
+    elif images_processor == 'resnet':
+        model_images_processor_name = ResNet50(weights='imagenet')
+        from keras.applications.resnet50 import preprocess_input
+        print("Used: resnet")
     else:
         model_images_processor_name = InceptionV3(weights='imagenet')
         from keras.applications.inception_v3 import preprocess_input
@@ -188,6 +188,8 @@ def preprocess(image_path, preprocess_input_function, images_processor):
     # Convert all the images to size 299x299 as expected by the inception v3 model
     img = image.load_img(image_path, target_size=(299, 299))
     if images_processor == "vgg16":
+        img = image.load_img(image_path, target_size=(224, 224))
+    if images_processor == "resnet":
         img = image.load_img(image_path, target_size=(224, 224))
     # Convert PIL image to numpy array of 3-dimensions
     x = image.img_to_array(img)
