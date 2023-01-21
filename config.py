@@ -46,7 +46,7 @@ config_mixed_flickr8k_flickr8k_vgg16 = {
     "images_processor": "vgg16",
     "text_processor": "glove"
 }
-config_mixed_flickr8k_flickr8k_inception_resnet = {
+config_mixed_flickr8k_flickr8k_resnet = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
     "test": {"dataset_name": "flickr8k", "subset_name": "test"},
     "encode_images": True,
