@@ -7,7 +7,7 @@ import os
 import string
 from keras.applications.inception_v3 import InceptionV3
 from keras.applications.vgg16 import VGG16
-from keras.applications.resnet50 import ResNet50
+from keras.applications.resnet_v2 import ResNet152V2
 from keras.applications.xception import Xception
 from keras.preprocessing import image
 from keras.models import Model
@@ -93,8 +93,8 @@ def define_images_feature_model(images_processor):
         from keras.applications.vgg16 import preprocess_input
         print("Used: Vgg16")
     elif images_processor == 'resnet':
-        model_images_processor_name = ResNet50(weights='imagenet')
-        from keras.applications.resnet50 import preprocess_input
+        model_images_processor_name = ResNet152V2(weights='imagenet')
+        from keras.applications.resnet_v2 import preprocess_input
         print("Used: resnet")
     else:
         model_images_processor_name = InceptionV3(weights='imagenet')
