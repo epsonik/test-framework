@@ -320,6 +320,7 @@ def load_dataset(configuration):
             "all_captions": all_captions,
             "language": dataset_configuration['language']
         }
+
     print("Loading train dataset")
     train = get_data_for_split("train")
     print("Loading test dataset")

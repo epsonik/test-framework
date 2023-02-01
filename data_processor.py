@@ -3,7 +3,6 @@ from time import time
 import numpy as np
 
 from config import general
-import os
 import string
 from keras.applications.inception_v3 import InceptionV3
 from keras.applications.vgg16 import VGG16
@@ -12,6 +11,10 @@ from keras.applications.xception import Xception
 from keras.preprocessing import image
 from keras.models import Model
 import itertools
+
+import os, codecs
+from tqdm import tqdm
+from config import fastText, glove
 
 
 def isfloat(value):
@@ -44,7 +47,7 @@ def get_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_di
     embeddings_index = {}
     # From the embeddings matrix get coefficients of particular words and store the in dictionarym by key - words
     f = open(word_embedings_path, encoding="utf-8")
-    for line in f:
+    for line in tqdm(f):
         values = line.split()
         word = values[0]
         import re
@@ -464,9 +467,40 @@ def preprocess_data(data):
     data.ixtoword, data.wordtoix = ixtowordandbackward(data.vocab, data.configuration)
     data.vocab_size = len(data.ixtoword) + 1  # one for appended 0's
     print("Vocab size: ", data.vocab_size)
+    if data.configuration["text_processor"] == "fastText":
+        get_fast_text_embedding_matrix(data.vocab_size, data.wordtoix,
+                                                     fastText[data.language]["word_embedings_path"],
+                                                     fastText[data.language]["embedings_dim"])
+    else:
+        data.embedding_matrix = get_embedding_matrix(data.vocab_size, data.wordtoix,
+                                                     glove[data.language]["word_embedings_path"],
+                                                     glove[data.language]["embedings_dim"])
 
-    data.embedding_matrix = get_embedding_matrix(data.vocab_size, data.wordtoix,
-                                                 general[data.language]["word_embedings_path"],
-                                                 general[data.language]["embedings_dim"])
     print(data.embedding_matrix.shape)
     return data
+
+
+def get_fast_text_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_dim):
+    # load embeddings
+    print('loading word embeddings...')
+    embeddings_index = {}
+    f = codecs.open(word_embedings_path, encoding='utf-8')
+    for line in tqdm(f):
+        values = line.rstrip().rsplit(' ')
+        word = values[0]
+        coefs = np.asarray(values[1:], dtype='float32')
+        embeddings_index[word] = coefs
+    f.close()
+    print('found %s word vectors' % len(embeddings_index))
+
+    # embedding matrix
+    print('preparing embedding matrix...')
+    words_not_found = []
+    embedding_matrix = np.zeros((vocab_size, embedings_dim))
+    for word, i in wordtoix.items():
+
+        embedding_vector = embeddings_index.get(word)
+        if (embedding_vector is not None) and len(embedding_vector) > 0:
+            # words not found in embedding index will be all-zeros.
+            embedding_matrix[i] = embedding_vector
+    return embedding_matrix
