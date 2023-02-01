@@ -468,7 +468,7 @@ def preprocess_data(data):
     data.vocab_size = len(data.ixtoword) + 1  # one for appended 0's
     print("Vocab size: ", data.vocab_size)
     if data.configuration["text_processor"] == "fastText":
-        get_fast_text_embedding_matrix(data.vocab_size, data.wordtoix,
+        data.embedding_matrix = get_fast_text_embedding_matrix(data.vocab_size, data.wordtoix,
                                                      fastText[data.language]["word_embedings_path"],
                                                      fastText[data.language]["embedings_dim"])
     else:
