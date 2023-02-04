@@ -191,8 +191,8 @@ config_mixed_flickr8k_flickr8k_Xception_glove = {
 config_mixed_coco14_coco14_Xception_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
     "test": {"dataset_name": "coco14", "subset_name": "test"},
-    "encode_images": True,
-    "save_ix_to_word": True,
+    "encode_images": False,
+    "save_ix_to_word": False,
     "train_model": True,
     "save_model": True,
     "ixtoword_path": "ixtoword.pkl",
@@ -227,8 +227,8 @@ config_mixed_flickr8k_flickr8k_Xception_fastText = {
 config_mixed_coco14_coco14_Xception_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
     "test": {"dataset_name": "coco14", "subset_name": "test"},
-    "encode_images": True,
-    "save_ix_to_word": True,
+    "encode_images": False,
+    "save_ix_to_word": False,
     "train_model": True,
     "save_model": True,
     "ixtoword_path": "ixtoword.pkl",
@@ -263,8 +263,8 @@ config_mixed_flickr8k_flickr8k_inception_glove = {
 config_mixed_coco14_coco14_inception_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
     "test": {"dataset_name": "coco14", "subset_name": "test"},
-    "encode_images": True,
-    "save_ix_to_word": True,
+    "encode_images": False,
+    "save_ix_to_word": False,
     "train_model": True,
     "save_model": True,
     "ixtoword_path": "ixtoword.pkl",
