@@ -2,7 +2,7 @@ import pickle
 from time import time
 import numpy as np
 
-from config import general
+from config import general, word2Vec
 import string
 from keras.applications.inception_v3 import InceptionV3
 from keras.applications.vgg16 import VGG16
@@ -11,6 +11,7 @@ from keras.applications.xception import Xception
 from keras.preprocessing import image
 from keras.models import Model
 import itertools
+import gensim
 
 import os, codecs
 from tqdm import tqdm
@@ -470,8 +471,14 @@ def preprocess_data(data):
     if data.configuration["text_processor"] == "fastText":
         print("Fasttext used")
         data.embedding_matrix = get_fast_text_embedding_matrix(data.vocab_size, data.wordtoix,
-                                                     fastText[data.language]["word_embedings_path"],
-                                                     fastText[data.language]["embedings_dim"])
+                                                               fastText[data.language]["word_embedings_path"],
+                                                               fastText[data.language]["embedings_dim"])
+
+    elif data.configuration["text_processor"] == "word2Vec":
+        print("Word2Vec used")
+        data.embedding_matrix = get_word2Vec_embedding_matrix(data.vocab_size, data.wordtoix,
+                                                              word2Vec[data.language]["word_embedings_path"],
+                                                              word2Vec[data.language]["embedings_dim"])
     else:
         print("Glove used")
         data.embedding_matrix = get_embedding_matrix(data.vocab_size, data.wordtoix,
@@ -502,6 +509,17 @@ def get_fast_text_embedding_matrix(vocab_size, wordtoix, word_embedings_path, em
     for word, i in wordtoix.items():
 
         embedding_vector = embeddings_index.get(word)
+        if (embedding_vector is not None) and len(embedding_vector) > 0:
+            # words not found in embedding index will be all-zeros.
+            embedding_matrix[i] = embedding_vector
+    return embedding_matrix
+
+
+def get_word2Vec_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_dim):
+    model = gensim.models.KeyedVectors.load_word2vec_format(word_embedings_path, binary=True)
+    embedding_matrix = np.zeros((vocab_size, embedings_dim))
+    for word, i in wordtoix.items():
+        embedding_vector = model.wv[word]
         if (embedding_vector is not None) and len(embedding_vector) > 0:
             # words not found in embedding index will be all-zeros.
             embedding_matrix[i] = embedding_vector
