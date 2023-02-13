@@ -457,8 +457,8 @@ def preprocess_data(data):
     data.train_captions_wrapped = wrap_captions_in_start_stop(train_captions_mapping)
     print("Descriptions wraped into start and stop words.")
     print(data.train_captions_wrapped[list(data.train_captions_wrapped.keys())[0]])
-    data.encoded_images_train, data.encoded_images_test = preprocess_images(train_images_mapping, test_images_mapping,
-                                                                            data.configuration)
+    # data.encoded_images_train, data.encoded_images_test = preprocess_images(train_images_mapping, test_images_mapping,
+    #                                                                         data.configuration)
     all_train_captions = get_all_train_captions_list(data.train_captions_wrapped)
     print("Number of training captions ", len(all_train_captions))
     data.max_length = get_max_length(all_train_captions)
@@ -519,8 +519,8 @@ def get_word2Vec_embedding_matrix(vocab_size, wordtoix, word_embedings_path, emb
     model = gensim.models.KeyedVectors.load_word2vec_format(word_embedings_path, binary=True)
     embedding_matrix = np.zeros((vocab_size, embedings_dim))
     for word, i in wordtoix.items():
-        embedding_vector = model.wv[word]
-        if (embedding_vector is not None) and len(embedding_vector) > 0:
+        embedding_vector = model[word]
+        if (embedding_vector is not None) and embedding_vector.shape[1] > 0:
             # words not found in embedding index will be all-zeros.
             embedding_matrix[i] = embedding_vector
     return embedding_matrix
