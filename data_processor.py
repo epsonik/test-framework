@@ -519,8 +519,8 @@ def get_word2Vec_embedding_matrix(vocab_size, wordtoix, word_embedings_path, emb
     model = gensim.models.KeyedVectors.load_word2vec_format(word_embedings_path, binary=True)
     embedding_matrix = np.zeros((vocab_size, embedings_dim))
     for word, i in wordtoix.items():
-        embedding_vector = model[word]
-        if (embedding_vector is not None) and embedding_vector.shape[1] > 0:
+        if word in model.vocab:
+            embedding_vector = model[word]
             # words not found in embedding index will be all-zeros.
             embedding_matrix[i] = embedding_vector
     return embedding_matrix
