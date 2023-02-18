@@ -279,8 +279,7 @@ def preprocess_images(train_images, test_images, configuration):
 
     encoding_test = iterate_over_images(test_images, configuration["encoded_images_test_path"])
 
-    # encoding_train = iterate_over_images(train_images, configuration["encoded_images_train_path"])
-    encoding_train = None
+    encoding_train = iterate_over_images(train_images, configuration["encoded_images_train_path"])
 
     return encoding_train, encoding_test
 
@@ -460,34 +459,34 @@ def preprocess_data(data):
     print(data.train_captions_wrapped[list(data.train_captions_wrapped.keys())[0]])
     data.encoded_images_train, data.encoded_images_test = preprocess_images(train_images_mapping, test_images_mapping,
                                                                             data.configuration)
-    # all_train_captions = get_all_train_captions_list(data.train_captions_wrapped)
-    # print("Number of training captions ", len(all_train_captions))
-    # data.max_length = get_max_length(all_train_captions)
-    # print('Description Length: %d' % data.max_length)
-    # # Count words and consider only words which occur at least 10 times in the corpus
-    # data.vocab = count_words_and_threshold(all_train_captions)
-    # data.ixtoword, data.wordtoix = ixtowordandbackward(data.vocab, data.configuration)
-    # data.vocab_size = len(data.ixtoword) + 1  # one for appended 0's
-    # print("Vocab size: ", data.vocab_size)
-    # if data.configuration["text_processor"] == "fastText":
-    #     print("Fasttext used")
-    #     data.embedding_matrix = get_fast_text_embedding_matrix(data.vocab_size, data.wordtoix,
-    #                                                            fastText[data.language]["word_embedings_path"],
-    #                                                            fastText[data.language]["embedings_dim"])
-    #
-    # elif data.configuration["text_processor"] == "word2Vec":
-    #     print("Word2Vec used")
-    #     data.embedding_matrix = get_word2Vec_embedding_matrix(data.vocab_size, data.wordtoix,
-    #                                                           word2Vec[data.language]["word_embedings_path"],
-    #                                                           word2Vec[data.language]["embedings_dim"])
-    # else:
-    #     print("Glove used")
-    #     data.embedding_matrix = get_embedding_matrix(data.vocab_size, data.wordtoix,
-    #                                                  glove[data.language]["word_embedings_path"],
-    #                                                  glove[data.language]["embedings_dim"])
-    #
-    # print(data.embedding_matrix.shape)
-    # return data
+    all_train_captions = get_all_train_captions_list(data.train_captions_wrapped)
+    print("Number of training captions ", len(all_train_captions))
+    data.max_length = get_max_length(all_train_captions)
+    print('Description Length: %d' % data.max_length)
+    # Count words and consider only words which occur at least 10 times in the corpus
+    data.vocab = count_words_and_threshold(all_train_captions)
+    data.ixtoword, data.wordtoix = ixtowordandbackward(data.vocab, data.configuration)
+    data.vocab_size = len(data.ixtoword) + 1  # one for appended 0's
+    print("Vocab size: ", data.vocab_size)
+    if data.configuration["text_processor"] == "fastText":
+        print("Fasttext used")
+        data.embedding_matrix = get_fast_text_embedding_matrix(data.vocab_size, data.wordtoix,
+                                                               fastText[data.language]["word_embedings_path"],
+                                                               fastText[data.language]["embedings_dim"])
+
+    elif data.configuration["text_processor"] == "word2Vec":
+        print("Word2Vec used")
+        data.embedding_matrix = get_word2Vec_embedding_matrix(data.vocab_size, data.wordtoix,
+                                                              word2Vec[data.language]["word_embedings_path"],
+                                                              word2Vec[data.language]["embedings_dim"])
+    else:
+        print("Glove used")
+        data.embedding_matrix = get_embedding_matrix(data.vocab_size, data.wordtoix,
+                                                     glove[data.language]["word_embedings_path"],
+                                                     glove[data.language]["embedings_dim"])
+
+    print(data.embedding_matrix.shape)
+    return data
 
 
 def get_fast_text_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_dim):
