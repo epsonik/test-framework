@@ -6,7 +6,9 @@ from config import general, word2Vec
 import string
 from keras.applications.inception_v3 import InceptionV3
 from keras.applications.vgg16 import VGG16
+from keras.applications.vgg19 import VGG19
 from keras.applications.resnet_v2 import ResNet152V2
+from tensorflow.keras.applications.resnet50 import ResNet50
 from keras.applications.xception import Xception
 from keras.preprocessing import image
 from keras.models import Model
@@ -96,10 +98,18 @@ def define_images_feature_model(images_processor):
         model_images_processor_name = VGG16(weights='imagenet')
         from keras.applications.vgg16 import preprocess_input
         print("Used: Vgg16")
+    elif images_processor == 'vgg19':
+        model_images_processor_name = VGG19(weights="imagenet")
+        from keras.applications.vgg16 import preprocess_input
+        print("Used: Vgg19")
     elif images_processor == 'resnet':
         model_images_processor_name = ResNet152V2(weights='imagenet')
         from keras.applications.resnet_v2 import preprocess_input
         print("Used: resnet")
+    elif images_processor == 'resnet50':
+        model_images_processor_name = ResNet50(weights='imagenet')
+        from tensorflow.keras.applications.resnet50 import preprocess_input
+        print("Used: resnet50")
     else:
         model_images_processor_name = InceptionV3(weights='imagenet')
         from keras.applications.inception_v3 import preprocess_input
@@ -190,11 +200,10 @@ def preprocess(image_path, preprocess_input_function, images_processor):
             Dictionary with wrapped into START and STOP tokens captions.
     """
     # Convert all the images to size 299x299 as expected by the inception v3 model
-    img = image.load_img(image_path, target_size=(299, 299))
-    if images_processor == "vgg16":
+    if images_processor == "vgg16" or images_processor == "resnet" or images_processor == "vgg19" or images_processor == "resnet50" :
         img = image.load_img(image_path, target_size=(224, 224))
-    if images_processor == "resnet":
-        img = image.load_img(image_path, target_size=(224, 224))
+    else:
+        img = image.load_img(image_path, target_size=(299, 299))
     # Convert PIL image to numpy array of 3-dimensions
     x = image.img_to_array(img)
     # Add one more dimension
@@ -519,8 +528,9 @@ def get_word2Vec_embedding_matrix(vocab_size, wordtoix, word_embedings_path, emb
     model = gensim.models.KeyedVectors.load_word2vec_format(word_embedings_path, binary=True)
     embedding_matrix = np.zeros((vocab_size, embedings_dim))
     for word, i in wordtoix.items():
-        if word in model.key_to_index:
+        if word in model.index2word:
             embedding_vector = model[word]
             # words not found in embedding index will be all-zeros.
             embedding_matrix[i] = embedding_vector
     return embedding_matrix
+

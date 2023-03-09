@@ -1,1 +1,10 @@
 /images/
+mixed*
+.ipynb_checkpoints
+__pycache__
+coco-caption
+.ipynb_checkpoints/
+__pycache__/
+results/
+
+
