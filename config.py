@@ -1126,9 +1126,9 @@ config_mixed_flickr8k_flickr8k_resnet50_fastText = {
 
 
 
-config_mixed_coco14_flickr30k_glove = {
+config_mixed_coco14_flickr30k_vgg16_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr8k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
     "encode_images": True,
     "save_ix_to_word": True,
     "train_model": False,
@@ -1375,8 +1375,8 @@ config_mixed_coco14_flickr30k_inception_word2Vec = {
 config_mixed_coco14_flickr30k_inception_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
     "test": {"dataset_name": "flickr30k", "subset_name": "test"},
-    "encode_images": True,
-    "save_ix_to_word": True,
+    "encode_images": False,
+    "save_ix_to_word": False,
     "train_model": False,
     "save_model": False,
     "ixtoword_path": "ixtoword.pkl",
