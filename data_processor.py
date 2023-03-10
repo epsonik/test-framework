@@ -200,7 +200,7 @@ def preprocess(image_path, preprocess_input_function, images_processor):
             Dictionary with wrapped into START and STOP tokens captions.
     """
     # Convert all the images to size 299x299 as expected by the inception v3 model
-    if images_processor == "vgg16" or images_processor == "resnet" or images_processor == "vgg19" or images_processor == "resnet50" :
+    if images_processor == "vgg16" or images_processor == "resnet" or images_processor == "vgg19" or images_processor == "resnet50":
         img = image.load_img(image_path, target_size=(224, 224))
     else:
         img = image.load_img(image_path, target_size=(299, 299))
@@ -489,10 +489,9 @@ def preprocess_data(data):
                                                               word2Vec[data.language]["word_embedings_path"],
                                                               word2Vec[data.language]["embedings_dim"])
     elif data.configuration["text_processor"] == "oneHot":
-        print("Word2Vec used")
-        data.embedding_matrix = get_oneHot_embedding_matrix(data.vocab_size, data.wordtoix,
-                                                              word2Vec[data.language]["word_embedings_path"],
-                                                              word2Vec[data.language]["embedings_dim"])
+        print("OneHot Encoding used")
+        data.embedding_matrix = get_oneHot_embedding_matrix(data.vocab_size, data.wordtoix, None,
+                                                            None)
     else:
         print("Glove used")
         data.embedding_matrix = get_embedding_matrix(data.vocab_size, data.wordtoix,
@@ -504,32 +503,8 @@ def preprocess_data(data):
 
 
 def get_oneHot_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_dim):
-    # load embeddings
-    print('loading word embeddings...')
-    embeddings_index = {}
-    f = codecs.open(word_embedings_path, encoding='utf-8')
-    for line in tqdm(f):
-        values = line.rstrip().rsplit(' ')
-        word = values[0]
-        coefs = np.asarray(values[1:], dtype='float32')
-        embeddings_index[word] = coefs
-    f.close()
-    print('found %s word vectors' % len(embeddings_index))
-
-    # embedding matrix
-    print('preparing embedding matrix...')
-    words_not_found = []
-    embedding_matrix = np.zeros((vocab_size, vocab_size))
-
-    for word, i in wordtoix.items():
-
-        embedding_vector = embeddings_index.get(word)
-        if (embedding_vector is not None) and len(embedding_vector) > 0:
-            # words not found in embedding index will be all-zeros.
-            embedding_matrix[i] = embedding_vector
-
     from keras.utils import to_categorical
-    embedding_matrix=to_categorical(wordtoix.values, vocab_size)
+    embedding_matrix = to_categorical(wordtoix.values, vocab_size)
     print(embedding_matrix)
     return embedding_matrix
 
@@ -569,4 +544,3 @@ def get_word2Vec_embedding_matrix(vocab_size, wordtoix, word_embedings_path, emb
             # words not found in embedding index will be all-zeros.
             embedding_matrix[i] = embedding_vector
     return embedding_matrix
-
