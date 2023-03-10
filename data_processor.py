@@ -76,6 +76,7 @@ def get_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_di
             # Words not found in the embedding index will be all zeros
             # 1655,299 199
             embedding_matrix[i] = embedding_vector
+    print(embedding_matrix.shape)
     return embedding_matrix
 
 
@@ -497,7 +498,6 @@ def preprocess_data(data):
                                                      glove[data.language]["word_embedings_path"],
                                                      glove[data.language]["embedings_dim"])
 
-    print(data.embedding_matrix.shape)
     return data
 
 
@@ -527,6 +527,8 @@ def get_fast_text_embedding_matrix(vocab_size, wordtoix, word_embedings_path, em
         if (embedding_vector is not None) and len(embedding_vector) > 0:
             # words not found in embedding index will be all-zeros.
             embedding_matrix[i] = embedding_vector
+    print(embedding_matrix.shape)
+
     return embedding_matrix
 
 
@@ -538,4 +540,6 @@ def get_word2Vec_embedding_matrix(vocab_size, wordtoix, word_embedings_path, emb
             embedding_vector = model[word]
             # words not found in embedding index will be all-zeros.
             embedding_matrix[i] = embedding_vector
+    print(embedding_matrix.shape)
+
     return embedding_matrix
