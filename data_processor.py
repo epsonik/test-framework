@@ -466,8 +466,8 @@ def preprocess_data(data):
     data.train_captions_wrapped = wrap_captions_in_start_stop(train_captions_mapping)
     print("Descriptions wraped into start and stop words.")
     print(data.train_captions_wrapped[list(data.train_captions_wrapped.keys())[0]])
-    # data.encoded_images_train, data.encoded_images_test = preprocess_images(train_images_mapping, test_images_mapping,
-    #                                                                         data.configuration)
+    data.encoded_images_train, data.encoded_images_test = preprocess_images(train_images_mapping, test_images_mapping,
+                                                                            data.configuration)
     all_train_captions = get_all_train_captions_list(data.train_captions_wrapped)
     print("Number of training captions ", len(all_train_captions))
     data.max_length = get_max_length(all_train_captions)
@@ -501,11 +501,10 @@ def preprocess_data(data):
     return data
 
 
-def get_oneHot_embedding_matrix(vocab_size, wordtoix):
+def get_oneHot_embedding_matrix(vocab_size):
     from tensorflow.keras.utils import to_categorical
-    embedding_matrix = to_categorical(list(wordtoix.values()))
+    embedding_matrix = to_categorical(list(range(0, vocab_size - 1)))
     print(embedding_matrix)
-    print(vocab_size)
     return embedding_matrix
 
 
@@ -527,7 +526,6 @@ def get_fast_text_embedding_matrix(vocab_size, wordtoix, word_embedings_path, em
     words_not_found = []
     embedding_matrix = np.zeros((vocab_size, embedings_dim))
     for word, i in wordtoix.items():
-
         embedding_vector = embeddings_index.get(word)
         if (embedding_vector is not None) and len(embedding_vector) > 0:
             # words not found in embedding index will be all-zeros.
