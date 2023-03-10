@@ -12,7 +12,6 @@ from tensorflow.keras.applications.resnet50 import ResNet50
 from keras.applications.xception import Xception
 from keras.preprocessing import image
 from keras.models import Model
-from keras.utils import to_categorical
 import itertools
 import gensim
 
@@ -467,8 +466,8 @@ def preprocess_data(data):
     data.train_captions_wrapped = wrap_captions_in_start_stop(train_captions_mapping)
     print("Descriptions wraped into start and stop words.")
     print(data.train_captions_wrapped[list(data.train_captions_wrapped.keys())[0]])
-    data.encoded_images_train, data.encoded_images_test = preprocess_images(train_images_mapping, test_images_mapping,
-                                                                            data.configuration)
+    # data.encoded_images_train, data.encoded_images_test = preprocess_images(train_images_mapping, test_images_mapping,
+    #                                                                         data.configuration)
     all_train_captions = get_all_train_captions_list(data.train_captions_wrapped)
     print("Number of training captions ", len(all_train_captions))
     data.max_length = get_max_length(all_train_captions)
@@ -504,9 +503,9 @@ def preprocess_data(data):
 
 def get_oneHot_embedding_matrix(vocab_size, wordtoix):
     from tensorflow.keras.utils import to_categorical
-    from numpy import array
-    embedding_matrix = to_categorical(list(wordtoix.values()), vocab_size)
+    embedding_matrix = to_categorical(list(wordtoix.values()))
     print(embedding_matrix)
+    print(vocab_size)
     return embedding_matrix
 
 
