@@ -502,11 +502,7 @@ def preprocess_data(data):
 
 
 def get_oneHot_embedding_matrix(vocab_size):
-    from tensorflow.keras.utils import to_categorical
-    embedding_matrix = to_categorical(list(range(0, vocab_size - 1)))
-    embedding_matrix = np.vstack([[0] * (vocab_size - 1),embedding_matrix])
-    print(embedding_matrix)
-    return embedding_matrix
+    return None
 
 
 def get_fast_text_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_dim):
