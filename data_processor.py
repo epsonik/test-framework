@@ -490,7 +490,7 @@ def preprocess_data(data):
                                                               word2Vec[data.language]["embedings_dim"])
     elif data.configuration["text_processor"] == "oneHot":
         print("OneHot Encoding used")
-        data.embedding_matrix = get_oneHot_embedding_matrix(data.vocab_size, data.wordtoix)
+        data.embedding_matrix = get_oneHot_embedding_matrix(data.vocab_size)
     else:
         print("Glove used")
         data.embedding_matrix = get_embedding_matrix(data.vocab_size, data.wordtoix,
