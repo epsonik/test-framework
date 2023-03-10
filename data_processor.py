@@ -12,6 +12,7 @@ from tensorflow.keras.applications.resnet50 import ResNet50
 from keras.applications.xception import Xception
 from keras.preprocessing import image
 from keras.models import Model
+from keras.utils import to_categorical
 import itertools
 import gensim
 
@@ -490,8 +491,7 @@ def preprocess_data(data):
                                                               word2Vec[data.language]["embedings_dim"])
     elif data.configuration["text_processor"] == "oneHot":
         print("OneHot Encoding used")
-        data.embedding_matrix = get_oneHot_embedding_matrix(data.vocab_size, data.wordtoix, None,
-                                                            None)
+        data.embedding_matrix = get_oneHot_embedding_matrix(data.vocab_size, data.wordtoix)
     else:
         print("Glove used")
         data.embedding_matrix = get_embedding_matrix(data.vocab_size, data.wordtoix,
@@ -502,9 +502,10 @@ def preprocess_data(data):
     return data
 
 
-def get_oneHot_embedding_matrix(vocab_size, wordtoix, word_embedings_path, embedings_dim):
-    from keras.utils import to_categorical
-    embedding_matrix = to_categorical(wordtoix.values, vocab_size)
+def get_oneHot_embedding_matrix(vocab_size, wordtoix):
+    from tensorflow.keras.utils import to_categorical
+    from numpy import array
+    embedding_matrix = to_categorical(list(wordtoix.values()), vocab_size)
     print(embedding_matrix)
     return embedding_matrix
 
