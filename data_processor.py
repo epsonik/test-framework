@@ -9,6 +9,10 @@ from keras.applications.vgg16 import VGG16
 from keras.applications.vgg19 import VGG19
 from keras.applications.resnet_v2 import ResNet152V2
 from tensorflow.keras.applications.resnet50 import ResNet50
+from tensorflow.keras.applications.densenet import DenseNet121
+from tensorflow.keras.applications.densenet import DenseNet201
+from tensorflow.keras.applications.mobilenet import MobileNet
+from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2
 from keras.applications.xception import Xception
 from keras.preprocessing import image
 from keras.models import Model
@@ -103,14 +107,30 @@ def define_images_feature_model(images_processor):
         model_images_processor_name = VGG19(weights="imagenet")
         from keras.applications.vgg16 import preprocess_input
         print("Used: Vgg19")
-    elif images_processor == 'resnet':
+    elif images_processor == 'resnet152V2':
         model_images_processor_name = ResNet152V2(weights='imagenet')
         from keras.applications.resnet_v2 import preprocess_input
-        print("Used: resnet")
+        print("Used: resnet142V2")
     elif images_processor == 'resnet50':
         model_images_processor_name = ResNet50(weights='imagenet')
         from tensorflow.keras.applications.resnet50 import preprocess_input
         print("Used: resnet50")
+    elif images_processor == 'denseNet121':
+        model_images_processor_name = DenseNet121(weights='imagenet')
+        from tensorflow.keras.applications.densenet import preprocess_input
+        print("Used: DenseNet121")
+    elif images_processor == 'denseNet201':
+        model_images_processor_name = DenseNet201(weights='imagenet')
+        from tensorflow.keras.applications.densenet import preprocess_input
+        print("Used: DenseNet201")
+    elif images_processor == 'mobileNet':
+        model_images_processor_name = MobileNet(weights='imagenet')
+        from tensorflow.keras.applications.mobilenet import preprocess_input
+        print("Used: MobileNet")
+    elif images_processor == 'mobileNetV2':
+        model_images_processor_name = MobileNetV2(weights='imagenet')
+        from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
+        print("Used: MobileNetV2")
     else:
         model_images_processor_name = InceptionV3(weights='imagenet')
         from keras.applications.inception_v3 import preprocess_input
@@ -201,7 +221,7 @@ def preprocess(image_path, preprocess_input_function, images_processor):
             Dictionary with wrapped into START and STOP tokens captions.
     """
     # Convert all the images to size 299x299 as expected by the inception v3 model
-    if images_processor == "vgg16" or images_processor == "resnet" or images_processor == "vgg19" or images_processor == "resnet50":
+    if images_processor == "vgg16" or images_processor == "resnet" or images_processor == "vgg19" or images_processor == "resnet50" or images_processor == "denseNet121" or images_processor == "denseNet201" or images_processor == "mobileNet" or images_processor == "mobileNetV2":
         img = image.load_img(image_path, target_size=(224, 224))
     else:
         img = image.load_img(image_path, target_size=(299, 299))
@@ -504,7 +524,7 @@ def preprocess_data(data):
 def get_oneHot_embedding_matrix(vocab_size):
     from tensorflow.keras.utils import to_categorical
     embedding_matrix = to_categorical(list(range(0, vocab_size - 1)))
-    embedding_matrix = np.vstack([[0] * (vocab_size - 1),embedding_matrix])
+    embedding_matrix = np.vstack([[0] * (vocab_size - 1), embedding_matrix])
     print(embedding_matrix)
     return embedding_matrix
 
