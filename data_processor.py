@@ -221,7 +221,7 @@ def preprocess(image_path, preprocess_input_function, images_processor):
             Dictionary with wrapped into START and STOP tokens captions.
     """
     # Convert all the images to size 299x299 as expected by the inception v3 model
-    if images_processor == "vgg16" or images_processor == "resnet" or images_processor == "vgg19" or images_processor == "resnet50" or images_processor == "denseNet121" or images_processor == "denseNet201" or images_processor == "mobileNet" or images_processor == "mobileNetV2":
+    if images_processor == "vgg16" or images_processor == "resnet152V2" or images_processor == "vgg19" or images_processor == "resnet50" or images_processor == "denseNet121" or images_processor == "denseNet201" or images_processor == "mobileNet" or images_processor == "mobileNetV2":
         img = image.load_img(image_path, target_size=(224, 224))
     else:
         img = image.load_img(image_path, target_size=(299, 299))
