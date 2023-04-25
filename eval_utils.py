@@ -156,6 +156,10 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
             image = encoding_test[image_id].reshape((1, 2048))
         elif images_processor == 'denseNet121':
             image = encoding_test[image_id].reshape((1, 1024))
+        elif images_processor == 'mobileNet':
+            image = encoding_test[image_id].reshape((1, 1000))
+        elif images_processor == 'mobileNetV2':
+            image = encoding_test[image_id].reshape((1, 1280))
         elif images_processor == 'denseNet201':
             image = encoding_test[image_id].reshape((1, 1920))
         else:
