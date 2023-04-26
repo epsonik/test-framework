@@ -35,9 +35,6 @@ word2Vec = {
 # sprawdzić czy w kazdym konfigu poprawnie jest wpisana data_name
 
 
-
-
-
 config_mixed_coco14_flickr8k_vgg16_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
     "test": {"dataset_name": "flickr8k", "subset_name": "test"},
@@ -72,11 +69,9 @@ config_mixed_coco14_flickr8k_vgg16_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr8k_vgg16_fastText",
     "images_processor": "vgg16",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
 
 config_mixed_coco14_flickr8k_resnet152V2_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -94,7 +89,8 @@ config_mixed_coco14_flickr8k_resnet152V2_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr8k_resnet152V2_glove",
     "images_processor": "resnet152V2",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_flickr8k_resnet152V2_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -112,11 +108,9 @@ config_mixed_coco14_flickr8k_resnet152V2_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr8k_resnet152V2_fastText",
     "images_processor": "resnet152V2",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
 
 config_mixed_coco14_flickr8k_Xception_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -134,7 +128,8 @@ config_mixed_coco14_flickr8k_Xception_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr8k_Xception_glove",
     "images_processor": "Xception",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_flickr8k_Xception_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -152,10 +147,9 @@ config_mixed_coco14_flickr8k_Xception_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr8k_Xception_fastText",
     "images_processor": "Xception",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
 
 config_mixed_coco14_flickr8k_inception_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -173,7 +167,8 @@ config_mixed_coco14_flickr8k_inception_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr8k_inception_glove",
     "images_processor": "inception",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_flickr8k_inception_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -191,16 +186,9 @@ config_mixed_coco14_flickr8k_inception_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr8k_inception_fastText",
     "images_processor": "inception",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
-
-
-
-
-
 
 config_mixed_coco14_flickr8k_vgg19_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -218,7 +206,8 @@ config_mixed_coco14_flickr8k_vgg19_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr8k_vgg19_glove",
     "images_processor": "vgg19",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_flickr8k_vgg19_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -236,15 +225,9 @@ config_mixed_coco14_flickr8k_vgg19_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr8k_vgg19_fastText",
     "images_processor": "vgg19",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
-
-
-
-
 
 config_mixed_coco14_flickr8k_resnet50_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -262,7 +245,8 @@ config_mixed_coco14_flickr8k_resnet50_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr8k_resnet50_glove",
     "images_processor": "resnet50",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_flickr8k_resnet50_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -280,16 +264,9 @@ config_mixed_coco14_flickr8k_resnet50_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr8k_resnet50_fastText",
     "images_processor": "resnet50",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
-
-
-
-
-
 
 config_mixed_coco14_coco14_vgg16_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -307,7 +284,8 @@ config_mixed_coco14_coco14_vgg16_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_vgg16_glove",
     "images_processor": "vgg16",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_coco14_vgg16_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -325,13 +303,9 @@ config_mixed_coco14_coco14_vgg16_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_vgg16_fastText",
     "images_processor": "vgg16",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
-
-
 
 config_mixed_coco14_coco14_resnet152V2_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -349,7 +323,8 @@ config_mixed_coco14_coco14_resnet152V2_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_resnet152V2_glove",
     "images_processor": "resnet152V2",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_coco14_resnet152V2_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -367,12 +342,9 @@ config_mixed_coco14_coco14_resnet152V2_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_resnet152V2_fastText",
     "images_processor": "resnet152V2",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
-
 
 config_mixed_coco14_coco14_Xception_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -390,7 +362,8 @@ config_mixed_coco14_coco14_Xception_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_Xception_glove",
     "images_processor": "Xception",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_coco14_Xception_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -408,15 +381,9 @@ config_mixed_coco14_coco14_Xception_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_Xception_fastText",
     "images_processor": "Xception",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
-
-
-
-
 
 config_mixed_coco14_coco14_inception_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -434,7 +401,8 @@ config_mixed_coco14_coco14_inception_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_inception_glove",
     "images_processor": "inception",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_coco14_inception_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -452,9 +420,9 @@ config_mixed_coco14_coco14_inception_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_inception_fastText",
     "images_processor": "inception",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
 
 config_mixed_coco14_coco14_vgg19_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -472,7 +440,8 @@ config_mixed_coco14_coco14_vgg19_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_vgg19_glove",
     "images_processor": "vgg19",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_coco14_vgg19_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -490,9 +459,9 @@ config_mixed_coco14_coco14_vgg19_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_vgg19_fastText",
     "images_processor": "vgg19",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
 
 config_mixed_coco14_coco14_resnet50_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -510,7 +479,8 @@ config_mixed_coco14_coco14_resnet50_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_resnet50_glove",
     "images_processor": "resnet50",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_coco14_resnet50_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -528,7 +498,8 @@ config_mixed_coco14_coco14_resnet50_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_resnet50_fastText",
     "images_processor": "resnet50",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
 
 config_mixed_coco14_coco14_denseNet121_glove = {
@@ -547,7 +518,8 @@ config_mixed_coco14_coco14_denseNet121_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_denseNet121_glove",
     "images_processor": "denseNet121",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_coco14_denseNet121_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -565,7 +537,8 @@ config_mixed_coco14_coco14_denseNet121_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_denseNet121_fastText",
     "images_processor": "denseNet121",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
 
 config_mixed_coco14_coco14_denseNet201_glove = {
@@ -584,7 +557,8 @@ config_mixed_coco14_coco14_denseNet201_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_denseNet201_glove",
     "images_processor": "denseNet201",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_coco14_denseNet201_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -602,9 +576,9 @@ config_mixed_coco14_coco14_denseNet201_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_denseNet201_fastText",
     "images_processor": "denseNet201",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
 
 config_mixed_coco14_coco14_mobileNet_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -622,7 +596,8 @@ config_mixed_coco14_coco14_mobileNet_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_mobileNet_glove",
     "images_processor": "mobileNet",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_coco14_mobileNet_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -640,7 +615,8 @@ config_mixed_coco14_coco14_mobileNet_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_mobileNet_fastText",
     "images_processor": "mobileNet",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
 
 config_mixed_coco14_coco14_mobileNetV2_glove = {
@@ -659,7 +635,8 @@ config_mixed_coco14_coco14_mobileNetV2_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_mobileNetV2_glove",
     "images_processor": "mobileNetV2",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_coco14_mobileNetV2_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -677,10 +654,9 @@ config_mixed_coco14_coco14_mobileNetV2_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_coco14_mobileNetV2_fastText",
     "images_processor": "mobileNetV2",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
 
 config_mixed_flickr8k_flickr8k_vgg16_glove = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -698,7 +674,8 @@ config_mixed_flickr8k_flickr8k_vgg16_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_vgg16_glove",
     "images_processor": "vgg16",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_flickr8k_flickr8k_vgg16_fastText = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -716,10 +693,9 @@ config_mixed_flickr8k_flickr8k_vgg16_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_vgg16_fastText",
     "images_processor": "vgg16",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
 
 config_mixed_flickr8k_flickr8k_resnet152V2_glove = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -737,7 +713,8 @@ config_mixed_flickr8k_flickr8k_resnet152V2_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_resnet152V2_glove",
     "images_processor": "resnet152V2",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_flickr8k_flickr8k_resnet152V2_fastText = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -755,17 +732,9 @@ config_mixed_flickr8k_flickr8k_resnet152V2_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_resnet152V2_fastText",
     "images_processor": "resnet152V2",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
-
-
-
-
-
-
 
 config_mixed_flickr8k_flickr8k_Xception_glove = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -783,7 +752,8 @@ config_mixed_flickr8k_flickr8k_Xception_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_Xception_glove",
     "images_processor": "Xception",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_flickr8k_flickr8k_Xception_fastText = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -801,17 +771,9 @@ config_mixed_flickr8k_flickr8k_Xception_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_Xception_fastText",
     "images_processor": "Xception",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
-
-
-
-
-
-
 
 config_mixed_flickr8k_flickr8k_inception_glove = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -829,7 +791,8 @@ config_mixed_flickr8k_flickr8k_inception_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_inception_glove",
     "images_processor": "inception",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_flickr8k_flickr8k_inception_fastText = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -847,13 +810,9 @@ config_mixed_flickr8k_flickr8k_inception_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_inception_fastText",
     "images_processor": "inception",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
-
-
 
 config_mixed_flickr8k_flickr8k_vgg19_glove = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -871,7 +830,8 @@ config_mixed_flickr8k_flickr8k_vgg19_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_vgg19_glove",
     "images_processor": "vgg19",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_flickr8k_flickr8k_vgg19_fastText = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -889,12 +849,9 @@ config_mixed_flickr8k_flickr8k_vgg19_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_vgg19_fastText",
     "images_processor": "vgg19",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
-
 
 config_mixed_flickr8k_flickr8k_resnet50_glove = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -912,7 +869,8 @@ config_mixed_flickr8k_flickr8k_resnet50_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_resnet50_glove",
     "images_processor": "resnet50",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_flickr8k_flickr8k_resnet50_fastText = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -930,7 +888,8 @@ config_mixed_flickr8k_flickr8k_resnet50_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_resnet50_fastText",
     "images_processor": "resnet50",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
 config_mixed_flickr8k_flickr8k_denseNet121_glove = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -948,7 +907,8 @@ config_mixed_flickr8k_flickr8k_denseNet121_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_denseNet121_glove",
     "images_processor": "denseNet121",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_flickr8k_flickr8k_denseNet121_fastText = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -966,7 +926,8 @@ config_mixed_flickr8k_flickr8k_denseNet121_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_denseNet121_fastText",
     "images_processor": "denseNet121",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
 config_mixed_flickr8k_flickr8k_denseNet201_glove = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -984,7 +945,9 @@ config_mixed_flickr8k_flickr8k_denseNet201_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_denseNet201_glove",
     "images_processor": "denseNet201",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False,
+    "continue_training": False
 }
 config_mixed_flickr8k_flickr8k_denseNet201_fastText = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -1002,7 +965,8 @@ config_mixed_flickr8k_flickr8k_denseNet201_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_denseNet201_fastText",
     "images_processor": "denseNet201",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
 
 config_mixed_flickr8k_flickr8k_mobileNet_glove = {
@@ -1021,7 +985,8 @@ config_mixed_flickr8k_flickr8k_mobileNet_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_mobileNet_glove",
     "images_processor": "mobileNet",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_flickr8k_flickr8k_mobileNet_fastText = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -1039,7 +1004,8 @@ config_mixed_flickr8k_flickr8k_mobileNet_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_mobileNet_fastText",
     "images_processor": "mobileNet",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
 config_mixed_flickr8k_flickr8k_mobileNetV2_glove = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -1057,7 +1023,8 @@ config_mixed_flickr8k_flickr8k_mobileNetV2_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_mobileNetV2_glove",
     "images_processor": "mobileNetV2",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_flickr8k_flickr8k_mobileNetV2_fastText = {
     "train": {"dataset_name": "flickr8k", "subset_name": "train"},
@@ -1075,16 +1042,9 @@ config_mixed_flickr8k_flickr8k_mobileNetV2_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_flickr8k_flickr8k_mobileNetV2_fastText",
     "images_processor": "mobileNetV2",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
-
-
-
-
-
 
 config_mixed_coco14_flickr30k_vgg16_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -1102,7 +1062,8 @@ config_mixed_coco14_flickr30k_vgg16_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr30k_vgg16_glove",
     "images_processor": "vgg16",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_flickr30k_vgg16_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -1120,9 +1081,9 @@ config_mixed_coco14_flickr30k_vgg16_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr30k_vgg16_fastText",
     "images_processor": "vgg16",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
 
 config_mixed_coco14_flickr30k_resnet152V2_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -1140,7 +1101,8 @@ config_mixed_coco14_flickr30k_resnet152V2_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr30k_resnet152V2_glove",
     "images_processor": "resnet152V2",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_flickr30k_resnet152V2_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -1158,11 +1120,9 @@ config_mixed_coco14_flickr30k_resnet152V2_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr30k_resnet152V2_fastText",
     "images_processor": "resnet152V2",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
 
 config_mixed_coco14_flickr30k_vgg19_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -1180,7 +1140,8 @@ config_mixed_coco14_flickr30k_vgg19_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr30k_vgg19_glove",
     "images_processor": "vgg19",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_flickr30k_vgg19_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -1198,13 +1159,9 @@ config_mixed_coco14_flickr30k_vgg19_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr30k_vgg19_fastText",
     "images_processor": "vgg19",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
-
-
 
 config_mixed_coco14_flickr30k_Xception_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -1222,7 +1179,8 @@ config_mixed_coco14_flickr30k_Xception_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr30k_Xception_glove",
     "images_processor": "Xception",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_flickr30k_Xception_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -1240,10 +1198,9 @@ config_mixed_coco14_flickr30k_Xception_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr30k_Xception_fastText",
     "images_processor": "Xception",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
 
 config_mixed_coco14_flickr30k_inception_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -1261,7 +1218,8 @@ config_mixed_coco14_flickr30k_inception_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr30k_inception_glove",
     "images_processor": "inception",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_flickr30k_inception_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -1279,11 +1237,9 @@ config_mixed_coco14_flickr30k_inception_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr30k_inception_fastText",
     "images_processor": "inception",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
-
-
-
 
 config_mixed_coco14_flickr30k_resnet50_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -1301,7 +1257,8 @@ config_mixed_coco14_flickr30k_resnet50_glove = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr30k_resnet50_glove",
     "images_processor": "resnet50",
-    "text_processor": "glove"
+    "text_processor": "glove",
+    "continue_training": False
 }
 config_mixed_coco14_flickr30k_resnet50_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
@@ -1319,5 +1276,6 @@ config_mixed_coco14_flickr30k_resnet50_fastText = {
     "model_save_path": "/model_Base_3_Batch_Komninos.h5",
     "data_name": "mixed_coco14_flickr30k_resnet50_fastText",
     "images_processor": "resnet50",
-    "text_processor": "fastText"
+    "text_processor": "fastText",
+    "continue_training": False
 }
