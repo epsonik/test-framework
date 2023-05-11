@@ -4,6 +4,7 @@ from __future__ import print_function
 import json
 import os
 import sys
+import time
 
 import numpy as np
 from keras.preprocessing.sequence import pad_sequences
@@ -169,7 +170,16 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
         for desc in test_captions_mapping[image_id]:
             expected[image_id].append({"image_id": image_id, "caption": desc})
         # Predict captions
+
+        st = time.time()
         generated = greedySearch(image, model, wordtoix, ixtoword, max_length)
+        et = time.time()
+        # get the execution time
+        elapsed_time = et - st
+        print('Execution time:', elapsed_time*1000, 'miliseconds')
+
+        # get the execution time
+        elapsed_time = et - st
         # Put predicted captions to the structure accepted by evaluation framework.
         results[image_id] = [{"image_id": image_id, "caption": generated}]
         if index % 100 == 0:
