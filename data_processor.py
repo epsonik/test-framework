@@ -2,7 +2,7 @@ import pickle
 from time import time
 import numpy as np
 
-from config import general, word2Vec
+from config import general
 import string
 from keras.applications.inception_v3 import InceptionV3
 from keras.applications.vgg16 import VGG16

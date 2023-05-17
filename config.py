@@ -648,7 +648,7 @@ config_mixed_coco14_coco14_mobileNetV2_fastText = {
 
 config_mixed_coco14_flickr30k_vgg16_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -667,7 +667,7 @@ config_mixed_coco14_flickr30k_vgg16_glove = {
 }
 config_mixed_coco14_flickr30k_vgg16_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -687,7 +687,7 @@ config_mixed_coco14_flickr30k_vgg16_fastText = {
 
 config_mixed_coco14_flickr30k_resnet152V2_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -706,7 +706,7 @@ config_mixed_coco14_flickr30k_resnet152V2_glove = {
 }
 config_mixed_coco14_flickr30k_resnet152V2_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -726,7 +726,7 @@ config_mixed_coco14_flickr30k_resnet152V2_fastText = {
 
 config_mixed_coco14_flickr30k_vgg19_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -745,7 +745,7 @@ config_mixed_coco14_flickr30k_vgg19_glove = {
 }
 config_mixed_coco14_flickr30k_vgg19_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -765,7 +765,7 @@ config_mixed_coco14_flickr30k_vgg19_fastText = {
 
 config_mixed_coco14_flickr30k_Xception_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -784,7 +784,7 @@ config_mixed_coco14_flickr30k_Xception_glove = {
 }
 config_mixed_coco14_flickr30k_Xception_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -804,7 +804,7 @@ config_mixed_coco14_flickr30k_Xception_fastText = {
 
 config_mixed_coco14_flickr30k_inception_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -823,7 +823,7 @@ config_mixed_coco14_flickr30k_inception_glove = {
 }
 config_mixed_coco14_flickr30k_inception_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -843,7 +843,7 @@ config_mixed_coco14_flickr30k_inception_fastText = {
 
 config_mixed_coco14_flickr30k_resnet50_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -862,7 +862,7 @@ config_mixed_coco14_flickr30k_resnet50_glove = {
 }
 config_mixed_coco14_flickr30k_resnet50_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -882,7 +882,7 @@ config_mixed_coco14_flickr30k_resnet50_fastText = {
 
 config_mixed_coco14_flickr30k_denseNet121_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -901,7 +901,7 @@ config_mixed_coco14_flickr30k_denseNet121_glove = {
 }
 config_mixed_coco14_flickr30k_denseNet121_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -921,7 +921,7 @@ config_mixed_coco14_flickr30k_denseNet121_fastText = {
 
 config_mixed_coco14_flickr30k_denseNet201_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -940,7 +940,7 @@ config_mixed_coco14_flickr30k_denseNet201_glove = {
 }
 config_mixed_coco14_flickr30k_denseNet201_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -960,7 +960,7 @@ config_mixed_coco14_flickr30k_denseNet201_fastText = {
 
 config_mixed_coco14_flickr30k_mobileNet_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -979,7 +979,7 @@ config_mixed_coco14_flickr30k_mobileNet_glove = {
 }
 config_mixed_coco14_flickr30k_mobileNet_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -999,7 +999,7 @@ config_mixed_coco14_flickr30k_mobileNet_fastText = {
 
 config_mixed_coco14_flickr30k_mobileNetV2_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
@@ -1018,7 +1018,7 @@ config_mixed_coco14_flickr30k_mobileNetV2_glove = {
 }
 config_mixed_coco14_flickr30k_mobileNetV2_fastText = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "flickr30k", "subset_name": "test"},
+    "test": {"dataset_name": "flickr30k", "subset_name": "train"},
     "encode_images": True,
     "save_ix_to_word": False,
     "train_model": False,
