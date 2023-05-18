@@ -110,7 +110,7 @@ def define_images_feature_model(images_processor):
     elif images_processor == 'resnet152V2':
         model_images_processor_name = ResNet152V2(weights='imagenet')
         from keras.applications.resnet_v2 import preprocess_input
-        print("Used: resnet142V2")
+        print("Used: resnet152V2")
     elif images_processor == 'resnet50':
         model_images_processor_name = ResNet50(weights='imagenet')
         from tensorflow.keras.applications.resnet50 import preprocess_input

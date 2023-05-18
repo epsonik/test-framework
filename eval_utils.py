@@ -153,7 +153,7 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
         expected[image_id] = []
         if images_processor == 'vgg16'or images_processor == 'vgg19':
             image = encoding_test[image_id].reshape((1, 4096))
-        elif images_processor == 'resnet':
+        elif images_processor == 'resnet152V2':
             image = encoding_test[image_id].reshape((1, 2048))
         elif images_processor == 'denseNet121':
             image = encoding_test[image_id].reshape((1, 1024))
