@@ -3,6 +3,8 @@ import json
 
 import config_datasets
 
+from IPython.display import display
+from IPython.display import HTML
 
 def split_captions(all_descriptions, train_images, test_images):
     """

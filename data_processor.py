@@ -309,9 +309,9 @@ def preprocess_images(train_images, test_images, configuration):
 
     encoding_test = iterate_over_images(test_images, configuration["encoded_images_test_path"])
 
-    # encoding_train = iterate_over_images(train_images, configuration["encoded_images_train_path"])
+    encoding_train = iterate_over_images(train_images, configuration["encoded_images_train_path"])
 
-    return encoding_test
+    return encoding_train, encoding_test
 
 
 def get_all_train_captions_list(train_captions):
@@ -487,14 +487,14 @@ def preprocess_data(data):
     data.train_captions_wrapped = wrap_captions_in_start_stop(train_captions_mapping)
     print("Descriptions wraped into start and stop words.")
     print(data.train_captions_wrapped[list(data.train_captions_wrapped.keys())[0]])
-    data.encoded_images_test = preprocess_images(train_images_mapping, test_images_mapping,
+    data.encoded_images_train, data.encoded_images_test = preprocess_images(train_images_mapping, test_images_mapping,
                                                                             data.configuration)
     all_train_captions = get_all_train_captions_list(data.train_captions_wrapped)
     print("Number of training captions ", len(all_train_captions))
     data.max_length = get_max_length(all_train_captions)
-    # print('Description Length: %d' % data.max_length)
-    # # Count words and consider only words which occur at least 10 times in the corpus
-    # data.vocab = count_words_and_threshold(all_train_captions)
+    print('Description Length: %d' % data.max_length)
+    # Count words and consider only words which occur at least 10 times in the corpus
+    data.vocab = count_words_and_threshold(all_train_captions)
     data.ixtoword, data.wordtoix = ixtowordandbackward(data.vocab, data.configuration)
     data.vocab_size = len(data.ixtoword) + 1  # one for appended 0's
     print("Vocab size: ", data.vocab_size)
