@@ -152,7 +152,7 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
     for j in range(0, len(test_pics)):
         image_id = test_pics[j]
         expected[image_id] = []
-        if images_processor == 'vgg16'or images_processor == 'vgg19':
+        if images_processor == 'vgg16' or images_processor == 'vgg19':
             image = encoding_test[image_id].reshape((1, 4096))
         elif images_processor == 'resnet152V2':
             image = encoding_test[image_id].reshape((1, 2048))
@@ -185,7 +185,7 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
         if index % 100 == 0:
             print("Processed:")
             print(index)
-            with open("xception_glove_training_set_{}.pkl".format(index), 'w+b') as encoded_pickle:
+            with open("./results/xception_glove_training_set_{}.pkl".format(index), 'w+b') as encoded_pickle:
                 pickle.dump(results, encoded_pickle)
             print("saved")
         index += 1
