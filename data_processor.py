@@ -503,15 +503,6 @@ def preprocess_data(data):
         data.embedding_matrix = get_fast_text_embedding_matrix(data.vocab_size, data.wordtoix,
                                                                fastText[data.language]["word_embedings_path"],
                                                                fastText[data.language]["embedings_dim"])
-
-    elif data.configuration["text_processor"] == "word2Vec":
-        print("Word2Vec used")
-        data.embedding_matrix = get_word2Vec_embedding_matrix(data.vocab_size, data.wordtoix,
-                                                              word2Vec[data.language]["word_embedings_path"],
-                                                              word2Vec[data.language]["embedings_dim"])
-    elif data.configuration["text_processor"] == "oneHot":
-        print("OneHot Encoding used")
-        data.embedding_matrix = get_oneHot_embedding_matrix(data.vocab_size)
     else:
         print("Glove used")
         data.embedding_matrix = get_embedding_matrix(data.vocab_size, data.wordtoix,

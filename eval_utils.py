@@ -185,6 +185,9 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
         if index % 100 == 0:
             print("Processed:")
             print(index)
+            with open("xception_glove_training_set"+index+".pkl", 'w+b') as encoded_pickle:
+                pickle.dump(results, encoded_pickle)
+            print("saved")
         index += 1
     with open("xception_glove_training_set.pkl", 'w+b') as encoded_pickle:
         pickle.dump(results, encoded_pickle)
