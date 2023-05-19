@@ -171,15 +171,15 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
             expected[image_id].append({"image_id": image_id, "caption": desc})
         # Predict captions
 
-        st = time.time()
+        # st = time.time()
         generated = greedySearch(image, model, wordtoix, ixtoword, max_length)
-        et = time.time()
+        # et = time.time()
         # get the execution time
-        elapsed_time = et - st
-        print('Execution time:', elapsed_time*1000, 'miliseconds')
+        # elapsed_time = et - st
+        # print('Execution time:', elapsed_time*1000, 'miliseconds')
 
         # get the execution time
-        elapsed_time = et - st
+        # elapsed_time = et - st
         # Put predicted captions to the structure accepted by evaluation framework.
         results[image_id] = [{"image_id": image_id, "caption": generated}]
         if index % 100 == 0:
