@@ -336,7 +336,7 @@ config_mixed_coco14_coco14_resnet152V2_fastText = {
 
 config_mixed_coco14_coco14_Xception_glove = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
-    "test": {"dataset_name": "coco14", "subset_name": "test"},
+    "test": {"dataset_name": "coco14", "subset_name": "train"},
     "encode_images": False,
     "save_ix_to_word": False,
     "train_model": False,
