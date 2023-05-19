@@ -308,9 +308,13 @@ def load_dataset(configuration):
                                                                                              train_images_mapping_original.keys()),
                                                                                          list(
                                                                                              test_images_mapping_original.keys()))
-        c_train_captions_mapping_original = list(itertools.chain.from_iterable(train_captions_mapping_original))
+        print("number of img in train")
+        print(len(train_captions_mapping_original.values()))
+        print("nuber img in test")
+        print(len(test_captions_mapping_original.values()))
+        c_train_captions_mapping_original = list(itertools.chain.from_iterable(train_captions_mapping_original.values()))
         print(len(c_train_captions_mapping_original))
-        c_test_captions_mapping_original = list(itertools.chain.from_iterable(test_captions_mapping_original))
+        c_test_captions_mapping_original = list(itertools.chain.from_iterable(test_captions_mapping_original.values()))
         print(len(c_test_captions_mapping_original))
         with open("train_captions.pkl", 'w+b') as encoded_pickle:
             pickle.dump(c_train_captions_mapping_original, encoded_pickle)
