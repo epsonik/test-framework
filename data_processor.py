@@ -485,10 +485,8 @@ def preprocess_data(data):
     print("Descriptions cleaned.")
     print(train_captions_mapping[list(train_images_mapping.keys())[0]])
     data.train_captions_wrapped = wrap_captions_in_start_stop(train_captions_mapping)
-    print("Train descriptions wraped into start and stop words.")
+    print("Descriptions wraped into start and stop words.")
     print(data.train_captions_wrapped[list(data.train_captions_wrapped.keys())[0]])
-    data.test_captions_wrapped = wrap_captions_in_start_stop(data.test_captions_mapping)
-    print("Test descriptions wraped into start and stop words.")
     data.encoded_images_train, data.encoded_images_test = preprocess_images(train_images_mapping, test_images_mapping,
                                                                             data.configuration)
     all_train_captions = get_all_train_captions_list(data.train_captions_wrapped)
