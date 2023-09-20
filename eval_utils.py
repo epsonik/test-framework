@@ -13,7 +13,7 @@ from config import general
 import csv
 
 
-def calculate_results(expected, results, config):
+def calculate_results(expected, results, config, model_name):
     """
     Method to evaluate image captioning model by calculating scores:
      "Bleu_1", "Bleu_2", "Bleu_3", "Bleu_4"m "METEOR", "ROUGE_L", "CIDEr", "WMD", "SPICE"
@@ -52,13 +52,17 @@ def calculate_results(expected, results, config):
         imgToEval[image_id]['caption'] = caption
         imgToEval[image_id]['ground_truth_captions'] = [x['caption'] for x in expected[p]]
 
-    evaluation_results_save_path = os.path.join(general["results_directory"], config["data_name"] + '.json')
+    model_result_dir = general["results_directory"] + "/" + config["data_name"]
+    if not os.path.isdir(model_result_dir):
+        os.makedirs(model_result_dir)
+
+    evaluation_results_save_path = os.path.join(model_result_dir, model_name.split('.')[0] + '.json')
     print("Results saved to ")
     print(evaluation_results_save_path)
     # Path to save evaluation results
     with open(evaluation_results_save_path, 'w') as outfile:
         json.dump(
-            {'overall': calculated_metrics, 'dataset_name': config["test"]["dataset_name"], 'imgToEval': imgToEval},
+            {'overall': calculated_metrics, 'dataset_name': model_name.split('.')[0], 'imgToEval': imgToEval},
             outfile)
     return calculated_metrics
 
@@ -185,12 +189,7 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
         if index % 100 == 0:
             print("Processed:")
             print(index)
-            with open("./results/xception_glove_training_set_{}.pkl".format(index), 'w+b') as encoded_pickle:
-                pickle.dump(results, encoded_pickle)
-            print("saved")
         index += 1
-    with open("xception_glove_training_set.pkl", 'w+b') as encoded_pickle:
-        pickle.dump(results, encoded_pickle)
     return expected, results
 
 
@@ -216,13 +215,14 @@ def generate_report(results_path):
         # use just .json files
         if x.endswith(".json"):
             # Load data from file with results particular for configuaration
-            results_for_report = json.load(open("./" + results_path + "/" + x, 'r'))
+            results_for_report = json.load(open(os.path.join(results_path, x), 'r'))
             # Add column with the configuration name to name the specific results.
             results_for_report["overall"]["config_name"] = x.split(".")[0]
             # Save the results to the table to save it in the next step
             all_results.append(results_for_report["overall"])
     # Save final csv file
-    with open("./" + results_path + "/final_results.csv", 'w') as f:
+
+    with open(os.path.join(results_path, "/final_results.csv", 'w')) as f:
         writer = csv.DictWriter(f, fieldnames=header)
         writer.writeheader()
         writer.writerows(all_results)
