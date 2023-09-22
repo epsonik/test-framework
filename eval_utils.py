@@ -153,7 +153,7 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
     print("Preparing for evaluation")
     # calculation of metrics for test images dataset
     index = 0
-    for j in range(0, len(test_pics)):
+    for j in range(0, 101):
         image_id = test_pics[j]
         expected[image_id] = []
         if images_processor == 'vgg16' or images_processor == 'vgg19':
