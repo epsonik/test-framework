@@ -56,7 +56,7 @@ def calculate_results(expected, results, config, model_name):
     if not os.path.isdir(model_result_dir):
         os.makedirs(model_result_dir)
 
-    evaluation_results_save_path = os.path.join(model_result_dir, model_name.split('.')[0] + '.json')
+    evaluation_results_save_path = os.path.join(model_result_dir, model_name.replace(".h5", '') + '.json')
     print("Results saved to ")
     print(evaluation_results_save_path)
     # Path to save evaluation results
