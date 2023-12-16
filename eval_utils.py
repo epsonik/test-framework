@@ -3,11 +3,11 @@ from __future__ import division
 from __future__ import print_function
 import json
 import os
-import pickle
 import sys
 import time
-
-import numpy as np
+from time import time
+from numpy import argmax, argsort
+from numpy import log
 from keras.preprocessing.sequence import pad_sequences
 from config import general
 import csv
@@ -67,6 +67,56 @@ def calculate_results(expected, results, config, model_name):
     return calculated_metrics
 
 
+def beam_search_pred(photo, model, wordtoix, ixtoword, max_length, k_beams = 3, log = True):
+    start = [wordtoix[general["START"]]]
+
+    start_word = [[start, 0.0]]
+
+    while len(start_word[0][0]) < max_length:
+        temp = []
+        for s in start_word:
+            sequence = pad_sequences([s[0]], maxlen=max_length).reshape((1, max_length))  # sequence of most probable words
+            # based on the previous steps
+            print(sequence.shape)
+            print(type(sequence))
+            print(type(photo))
+            preds = model([photo, sequence])
+            word_preds = argsort(preds[0])[-k_beams:]  # sort predictions based on the probability, then take the last
+            # K_beams items. words with the most probs
+            # Getting the top <K_beams>(n) predictions and creating a
+            # new list so as to put them via the model again
+            for w in word_preds:
+
+                next_cap, prob = s[0][:], s[1]
+                next_cap.append(w)
+                if log:
+                    prob += log(preds[0][w])  # assign a probability to each K words4
+                else:
+                    prob += preds[0][w]
+                temp.append([next_cap, prob])
+        start_word = temp
+        # Sorting according to the probabilities
+        start_word = sorted(start_word, reverse=False, key=lambda l: l[1])
+
+        # Getting the top words
+        start_word = start_word[-k_beams:]
+
+    start_word = start_word[-1][0]
+    captions_ = [ixtoword[i] for i in start_word]
+
+    final_caption = []
+
+    for i in captions_:
+        if i != general["STOP"]:
+            final_caption.append(i)
+        else:
+            break
+
+    final_caption = ' '.join(final_caption[1:])
+    return final_caption
+
+
+
 def greedySearch(photo, model, wordtoix, ixtoword, max_length):
     """
     Method to put ground truth captions and results to the structure accepted by evaluation framework
@@ -97,12 +147,16 @@ def greedySearch(photo, model, wordtoix, ixtoword, max_length):
     for i in range(max_length):
         # Get previously generated sequence
         sequence = [wordtoix[w] for w in in_text.split() if w in wordtoix]
+        print("photo")
+        print(type(photo))
         # Pad sewuences to the maximum length
         sequence = pad_sequences([sequence], maxlen=max_length)
+        print("sequence")
+        print(type(sequence))
         # Predict sequence with the learned model
-        yhat = model.predict([photo, sequence], verbose=0)
+        yhat = model([photo, sequence])
         # Get word with the highest propability
-        yhat = np.argmax(yhat)
+        yhat = argmax(yhat)
         # Transform index of word to the word by previously created dictionary
         word = ixtoword[yhat]
         in_text += ' ' + word
@@ -153,7 +207,7 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
     print("Preparing for evaluation")
     # calculation of metrics for test images dataset
     index = 0
-    for j in range(0, 101):
+    for j in range(0, len(test_pics)):
         image_id = test_pics[j]
         expected[image_id] = []
         if images_processor == 'vgg16' or images_processor == 'vgg19':
@@ -176,9 +230,9 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
             expected[image_id].append({"image_id": image_id, "caption": desc})
         # Predict captions
 
-        st = time.time()
+        st = time()
         generated = greedySearch(image, model, wordtoix, ixtoword, max_length)
-        et = time.time()
+        et = time()
         # get the execution time
         elapsed_time = et - st
         # print('Execution time:', elapsed_time*1000, 'miliseconds')
@@ -207,7 +261,8 @@ def generate_report(results_path):
 
     """
     # Names of the evaluation metrics
-    header = ["config_name", "Bleu_1", "Bleu_2", "Bleu_3", "Bleu_4", "METEOR", "ROUGE_L", "CIDEr", "SPICE", "WMD"]
+    header = ["config_name", "loss", "epoch", "Bleu_1", "Bleu_2", "Bleu_3", "Bleu_4", "METEOR", "ROUGE_L", "CIDEr",
+              "SPICE", "WMD"]
     print(f'\n Final results saved to final_results.csv')
     all_results = []
     # iterate over all files in results directory
@@ -217,12 +272,16 @@ def generate_report(results_path):
             # Load data from file with results particular for configuaration
             results_for_report = json.load(open(os.path.join(results_path, x), 'r'))
             # Add column with the configuration name to name the specific results.
-            results_for_report["overall"]["config_name"] = x.split(".")[0]
+            config_name = x.replace(".json", '')
+            b = config_name.split("-")
+            results_for_report["overall"]["config_name"] = config_name
+            results_for_report["overall"]["loss"] = b[2]
+            results_for_report["overall"]["epoch"] = b[1]
             # Save the results to the table to save it in the next step
             all_results.append(results_for_report["overall"])
     # Save final csv file
 
-    with open(os.path.join(results_path, "/final_results.csv", 'w')) as f:
+    with open(results_path + "/final_results.csv", 'w') as f:
         writer = csv.DictWriter(f, fieldnames=header)
         writer.writeheader()
         writer.writerows(all_results)
