@@ -7,7 +7,7 @@ import sys
 import time
 from time import time
 from numpy import argmax, argsort
-from numpy import log
+import numpy as np
 from keras.preprocessing.sequence import pad_sequences
 from config import general
 import csv
@@ -67,7 +67,7 @@ def calculate_results(expected, results, config, model_name):
     return calculated_metrics
 
 
-def beam_search_pred(photo, model, wordtoix, ixtoword, max_length, k_beams = 3, log = True):
+def beam_search_pred(photo, model, wordtoix, ixtoword, max_length, k_beams=5, log=True):
     start = [wordtoix[general["START"]]]
 
     start_word = [[start, 0.0]]
@@ -75,22 +75,19 @@ def beam_search_pred(photo, model, wordtoix, ixtoword, max_length, k_beams = 3, 
     while len(start_word[0][0]) < max_length:
         temp = []
         for s in start_word:
-            sequence = pad_sequences([s[0]], maxlen=max_length).reshape((1, max_length))  # sequence of most probable words
+            sequence = pad_sequences([s[0]], maxlen=max_length).reshape(
+                (1, max_length))  # sequence of most probable words
             # based on the previous steps
-            print(sequence.shape)
-            print(type(sequence))
-            print(type(photo))
             preds = model([photo, sequence])
             word_preds = argsort(preds[0])[-k_beams:]  # sort predictions based on the probability, then take the last
             # K_beams items. words with the most probs
             # Getting the top <K_beams>(n) predictions and creating a
             # new list so as to put them via the model again
             for w in word_preds:
-
                 next_cap, prob = s[0][:], s[1]
                 next_cap.append(w)
                 if log:
-                    prob += log(preds[0][w])  # assign a probability to each K words4
+                    prob += np.log(preds[0][w])  # assign a probability to each K words4
                 else:
                     prob += preds[0][w]
                 temp.append([next_cap, prob])
@@ -114,7 +111,6 @@ def beam_search_pred(photo, model, wordtoix, ixtoword, max_length, k_beams = 3, 
 
     final_caption = ' '.join(final_caption[1:])
     return final_caption
-
 
 
 def greedySearch(photo, model, wordtoix, ixtoword, max_length):
