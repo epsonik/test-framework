@@ -43,11 +43,9 @@ def calculate_results(expected, results, config, model_name):
     # Store metrics  values in dictionary by metrics names
     for metric, score in cocoEvalObj.eval.items():
         calculated_metrics[metric] = score
-    print(calculated_metrics)
     print("Calculating final results")
     imgToEval = cocoEvalObj.imgToEval
     for p in results:
-        print(imgToEval)
         image_id, caption = p, results[p][0]['caption']
         imgToEval[image_id]['caption'] = caption
         imgToEval[image_id]['ground_truth_captions'] = [x['caption'] for x in expected[p]]
@@ -67,7 +65,7 @@ def calculate_results(expected, results, config, model_name):
     return calculated_metrics
 
 
-def beam_search_pred(photo, model, wordtoix, ixtoword, max_length, k_beams=5, log=True):
+def beam_search_pred(photo, model, wordtoix, ixtoword, max_length, k_beams=2, log=True):
     start = [wordtoix[general["START"]]]
 
     start_word = [[start, 0.0]]
@@ -202,6 +200,9 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
     results = dict()
     print("Preparing for evaluation")
     # calculation of metrics for test images dataset
+    k_beams = 2
+    print("Evaluating at beam search: ")
+    print(k_beams)
     index = 0
     for j in range(0, len(test_pics)):
         image_id = test_pics[j]
@@ -227,7 +228,8 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
         # Predict captions
 
         st = time()
-        generated = greedySearch(image, model, wordtoix, ixtoword, max_length)
+        #         generated = greedySearch(image, model, wordtoix, ixtoword, max_length)
+        generated = beam_search_pred(image, model, wordtoix, ixtoword, max_length, k_beams)
         et = time()
         # get the execution time
         elapsed_time = et - st
