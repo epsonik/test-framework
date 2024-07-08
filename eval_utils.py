@@ -200,7 +200,7 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
     results = dict()
     print("Preparing for evaluation")
     # calculation of metrics for test images dataset
-    k_beams = 2
+    k_beams = 1
     print("Evaluating at beam search: ")
     print(k_beams)
     index = 0
@@ -239,8 +239,7 @@ def prepare_for_evaluation(encoding_test, test_captions_mapping, wordtoix, ixtow
         # Put predicted captions to the structure accepted by evaluation framework.
         results[image_id] = [{"image_id": image_id, "caption": generated, "time": elapsed_time}]
         if index % 100 == 0:
-            print("Processed:")
-            print(index)
+            print("Processed %s:" % (index))
         index += 1
     return expected, results
 

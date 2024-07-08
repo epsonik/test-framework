@@ -213,6 +213,44 @@ config_mixed_coco14_coco14_Xception_glove_concatenate_dense512_GRU = {
     "text_processor": "glove",
     "continue_training": False
 }
+config_mixed_coco14_coco14_Xception_glove_concatenate_dense256_GRU = {
+    "train": {"dataset_name": "coco14", "subset_name": "train"},
+    "test": {"dataset_name": "coco14", "subset_name": "test"},
+    "encode_images": False,
+    "save_ix_to_word": False,
+    "train_model": True,
+    "save_model": True,
+    "ixtoword_path": "ixtoword.pkl",
+    "wordtoix_path": "wordtoix.pkl",
+    "pickles_dir": "/Pickle",
+    "encoded_images_test_path": "/encoded_test_images.pkl",
+    "encoded_images_train_path": "/encoded_train_images.pkl",
+    "model_save_dir": "/model_weights",
+    "model_save_path": "/model_Base_3_Batch_Komninos.h5",
+    "data_name": "mixed_coco14_coco14_Xception_glove_concatenate_dense256_GRU",
+    "images_processor": "Xception",
+    "text_processor": "glove",
+    "continue_training": False
+}
+config_mixed_coco14_coco14_Xception_glove_concatenate_dense128_GRU = {
+    "train": {"dataset_name": "coco14", "subset_name": "train"},
+    "test": {"dataset_name": "coco14", "subset_name": "test"},
+    "encode_images": False,
+    "save_ix_to_word": False,
+    "train_model": True,
+    "save_model": True,
+    "ixtoword_path": "ixtoword.pkl",
+    "wordtoix_path": "wordtoix.pkl",
+    "pickles_dir": "/Pickle",
+    "encoded_images_test_path": "/encoded_test_images.pkl",
+    "encoded_images_train_path": "/encoded_train_images.pkl",
+    "model_save_dir": "/model_weights",
+    "model_save_path": "/model_Base_3_Batch_Komninos.h5",
+    "data_name": "mixed_coco14_coco14_Xception_glove_concatenate_dense128_GRU",
+    "images_processor": "Xception",
+    "text_processor": "glove",
+    "continue_training": False
+}
 config_mixed_coco14_coco14_Xception_glove_concatenate_dense256 = {
     "train": {"dataset_name": "coco14", "subset_name": "train"},
     "test": {"dataset_name": "coco14", "subset_name": "test"},
